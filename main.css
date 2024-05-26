@@ -1,0 +1,53 @@
+h1{
+    text-align: center;
+    font-size: 90px;
+}
+.cardDisplay{
+    display: flex;
+    flex-direction: column; 
+    border: 5px solid black; 
+    border-radius: 18px;
+    width: 130px;
+    height: 200px;
+}
+.cardTitle{
+    height: 17%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.cardName{
+    flex-shrink: 1;
+    padding: 5px;
+}
+.cardCost{
+    flex-shrink: 0;
+    background-color: blueviolet;
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+
+
+}
+.cardImage{
+    height: 42%;
+    overflow: auto;
+}
+.cardEffect{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 41%;
+    justify-content: center;
+}
+.cardEffectText{
+    overflow: auto;
+    text-align: center;
+    
+
+}

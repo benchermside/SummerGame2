@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="main.css">
+    </head>
+    <body>
+        <h1 id="top"> 
+            CardDules(Placeholder)
+        </h1>
+        <div id="homeCard">  
+            <div class="cardDisplay">
+                <div class="cardTitle">
+                    <div class="cardName">name1</div>
+                    <div class="cardCost">12</div>
+                </div>
+                <img class="cardImage" src="img/dragon.jpg"></img>
+                <div class="cardEffect">
+                    <div class="cardEffectText">re.</div>
+                </div>
+            </div>
+        </div> 
+        <script>
+            const SoloButton = document.createElement('button')
+            SoloButton.innerText = 'Solo'
+            SoloButton.id = 'SoloButton'
+            SoloButton.addEventListener('click', () => {
+                alert('Fill this in later')
+                const header = document.getElementById("top")
+                header.style.display = 'none'
+            })
+            document.body.appendChild(SoloButton)
+            const MultButton = document.createElement('button')
+            MultButton.innerText = 'Mult'
+            MultButton.id = 'MultButton'
+            MultButton.addEventListener('click', () => {
+                alert('Fill this in later')
+            })
+            document.body.appendChild(MultButton)
+
+        </script>
+    </body>
+</html>
+
