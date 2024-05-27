@@ -4,6 +4,6 @@ const card1 = {
     effectText: "Dragions breath fire",
     cost: 12
 }
-renderCard(card1, "homeCard")
-
+//renderCard(card1, "homeCard")
+console.log("ran Main.js")
 
