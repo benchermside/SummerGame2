@@ -51,3 +51,9 @@ h1{
     
 
 }
+.cardSlot{
+    width: 130px;
+    height: 200px;
+    border-radius: 18px;
+    border: 4px dashed gray; 
+}

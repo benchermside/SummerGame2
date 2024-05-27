@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div> 
-        <div id="homeCard"></div>
+        <div id="homeCard" class="cardSlot"></div>
         <script>
             const SoloButton = document.createElement('button')
             SoloButton.innerText = 'Solo'
@@ -37,6 +37,13 @@
                 alert('Fill this in later')
             })
             document.body.appendChild(MultButton)
+            const cardClassList = document.getElementsByClassName("cardDisplay")
+            for (let classNumber = 0; classNumber<cardClassList.length; classNumber++){
+                cardClassList[classNumber].setAttribute("draggable", "true")
+                cardClassList[classNumber].addEventListener("click", (event) => {
+                    alert("card Clicked")
+                });
+            }
 
         </script>
     </body>
