@@ -57,3 +57,8 @@ h1{
     border-radius: 18px;
     border: 4px dashed gray; 
 }
+.cardSlot:has(> .cardDisplay){
+    border:0px
+}
+
+

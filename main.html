@@ -2,7 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="main.css">
-        <script type="text/javascript" src="Main.js"></script>
+        <script type="text/javascript" src="main.js"></script>
     </head>
     <body>
         <h1 id="top"> 
@@ -23,30 +23,7 @@
         <div id="homeCard" class="cardSlot"></div>
 
         <script>
-            const SoloButton = document.createElement('button')
-            SoloButton.innerText = 'Solo'
-            SoloButton.id = 'SoloButton'
-            SoloButton.addEventListener('click', () => {
-                alert('Fill this in later')
-                const header = document.getElementById("top")
-                header.style.display = 'none'
-            })
-            document.body.appendChild(SoloButton)
-            const MultButton = document.createElement('button')
-            MultButton.innerText = 'Mult'
-            MultButton.id = 'MultButton'
-            MultButton.addEventListener('click', () => {
-                alert('Fill this in later')
-            })
-            document.body.appendChild(MultButton)
-            const cardClassList = document.getElementsByClassName("cardDisplay")
-            for (let classNumber = 0; classNumber<cardClassList.length; classNumber++){
-                cardClassList[classNumber].setAttribute("draggable", "true")
-                cardClassList[classNumber].addEventListener("click", (event) => {
-                    alert("card Clicked")
-                });
-            }
-
+            main()
         </script>
     </body>
 </html>
