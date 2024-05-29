@@ -1,3 +1,9 @@
+.body{
+    display: flex;
+    flex-direction: column;
+}
+
+
 h1{
     text-align: center;
     font-size: 90px;
@@ -51,14 +57,27 @@ h1{
     
 
 }
-.cardSlot{
+.handSlot, .cardSlot{
     width: 130px;
     height: 200px;
     border-radius: 18px;
     border: 4px dashed gray; 
+    margin: 5px;
 }
 .cardSlot:has(> .cardDisplay){
     border:0px
+}
+.handSlot{
+    
+}
+.playerHand{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    align-self: center;
+    height: 300px;
+    width: 800px;
 }
 
 

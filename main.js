@@ -11,6 +11,7 @@ const card1 = {
  * @param locationID the element the card is to be drawn on 
  */
 function renderCard(card, locationID){
+    console.log("renderCardCalled")
     const location = document.getElementById(locationID)
     const cardDisplyDiv = document.createElement("div");
     cardDisplyDiv.classList.add("cardDisplay")
@@ -47,32 +48,86 @@ function renderCard(card, locationID){
 
 }
 
+function enterGame(){
+    const header = document.getElementById("top")
+    header.style.display = 'none'
+    const soloButton = document.getElementById("soloButton")
+    soloButton.style.display = "none"
+    const multButton = document.getElementById("multButton")
+    multButton.style.display = "none"
+    cardSlotList = []
+    const handWraper = document.getElementById("handWraper")
+    for (let i=0; i<5; i++){
+        cardSlotList.push(document.createElement("div"))
+        cardSlotList[i].classList.add("handSlot")
+        cardSlotList[i].id = "handSlotCard" + String(i)
+
+
+        cardSlotList[i].addEventListener("dragover", function(e){
+            e.preventDefault()
+        });
+        cardSlotList[i].addEventListener("drop", (event) => {
+            for (const child of cardSlotList[i].children){
+                child.style.display = "none"
+            }
+            renderCard(card1, cardSlotList[i].getAttribute("id"))
+        })
+
+
+
+        handWraper.appendChild(cardSlotList[i])
+    }
+
+
+    
+
+}
+
+
+
 
 function main(){
     console.log("ran main.js")
-    const SoloButton = document.createElement('button')
-    SoloButton.innerText = 'Solo'
-    SoloButton.id = 'SoloButton'
-    SoloButton.addEventListener('click', () => {
-        alert('Fill this in later')
-        const header = document.getElementById("top")
-        header.style.display = 'none'
+    const soloButton = document.createElement('button')
+    soloButton.innerText = 'Solo'
+    soloButton.id = 'soloButton'
+    soloButton.addEventListener('click', () => {
+        enterGame()
     })
-    document.body.appendChild(SoloButton)
-    const MultButton = document.createElement('button')
-    MultButton.innerText = 'Mult'
-    MultButton.id = 'MultButton'
-    MultButton.addEventListener('click', () => {
-        alert('Fill this in later')
+    document.body.appendChild(soloButton)
+    const multButton = document.createElement('button')
+    multButton.innerText = 'Mult'
+    multButton.id = 'multButton'
+    multButton.addEventListener('click', () => {
+        enterGame()
     })
-    document.body.appendChild(MultButton)
+    document.body.appendChild(multButton)
+
+
     const cardClassList = document.getElementsByClassName("cardDisplay")
     for (let classNumber = 0; classNumber<cardClassList.length; classNumber++){
         cardClassList[classNumber].setAttribute("draggable", "true")
-        cardClassList[classNumber].addEventListener("click", (event) => {
-            alert("card Clicked")
+        cardClassList[classNumber].addEventListener("dragstart", (event) => {
+            
         });
+        cardClassList[classNumber].addEventListener("dragend", (event) => {
+            console.log("draged")
+            console.log(event)
+        });
+    
     }
-    renderCard(card1, "homeCard")
+    const cardSlots = document.getElementsByClassName("cardSlot")
+    for(let cardSlotNumber=0; cardSlotNumber<cardSlots.length; cardSlotNumber++){
+        cardSlots[cardSlotNumber].addEventListener("dragover", function(e){
+            e.preventDefault()
+        });
+        cardSlots[cardSlotNumber].addEventListener("drop", (event) => {
+            for (const child of cardSlots[cardSlotNumber].children){
+                child.style.display = "none"
+            }
+            renderCard(card1, cardSlots[cardSlotNumber].getAttribute("id"))
+
+        })
+    }
 }
 
