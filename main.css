@@ -37,12 +37,13 @@ h1{
     font-weight: bold;
     text-align: center;
     line-height: 30px;
-
-
 }
+
+
 .cardImage{
     height: 42%;
     overflow: auto;
+    user-drag: none;
 }
 .cardEffect{
     display: flex;
@@ -78,6 +79,24 @@ h1{
     align-self: center;
     height: 300px;
     width: 800px;
+}
+
+
+.cardPlayArea{
+    height: 240px;
+    align-self: stretch;
+    display: flex;
+    justify-content: center;
+}
+
+.purchesArea{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    align-self: center;
+    height: 300px;
+    width: 1000px;
 }
 
 
