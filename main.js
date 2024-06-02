@@ -2,7 +2,17 @@ const card1 = {
     name:"dragon",
     image:"dragon.jpg",
     effectText: "Dragions breath fire",
-    cost: 12
+    cost: 12,
+    EffectID: "card1"
+}
+
+const recurtor = {
+    name: "recrutor",
+    image: "superRecrutor.jpg",
+    effectText: "Gain 1 reputation",
+    cost: 1,
+    EffectID: "recurtor"
+
 }
 
 
@@ -35,6 +45,10 @@ const gameState = {
         slot4: null,
         slot5: null,
     },
+    playerDeck: [],
+    opponentDeck: [],
+    playerDiscard: [],
+    opponentDiscard: [],
 
 }
 
@@ -260,6 +274,32 @@ function renderCard(card, locationID){
 }
 
 
+function shufflePlayerDeck() {
+    const PlayerDeck = gameState.playerDeck
+    let index = PlayerDeck.length
+    while(index != 0){
+        let RandomIndex = Math.floor(Math.random()*index)
+        index = index - 1;
+        [PlayerDeck[index], PlayerDeck[RandomIndex]] = [PlayerDeck[RandomIndex], PlayerDeck[index]]
+    }
+}
+
+
+
+
+function DrawNewHand(){
+    for (let i=0; i<5; i++){
+        if (gameState.playerDeck.length === 0){
+            gameState.playerDeck = gameState.playerDiscard
+            gameState.playerDiscard = []
+            shufflePlayerDeck()
+        }
+        if (!(gameState.playerDeck.length === 0)){
+            gameState.playerhand.updateNthHandSlot(i, gameState.playerDeck.pop())
+        }
+    }
+}
+
 
 
 
@@ -289,6 +329,28 @@ function enterGame(){
     cardPlayArea.addEventListener("drop", (event) => {
         alert("cardPlayed")
     })
+
+
+    //this creates the players deck
+    console.log(gameState.playerDeck)
+    for (let i=0; i<10; i++){
+        gameState.playerDeck.push(structuredClone(recurtor))
+        console.log(JSON.stringify(gameState.playerDeck))
+    }
+    for (let i=0; i<5; i++){
+        gameState.playerDeck.push(structuredClone(card1))
+        console.log(JSON.stringify(gameState.playerDeck))
+    }
+    console.log(JSON.stringify(gameState.playerDeck))
+    shufflePlayerDeck()
+    console.log(JSON.stringify(gameState.playerDeck))
+    shufflePlayerDeck()
+    console.log(JSON.stringify(gameState.playerDeck))
+    shufflePlayerDeck()
+    console.log(JSON.stringify(gameState.playerDeck))
+
+
+    //
 
     //this creates the players hand
     cardSlotList = []

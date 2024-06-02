@@ -40,7 +40,7 @@ h1{
 }
 
 
-.cardImage{
+.cardImage{ 
     height: 42%;
     overflow: auto;
     user-drag: none;
