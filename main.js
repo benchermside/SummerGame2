@@ -3,7 +3,7 @@ const card1 = {
     image:"dragon.jpg",
     effectText: "Dragions breath fire",
     cost: 12,
-    EffectID: "card1"
+    effectID: "card1"
 }
 
 const recurtor = {
@@ -11,12 +11,144 @@ const recurtor = {
     image: "superRecrutor.jpg",
     effectText: "Gain 1 reputation",
     cost: 1,
-    EffectID: "recurtor"
+    effectID: "recurtor"
 
 }
 
 
+const ninga = {
+    name:"ninga",
+    image:"dragon.jpg",
+    effectText: "3 energy, loose 3 energy at the end of next turn",//not implimented yet
+    cost: 2,
+    effectID: "ninga"
+}
+const thief = {
+    name:"thief",
+    image:"dragon.jpg",
+    effectText: "steal 2 energy from your opponent",
+    cost: 3,
+    effectID: "thief"
+}
+// const card1 = {
+//     name:"dragon",
+//     image:"dragon.jpg",
+//     effectText: "Dragions breath fire",
+//     cost: 12,
+//     effectID: "card1"
+// }
+// const card1 = {
+//     name:"dragon",
+//     image:"dragon.jpg",
+//     effectText: "Dragions breath fire",
+//     cost: 12,
+//     effectID: "card1"
+// }
+// const card1 = {
+//     name:"dragon",
+//     image:"dragon.jpg",
+//     effectText: "Dragions breath fire",
+//     cost: 12,
+//     effectID: "card1"
+// }
+// const card1 = {
+//     name:"dragon",
+//     image:"dragon.jpg",
+//     effectText: "Dragions breath fire",
+//     cost: 12,
+//     effectID: "card1"
+// }
+// const card1 = {
+//     name:"dragon",
+//     image:"dragon.jpg",
+//     effectText: "Dragions breath fire",
+//     cost: 12,
+//     effectID: "card1"
+// }
+// const card1 = {
+//     name:"dragon",
+//     image:"dragon.jpg",
+//     effectText: "Dragions breath fire",
+//     cost: 12,
+//     effectID: "card1"
+// }
+// const card1 = {
+//     name:"dragon",
+//     image:"dragon.jpg",
+//     effectText: "Dragions breath fire",
+//     cost: 12,
+//     effectID: "card1"
+// }
 
+
+
+
+
+/**
+ * This is a table of the function that creates the effect of playing every card. 
+ * The indexes here are the same as the effectID feld in the card objects
+ * The function take in a player who played the card, "player" for the player who's running the program, "opponent" for the opponent
+ */
+const cardEffects = new Map()
+
+cardEffects.set('recurtor', (playingPlayer) => {
+    if(playingPlayer === "player"){
+        gameState.playerReputation++
+    }
+    else if(playingPlayer === "opponent"){
+        gameState.opponentReputation++
+    }
+    else{
+        console.log("Error, playingPlayer invalid")
+    }
+    console.log("Player Reputation is ", gameState.playerReputation) //Deleate This
+})
+
+cardEffects.set("card1", (playingPlayer) => {
+    console.log("card1Played")
+    },
+)
+cardEffects.set("ninga", (playingPlayer) => {
+    if(playingPlayer === "player"){
+        gameState.playerEnergy = gameState.playerEnergy + 3
+    }
+    else if(playingPlayer === "opponent"){
+        gameState.opponenetEnergy = gameState.opponenetEnergy + 3
+    }
+    else{
+        console.log("ninga input invalid")
+    }
+})
+cardEffects.set("thief", (playingPlayer) => {
+    if(playingPlayer === "player"){
+        if (gameState.opponenetEnergy >= 2){
+            gameState.playerEnergy = gameState.playerEnergy + 2
+            gameState.opponenetEnergy = gameState.opponenetEnergy - 2    
+        }
+        else if(gameState.opponenetEnergy === 1){
+            gameState.playerEnergy = gameState.playerEnergy + 1
+            gameState.opponenetEnergy = 0
+        }
+    }
+    else if(playingPlayer === "opponent"){
+        if (gameState.playerEnergy >= 2){
+            gameState.opponenetEnergy = gameState.opponenetEnergy + 2
+            gameState.playerEnergy = gameState.playerEnergy - 2    
+        }
+        else if(gameState.playerEnergy === 1){
+            gameState.opponenetEnergy = gameState.opponenetEnergy + 1
+            gameState.playerEnergy = 0
+        }
+    }
+    else{
+        console.log("ninga input invalid")
+    }
+})
+
+
+
+
+let draggingCard = null
 
 
 const gameState = {
@@ -24,6 +156,15 @@ const gameState = {
     //contains, Playerhand ... PlayerHand is an object with slot1 through slot5. 
     //these are null when no card present in slot, otherwise they are a card object repersenting the card
     //Oppondnts hand is object with slot1-5 null when no card in slot, otherwise is the cardBack const
+    //playerDeck is a list of all cards in the player deck in order. the Last element is the top of the deck
+    //opponentDeck is a list of all cards in the opponentDeck in order. the Last element is the top of the deck
+    //playerDiscard is a list of all cards in the Playes dicard pile
+    //Opponent Discard is a list of all cards in the opponents dicard pile
+    //playerTurn is Player when it's the players turn to play and opponent when it's the opponents turn to play
+    //current phase is the current phase your in, It can be playing or purchesing
+    //cardsPlayed indicates the number of cards played by the player going first, 0 through 5. 
+    //goingFirts indicaes who is going first this round. Either Player or opponent
+
     playerhand: {
         slot1: null,
         slot2: null,
@@ -49,6 +190,15 @@ const gameState = {
     opponentDeck: [],
     playerDiscard: [],
     opponentDiscard: [],
+    playerReputation: 0,
+    opponentReputation: 0,
+    playerEnergy: 0,
+    opponenetEnergy: 0,
+    playerTurn : "player",
+    currentPhase: "playing",
+    CardsPlayed: 0,
+    goingFirst: "player"
+
 
 }
 
@@ -89,16 +239,16 @@ function updateNthHandSlot(n, newValue){
         gameState.playerhand.slot1 = newValue
     }
     else if (n===1){
-        gameState.playerhand.slot1 = newValue
+        gameState.playerhand.slot2 = newValue
     }
     else if (n===2){
-        gameState.playerhand.slot1 = newValue
+        gameState.playerhand.slot3 = newValue
     }
     else if (n===3){
-        gameState.playerhand.slot1 = newValue
+        gameState.playerhand.slot4 = newValue
     }
     else if (n===4){
-        gameState.playerhand.slot1 = newValue
+        gameState.playerhand.slot5 = newValue
     }
     else{
         console.log("updateNthHandSlot n invalid")
@@ -231,7 +381,6 @@ function updatePurchesAreaNthSlot(n, newValue){
  * @param locationID the element the card is to be drawn on 
  */
 function renderCard(card, locationID){
-    console.log(locationID)
     const location = document.getElementById(locationID)
     const cardDisplyDiv = document.createElement("div");
     if (card != null){
@@ -272,6 +421,38 @@ function renderCard(card, locationID){
 
     location.appendChild(cardDisplyDiv);
 }
+
+/**
+ * Plays a card
+ */
+function playCard(card, player){
+    cardEffects.get(card.effectID)(player)
+    gameState.currentPhase = "purchasing"
+
+
+}
+
+
+function endPhaseButton(){
+    console.log("button pressed")
+    if (gameState.playerTurn === "player"){// in The future, this should chck that the player has had there turn for some minimum time, possibly 5 seconds
+        if (gameState.currentPhase === "playing"){
+            gameState.currentPhase = "purchasing"
+            gameState.CardsPlayed = gameState.CardsPlayed + 1
+            return
+        }
+        else if(gameState.currentPhase === "purchasing"){
+            gameState.playerTurn = "opponent"
+            gameState.currentPhase = "playing"
+
+        }
+    }
+}
+
+
+
+
+
 
 
 function shufflePlayerDeck() {
@@ -327,36 +508,33 @@ function enterGame(){
         cardPlayArea.style.borderStyle = "dashed"
     });
     cardPlayArea.addEventListener("drop", (event) => {
-        alert("cardPlayed")
+
+        playCard(draggingCard, "player")
     })
 
 
     //this creates the players deck
-    console.log(gameState.playerDeck)
     for (let i=0; i<10; i++){
         gameState.playerDeck.push(structuredClone(recurtor))
-        console.log(JSON.stringify(gameState.playerDeck))
     }
     for (let i=0; i<5; i++){
         gameState.playerDeck.push(structuredClone(card1))
-        console.log(JSON.stringify(gameState.playerDeck))
     }
-    console.log(JSON.stringify(gameState.playerDeck))
     shufflePlayerDeck()
-    console.log(JSON.stringify(gameState.playerDeck))
-    shufflePlayerDeck()
-    console.log(JSON.stringify(gameState.playerDeck))
-    shufflePlayerDeck()
-    console.log(JSON.stringify(gameState.playerDeck))
 
 
-    //
+
+
+
+
+
 
     //this creates the players hand
     cardSlotList = []
     const handWraper = document.getElementById("handWraper")
     let currCardSlot = null
     for (let i=0; i<5; i++){
+        const cardIndex = i
         cardSlotList.push(document.createElement("div"))
         currCardSlot = cardSlotList[i]
         currCardSlot.classList.add("handSlot")
@@ -375,12 +553,16 @@ function enterGame(){
                     document.getElementById("cardPlayArea").style.borderStyle = "dashed"
                 }
                 catch(TypeError){}    
+                
+                draggingCard = getNthHandSlot(cardIndex)
+
             })
             cardSlotList[i].addEventListener("dragend", (event) => {
                 try{
                     document.getElementById("cardPlayArea").style.borderStyle = "none"
                 }
-                catch(TypeError){}    
+                catch(TypeError){}   
+
             })
         })
 
@@ -388,9 +570,19 @@ function enterGame(){
 
         handWraper.appendChild(currCardSlot)
     }
-    //Temporary code to create a starting card to play around with
-    gameState.playerhand.slot1 = card1
-    //Temporary code to create a starting card to play around with
+    
+
+
+    //Give the players hand it's starting cards
+
+    for (let slotNum = 0; slotNum<5;slotNum++){
+        let nextCard = gameState.playerDeck.pop()
+        updateNthHandSlot(slotNum, nextCard)
+    }
+
+
+
+    
     document.body.insertBefore(cardPlayArea, handWraper)
 
 
@@ -424,17 +616,37 @@ function enterGame(){
     }
     cardPlayArea.appendChild(purchesArea)
 
+    //This creates the skipPhase button
+    const skipPhaseButton = document.createElement("button")
+    skipPhaseButton.classList.add("SkipPhase")
+    skipPhaseButton.innerText = "Skip Phase"
+    skipPhaseButton.addEventListener('click', () => {
+        endPhaseButton()
+    })
+    const cardPlayPlace = document.getElementById("cardPlayArea")
+    cardPlayPlace.appendChild(skipPhaseButton)
+    
 
+
+
+
+
+
+
+    //Call update gameState
     updateGameState()
     //Temporary code to create a starting card to play around with
     const startCard = document.getElementsByClassName("cardDisplay")
+    let count = 0
     for(let card of startCard){
+        const index = count
         card.setAttribute("draggable", "true")
         card.addEventListener("dragstart", (event) => {
             try{
                 document.getElementById("cardPlayArea").style.borderStyle = "dashed"
             }
             catch(TypeError){}
+            draggingCard = getNthHandSlot(index)
         });
         card.addEventListener("dragend", (event) => {
             try{
@@ -443,6 +655,7 @@ function enterGame(){
             catch{}
 
         });
+        count++
     }
     //Temporary code to create a starting card to play around with
 
@@ -530,12 +743,15 @@ function main(){
 
     const cardClassList = document.getElementsByClassName("cardDisplay")
     for (let classNumber = 0; classNumber<cardClassList.length; classNumber++){
+        const calssIndex = classNumber
         cardClassList[classNumber].setAttribute("draggable", "true")
         cardClassList[classNumber].addEventListener("dragstart", (event) => {
             try{
                 document.getElementById("cardPlayArea").style.borderStyle = "dashed"
             }
             catch(TypeError){}
+            draggingCard = getNthHandSlot(calssIndex)
+
         });
         cardClassList[classNumber].addEventListener("dragend", (event) => {
             try{

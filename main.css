@@ -99,4 +99,16 @@ h1{
     width: 1000px;
 }
 
+.SkipPhase{
+    background-color: red;
+    align-self: flex-end;
+    align-self: center;
+    font-size: 35px;
+    
+    height: 100px;
+    width: 220px;
+
+
+    
+}
 
