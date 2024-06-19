@@ -56,30 +56,30 @@ function enterGame(){
         currCardSlot.id = "handSlotCard" + String(i)
 
 
-        currCardSlot.addEventListener("dragover", function(e){
-            e.preventDefault()
-        });
-        cardSlotList[i].addEventListener("drop", (event) => {
-            cardSlotList[i].style.border = "none"
-            renderCard(card1, cardSlotList[i].getAttribute("id"))
-            cardSlotList[i].lastChild.setAttribute("draggable", "true")
-            cardSlotList[i].addEventListener("dragstart", (event) => {
-                try{
-                    document.getElementById("cardPlayArea").style.borderStyle = "dashed"
-                }
-                catch(TypeError){}    
+        // currCardSlot.addEventListener("dragover", function(e){
+        //     e.preventDefault()
+        // });
+        // cardSlotList[i].addEventListener("drop", (event) => {
+        //     cardSlotList[i].style.border = "none"
+        //     renderCard(card1, cardSlotList[i].getAttribute("id"))
+        //     cardSlotList[i].lastChild.setAttribute("draggable", "true")
+        //     cardSlotList[i].addEventListener("dragstart", (event) => {
+        //         try{
+        //             document.getElementById("cardPlayArea").style.borderStyle = "dashed"
+        //         }
+        //         catch(TypeError){}    
                 
-                draggingCard = getNthHandSlot(cardIndex)
+        //         draggingCard = getNthHandSlot(cardIndex)
 
-            })
-            cardSlotList[i].addEventListener("dragend", (event) => {
-                try{
-                    document.getElementById("cardPlayArea").style.borderStyle = "none"
-                }
-                catch(TypeError){}   
+        //     })
+        //     cardSlotList[i].addEventListener("dragend", (event) => {
+        //         try{
+        //             document.getElementById("cardPlayArea").style.borderStyle = "none"
+        //         }
+        //         catch(TypeError){}   
 
-            })
-        })
+        //     })
+        // })
 
 
 
@@ -97,7 +97,14 @@ function enterGame(){
 
 
 
-    
+    //This creates the player reputation tracker
+    const playerReputationTracker = document.createElement("div")
+    playerReputationTracker.classList.add("reputationTracker")
+    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
+    playerReputationTracker.id = "playerReputationTracker"
+    handWraper.appendChild(playerReputationTracker)
+
+
     document.body.insertBefore(cardPlayArea, handWraper)
 
 
@@ -115,6 +122,13 @@ function enterGame(){
     }
     const firstElement = document.body.firstChild
     document.body.insertBefore(opponetHandWrapper, firstElement)
+    //This creates the opponents reputation tracker
+    const opponentReputationTracker = document.createElement("div")
+    opponentReputationTracker.classList.add("reputationTracker")
+    opponentReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
+    opponentReputationTracker.id = "opponentReputationTracker"
+    opponetHandWrapper.appendChild(opponentReputationTracker)
+    
 
     
     //Handles purches area
@@ -126,10 +140,22 @@ function enterGame(){
         purchesAreaSlotList.push(document.createElement("div"))
         purchesAreaSlotList[i].classList.add("cardSlot")
         purchesAreaSlotList[i].id = `purchesAreaSlot${i}`
-        updatePurchesAreaNthSlot(i, null)//Note, Line is redundent
         purchesArea.appendChild(purchesAreaSlotList[i])
     }
     cardPlayArea.appendChild(purchesArea)
+
+   //creates the deck of cards for the purches area
+    let wildCardIndex = gameState.wildCards.length
+    while(wildCardIndex != 0){
+       let RandomwildCardIndex = Math.floor(Math.random()*wildCardIndex)
+       wildCardIndex = wildCardIndex - 1;
+       [gameState.wildCards[wildCardIndex], gameState.wildCards[RandomwildCardIndex]] = [gameState.wildCards[RandomwildCardIndex], gameState.wildCards[wildCardIndex]]
+    }
+    for (let i=0; i<5; i++){
+        updatePurchesAreaNthSlot(i, gameState.wildCards.pop())
+    }
+
+
 
     //This creates the skipPhase button
     const skipPhaseButton = document.createElement("button")
@@ -151,28 +177,28 @@ function enterGame(){
 
     //Call update gameState
     renderGameState()
-    //Temporary code to create a starting card to play around with
-    const startCard = document.getElementsByClassName("cardDisplay")
-    let count = 0
-    for(let card of startCard){
-        const index = count
-        card.setAttribute("draggable", "true")
-        card.addEventListener("dragstart", (event) => {
-            try{
-                document.getElementById("cardPlayArea").style.borderStyle = "dashed"
-            }
-            catch(TypeError){}
-            draggingCard = getNthHandSlot(index)
-        });
-        card.addEventListener("dragend", (event) => {
-            try{
-                document.getElementById("cardPlayArea").style.borderStyle = "none"
-            }
-            catch{}
+    turnOnCardPlay()
+    // for(let count=0; count<5; count++){
+    //     const index = count
+    //     const card = document.getElementById(`handSlotCard${count}`).firstChild
+    //     card.setAttribute("draggable", "true")
+    //     card.addEventListener("dragstart", (event) => {
+    //         try{
+    //             document.getElementById("cardPlayArea").style.borderStyle = "dashed"
+    //         }
+    //         catch(TypeError){}
+    //         draggingCard = getNthHandSlot(index)
+    //     });
+    //     card.addEventListener("dragend", (event) => {
+    //         console.log("draggend called")
 
-        });
-        count++
-    }
+    //         try{
+    //             document.getElementById("cardPlayArea").style.borderStyle = "none"
+    //         }
+    //         catch{}
+
+    //     });
+    // }
     //Temporary code to create a starting card to play around with
 
 
@@ -199,15 +225,116 @@ function playCard(card, player){
     cardEffects.get(card.effectID)(player)
     gameState.currentPhase = "purchasing"
 }
+
 /**
- * this function activeates the mode switch that happens when a card is played 
- * by player
+ * activates whenever a card is bought, puts the card into the players discard pile, subtracts the reputation
+ */
+function buyCard(card, player){
+
+}
+
+function tryBuyCard(cardNumber){
+    console.log("tryBuyCard Called")
+    const boughtCard = getPurchesAreaNthSlot(cardNumber)
+    if(gameState.playerReputation >= boughtCard.cost){
+        gameState.playerReputation = gameState.playerReputation - boughtCard.cost
+        gameState.playerDiscard.push(boughtCard)
+        updatePurchesAreaNthSlot(cardNumber, null)
+        renderGameState()
+        turnOnCardPlay()
+        enterMode(playingCard)
+    }
+}
+
+/**
+ * calls tryBuyCard(0)
+ */
+function tryBuyCard0(){
+    tryBuyCard(0)
+}
+
+/**
+ * calls tryBuyCard(1)
+ */
+function tryBuyCard1(){
+    tryBuyCard(1)
+}
+
+/**
+ * calls tryBuyCard(2)
+ */
+function tryBuyCard2(){
+    tryBuyCard(2)
+}
+
+/**
+ * calls tryBuyCard(3)
+ */
+function tryBuyCard3(){
+    tryBuyCard(3)
+}
+
+/**
+ * calls tryBuyCard(4)
+ */
+function tryBuyCard4(){
+    tryBuyCard(4)
+}
+
+
+/**
+ * this function activeates the mode switch that happens when a card is played by player
  * and calls the play card function
  */
 function playerPlaysCard(){
+   
     playCard(draggingCard, "player")
+    turnOffCardPlay()
+    renderGameState()
+    enterMode(buyingCard)
+}
+
+/**
+ * this function turns off the draggability of cards in player's hand
+ */
+function turnOffCardPlay(){
+    console.log("called turn off cardPlay")
+    for (let i=0; i<5; i++){
+        const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild
+        currHandSlot.setAttribute("draggable", "false") 
+    }
+}
+
+/**
+ * this function turns on the draggability of cards in player's hand
+ */
+function turnOnCardPlay(){
+    console.log("called turn on card play")
+    for (let i=0; i<5; i++){
+        const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild
+        currHandSlot.setAttribute("draggable", "true")
+        currHandSlot.addEventListener("dragstart", (event) => {
+            try{
+                document.getElementById("cardPlayArea").style.borderStyle = "dashed"
+            }
+            catch(TypeError){}
+            draggingCard = getNthHandSlot(i)
+        });
+        currHandSlot.addEventListener("dragend", (event) => {
+            console.log("draggend called")
+
+            try{
+                document.getElementById("cardPlayArea").style.borderStyle = "none"
+            }
+            catch{}
+
+        });
+        
+    }
+
 
 }
+
 
 /**
  * occures when end phase button pressed while the player is playing a card
@@ -216,6 +343,7 @@ function playerPlaysCard(){
 function endPhaseButtonPlaying(){
     console.log("endPhaseButtonPlaying called")
     enterMode(buyingCard)
+    turnOffCardPlay()
 }
 
 
@@ -225,6 +353,7 @@ function endPhaseButtonPlaying(){
  */
 function endPhaseButtonBuying(){
     enterMode(playingCard)
+    turnOnCardPlay()
 }
 
 
@@ -262,7 +391,8 @@ function endPhaseButtonBuying(){
  * when they do, adds the event listner for all those functions
  */
 function enterMode(mode){
-    console.log("enter Mode")
+
+    //This will create the new Transition event listners and deleate the old ones
     if (currentMode != null){
         const prevMode = currentMode
         const prevModeTransitionList = Object.values(prevMode.transitions)
@@ -282,6 +412,8 @@ function enterMode(mode){
             EffectedElement.addEventListener(currTransition.eventType, currTransition.funct)
         }
     }
+
+    //This will 
 }
 
 
@@ -326,6 +458,36 @@ const buyingCard = {
             funct: endPhaseButtonBuying,
             elementID: "skipPhaseButton",
             eventType: "click",
+        },
+        buyCard0: {
+            funct: tryBuyCard0,
+            elementID: "purchesAreaSlot0",
+            eventType: "click",
+
+        },
+        buyCard1: {
+            funct: tryBuyCard1,
+            elementID: "purchesAreaSlot1",
+            eventType: "click",
+
+        },
+        buyCard2: {
+            funct: tryBuyCard2,
+            elementID: "purchesAreaSlot2",
+            eventType: "click",
+
+        },
+        buyCard3: {
+            funct: tryBuyCard3,
+            elementID: "purchesAreaSlot3",
+            eventType: "click",
+
+        },
+        buyCard4: {
+            funct: tryBuyCard4,
+            elementID: "purchesAreaSlot4",
+            eventType: "click",
+
         },
     },
 }

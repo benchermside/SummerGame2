@@ -87,6 +87,9 @@ function renderGameState(){
             }
         }
         else if(gameStateCardVal === "cardBack"){
+            for (const child of opponentsCardSlot.children){
+                child.remove()
+            }
             const newCardBack = document.createElement("img")
             newCardBack.setAttribute("src", "img/cardBack.jpg")
             newCardBack.setAttribute("draggable", "false")
@@ -103,7 +106,9 @@ function renderGameState(){
         renderCard(currPurchesCard, `purchesAreaSlot${i}`)
     }
 
-
+    //Update playerReputationTracker
+    const playerReputationTracker = document.getElementById("playerReputationTracker")
+    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
 
 
 

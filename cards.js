@@ -16,6 +16,7 @@ const recurtor = {
 }
 
 
+
 const ninga = {
     name:"ninga",
     image:"dragon.jpg",
@@ -32,27 +33,44 @@ const thief = {
 }
 
 
-// const card1 = {
-//     name:"dragon",
-//     image:"dragon.jpg",
-//     effectText: "Dragions breath fire",
-//     cost: 12,
-//     effectID: "card1"
-// }
-// const card1 = {
-//     name:"dragon",
-//     image:"dragon.jpg",
-//     effectText: "Dragions breath fire",
-//     cost: 12,
-//     effectID: "card1"
-// }
-// const card1 = {
-//     name:"dragon",
-//     image:"dragon.jpg",
-//     effectText: "Dragions breath fire",
-//     cost: 12,
-//     effectID: "card1"
-// }
+
+const doomsayer = {
+    name:"doomsayer",
+    image:"dragon.jpg",
+    effectText: "set both players reputation to 0",
+    cost: 5,
+    effectID: "doomsayer"
+}
+
+
+const publicityOfficer = {
+    name:"publicityOfficer",
+    image:"dragon.jpg",
+    effectText: "gain 1 reputatiin for every 3 cards you have somewhere (rounded down)",
+    cost: 2,
+    effectID: "publicityOfficer"
+}
+const bigEnergy = {
+    name:"bigEnergy",
+    image:"dragon.jpg",
+    effectText: "gain 20 reputation",
+    cost: 0,
+    effectID: "bigEnergy"
+}
+
+
+const instantPower = {
+    name:"instantPower",
+    image:"dragon.jpg",
+    effectText: "do nothing",
+    cost: -5,
+    effectID: "instantPower"
+}
+
+const wildCards = [ninga, thief, doomsayer, publicityOfficer, bigEnergy, instantPower]
+
+
+
 // const card1 = {
 //     name:"dragon",
 //     image:"dragon.jpg",
@@ -146,5 +164,40 @@ cardEffects.set("thief", (playingPlayer) => {
         console.log("ninga input invalid")
     }
 })
+
+cardEffects.set("doomsayer", (playingPlayer) => {
+    gameState.playerEnergy = 0
+    gameState.opponenetEnergy = 0
+}
+)
+
+cardEffects.set("publicityOfficer", (playeringPlayer) => {
+    if (playeringPlayer === "player"){
+        gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.playerDeck.length + gameState.playerDiscard.length + (gameState.playerhand.slot1 != null) + (gameState.playerhand.slot2 != null) + (gameState.playerhand.slot3 != null) + (gameState.playerhand.slot4 != null) + (gameState.playerhand.slot5 != null))/2)
+    }
+    else if(playeringPlayer === "opponent"){
+        gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.opponentDeck.length + gameState.opponentDiscard.length + (gameState.opponentHand.slot1 != null) + (gameState.opponentHand.slot2 != null) + (gameState.opponentHand.slot3 != null) + (gameState.opponentHand.slot4 != null) + (gameState.opponentHand.slot5 != null))/2)
+    }
+    else{
+        console.log("publicityOfficer Input invalid")
+    }
+})
+cardEffects.set("bigEnergy", (playingPlayer) => {
+    if (playingPlayer === "player"){
+        gameState.playerReputation = gameState.playerReputation + 20
+    }
+    else if (playingPlayer === "opponent"){
+        gameState.playerReputation = gameState.playerReputation + 20
+    }
+    else{
+        console.log("bigEnergy Input invalid")        
+    }
+    
+})
+
+cardEffects.set("instantPower", (playeringPlayer) => {
+
+})
+
 
 

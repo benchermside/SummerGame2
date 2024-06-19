@@ -28,16 +28,17 @@ const gameState = {
         slot5: null,
     },
     purchesArea: {
+        slot0: null,
         slot1: null,
         slot2: null,
         slot3: null,
         slot4: null,
-        slot5: null,
     },
     playerDeck: [],
     opponentDeck: [],
     playerDiscard: [],
     opponentDiscard: [],
+    wildCards: wildCards,
     playerReputation: 0,
     opponentReputation: 0,
     playerEnergy: 0,
@@ -45,7 +46,7 @@ const gameState = {
     playerTurn : "player",
     currentPhase: "playing",
     CardsPlayed: 0,
-    goingFirst: "player"
+    goingFirst: "player",
 
 
 }
@@ -76,7 +77,7 @@ function getNthHandSlot(n){
         return gameState.playerhand.slot5
     }
     else{
-        console.log("getNthHandSlot input invalid")
+        console.log("getNthHandSlot input invalid was ", n)
     }
 
 }
@@ -170,19 +171,19 @@ function updateOpponentsNthHandSlot(n, newValue){
  */
 function getPurchesAreaNthSlot(n){
     if (n===0){
-        return gameState.purchesArea.slot1
+        return gameState.purchesArea.slot0
     }
     else if (n===1){
-        return gameState.purchesArea.slot2
+        return gameState.purchesArea.slot1
     }
     else if (n===2){
-        return gameState.purchesArea.slot3
+        return gameState.purchesArea.slot2
     }
     else if (n===3){
-        return gameState.purchesArea.slot4
+        return gameState.purchesArea.slot3
     }
     else if (n===4){
-        return gameState.purchesArea.slot5
+        return gameState.purchesArea.slot4
     }
     else{
         console.log("getPurchesAreaNthSlot input invalid")
@@ -199,19 +200,19 @@ function getPurchesAreaNthSlot(n){
  */
 function updatePurchesAreaNthSlot(n, newValue){
     if (n===0){
-        gameState.purchesArea.slot1 = newValue
+        gameState.purchesArea.slot0 = newValue
     }
     else if (n===1){
-        gameState.purchesArea.slot2 = newValue
+        gameState.purchesArea.slot1 = newValue
     }
     else if (n===2){
-        gameState.purchesArea.slot3 = newValue
+        gameState.purchesArea.slot2 = newValue
     }
     else if (n===3){
-        gameState.purchesArea.slot4 = newValue
+        gameState.purchesArea.slot3 = newValue
     }
     else if (n===4){
-        gameState.purchesArea.slot5 = newValue
+        gameState.purchesArea.slot4 = newValue
     }
     else{
         console.log("updatePurchesAreaNthSlot n invalid")

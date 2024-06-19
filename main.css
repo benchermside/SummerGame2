@@ -81,6 +81,18 @@ h1{
     width: 800px;
 }
 
+.reputationTracker{
+    height: 100px;
+    min-width: 220px;
+    text-align: center;
+    align-self: center;
+    overflow: visible;
+    font-size: 35px;
+    background-color: blue;
+    margin: 15px;
+
+}
+
 
 .cardPlayArea{
     height: 240px;
@@ -107,8 +119,7 @@ h1{
     
     height: 100px;
     width: 220px;
-
-
-    
 }
+
+
 
