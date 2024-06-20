@@ -111,14 +111,30 @@ h1{
     width: 1000px;
 }
 
-.SkipPhase{
-    background-color: red;
-    align-self: flex-end;
-    align-self: center;
-    font-size: 35px;
+
+.buttonHolder{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
     
+}
+
+
+.refreshButton, .SkipPhase{
+    font-size: 35px; 
     height: 100px;
     width: 220px;
+
+}
+
+.refreshButton{
+    background-color: blue;
+}
+
+.SkipPhase{
+    background-color: red;
+    /*align-self: flex-end;
+    align-self: center;*/
 }
 
 

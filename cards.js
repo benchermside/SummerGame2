@@ -1,3 +1,70 @@
+//Card images should be 130 by 84 or some multible like 260x168
+//matches
+// 130	84
+// 260	168
+// 390	252
+// 520	336
+// 650	420
+// 780	504
+// 910	588
+// 1040	672
+// 1170	756
+// 1300	840
+// 1430	924
+// 1560	1008
+// 1690	1092
+// 1820	1176
+// 1950	1260
+// 2080	1344
+// 2210	1428
+// 2340	1512
+// 2470	1596
+// 2600	1680
+// 2730	1764
+// 2860	1848
+// 2990	1932
+// 3120	2016
+// 3250	2100
+// 3380	2184
+// 3510	2268
+// 3640	2352
+// 3770	2436
+// 3900	2520
+// 4030	2604
+// 4160	2688
+// 4290	2772
+// 4420	2856
+// 4550	2940
+// 4680	3024
+// 4810	3108
+// 4940	3192
+// 5070	3276
+// 5200	3360
+// 5330	3444
+// 5460	3528
+// 5590	3612
+// 5720	3696
+// 5850	3780
+// 5980	3864
+// 6110	3948
+// 6240	4032
+// 6370	4116
+// 6500	4200
+// 6630	4284
+// 6760	4368
+// 6890	4452
+// 7020	4536
+// 7150	4620
+// 7280	4704
+// 7410	4788
+// 7540	4872
+// 7670	4956
+// 7800	5040
+// 7930	5124
+// 8060	5208
+// 8190	5292
+// 8320	5376
+
 const card1 = {
     name:"dragon",
     image:"dragon.jpg",
@@ -17,12 +84,12 @@ const recurtor = {
 
 
 
-const ninga = {
-    name:"ninga",
-    image:"dragon.jpg",
+const ninja = {
+    name:"ninja",
+    image:"ninja.jpg",
     effectText: "3 energy, loose 3 energy at the end of next turn",//not implimented yet
     cost: 2,
-    effectID: "ninga"
+    effectID: "ninja"
 }
 const thief = {
     name:"thief",
@@ -67,7 +134,7 @@ const instantPower = {
     effectID: "instantPower"
 }
 
-const wildCards = [ninga, thief, doomsayer, publicityOfficer, bigEnergy, instantPower]
+const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower]
 
 
 
@@ -128,7 +195,7 @@ cardEffects.set("card1", (playingPlayer) => {
     console.log("card1Played")
     },
 )
-cardEffects.set("ninga", (playingPlayer) => {
+cardEffects.set("ninja", (playingPlayer) => {
     if(playingPlayer === "player"){
         gameState.playerEnergy = gameState.playerEnergy + 3
     }
@@ -136,7 +203,7 @@ cardEffects.set("ninga", (playingPlayer) => {
         gameState.opponenetEnergy = gameState.opponenetEnergy + 3
     }
     else{
-        console.log("ninga input invalid")
+        console.log("ninja input invalid")
     }
 })
 cardEffects.set("thief", (playingPlayer) => {
@@ -161,7 +228,7 @@ cardEffects.set("thief", (playingPlayer) => {
         }
     }
     else{
-        console.log("ninga input invalid")
+        console.log("ninja input invalid")
     }
 })
 

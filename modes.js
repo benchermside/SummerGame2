@@ -157,16 +157,22 @@ function enterGame(){
 
 
 
-    //This creates the skipPhase button
+    //This creates the skipPhase button and refresh hand button
+    const buttons = document.createElement("div")
+    buttons.id = "buttonHolder"
+    buttons.classList.add("buttonHolder")
     const skipPhaseButton = document.createElement("button")
     skipPhaseButton.classList.add("SkipPhase")
     skipPhaseButton.innerText = "Skip Phase"
     skipPhaseButton.id = "skipPhaseButton"
-    // skipPhaseButton.addEventListener('click', () => {
-    //     endPhaseButton()
-    // })
+    const refreshButton = document.createElement("button")
+    refreshButton.classList.add("refreshButton")
+    refreshButton.innerText = "refresh hand"
+    refreshButton.id = "refreshButton"
+    buttons.appendChild(skipPhaseButton)
+    buttons.appendChild(refreshButton)
     const cardPlayPlace = document.getElementById("cardPlayArea")
-    cardPlayPlace.appendChild(skipPhaseButton)
+    cardPlayPlace.appendChild(buttons)
     
 
 
@@ -223,7 +229,7 @@ function setStartingPlayer(){
  */
 function playCard(card, player){
     cardEffects.get(card.effectID)(player)
-    gameState.currentPhase = "purchasing"
+    //gameState.currentPhase = "purchasing"
 }
 
 /**
@@ -234,9 +240,8 @@ function buyCard(card, player){
 }
 
 function tryBuyCard(cardNumber){
-    console.log("tryBuyCard Called")
     const boughtCard = getPurchesAreaNthSlot(cardNumber)
-    if(gameState.playerReputation >= boughtCard.cost){
+    if(boughtCard != null && gameState.playerReputation >= boughtCard.cost){
         gameState.playerReputation = gameState.playerReputation - boughtCard.cost
         gameState.playerDiscard.push(boughtCard)
         updatePurchesAreaNthSlot(cardNumber, null)
@@ -288,7 +293,8 @@ function tryBuyCard4(){
  */
 function playerPlaysCard(){
    
-    playCard(draggingCard, "player")
+    playCard(draggingCard.card, "player")
+    DrawCard(draggingCard.cardNumber)
     turnOffCardPlay()
     renderGameState()
     enterMode(buyingCard)
@@ -318,7 +324,8 @@ function turnOnCardPlay(){
                 document.getElementById("cardPlayArea").style.borderStyle = "dashed"
             }
             catch(TypeError){}
-            draggingCard = getNthHandSlot(i)
+            draggingCard.card = getNthHandSlot(i)
+            draggingCard.cardNumber = i
         });
         currHandSlot.addEventListener("dragend", (event) => {
             console.log("draggend called")
@@ -356,11 +363,50 @@ function endPhaseButtonBuying(){
     turnOnCardPlay()
 }
 
+/**
+ * occures when player clicks refresh hand button durring the playing phase
+ */
+function RefreshHand(){
+    console.log("refress button pressed")
+    for (slotNumber=0; slotNumber<5; slotNumber++){
+        dicardCard(slotNumber)
+    }
+    for (slotNumber=0; slotNumber<5; slotNumber++){
+        DrawCard(slotNumber)
+    }
+    renderGameState() 
+    enterMode(buyingCard)
+}
 
+/**
+ * discards the card from the cardSlot if one exists in the cardSlot
+ * Does not call RenderGameState
+ */
 
+function dicardCard(slotNum){
+    if(getNthHandSlot(slotNum) != null){
+        gameState.playerDiscard.push(getNthHandSlot(slotNum))
+        updateNthHandSlot(slotNum, null)
+    }
+}
 
-
-
+/**
+ * Draws a new card for slot, 
+ * If a card alredy exists in slot, card will be discarded before drawing a new card
+ * This does not call renderGamestate
+ */
+function DrawCard(slotNumber){
+    //Update the gameState
+    if(getNthHandSlot(slotNumber) != null){
+        dicardCard(slotNumber)
+    }
+    if(gameState.playerDeck.length === 0){
+        gameState.playerDeck = gameState.playerDiscard
+        gameState.playerDiscard = []
+        shufflePlayerDeck()
+    }
+    updateNthHandSlot(slotNumber, gameState.playerDeck.pop())
+}
 
 
 
@@ -446,6 +492,11 @@ const playingCard = {
         skipPhaseButton: {
             funct: endPhaseButtonPlaying,
             elementID: "skipPhaseButton",
+            eventType: "click",
+        },
+        refreshHandButton: {
+            funct: RefreshHand,
+            elementID: "refreshButton",
             eventType: "click",
         },
 

@@ -71,7 +71,8 @@ function main(){
                 document.getElementById("cardPlayArea").style.borderStyle = "dashed"
             }
             catch(TypeError){}
-            draggingCard = getNthHandSlot(calssIndex)
+            draggingCard.card = getNthHandSlot(calssIndex)
+            draggingCard.cardNumber = calssIndex
 
         });
         cardClassList[classNumber].addEventListener("dragend", (event) => {
