@@ -191,7 +191,7 @@ function enterGame(){
     
 
     //This selects how the opponent will decides on there moves
-    opponentMovesDesider = "random" //in the future, this may depend on the gameMode your playing and the AI level
+    gameState.opponentMovesDesider = "random" //in the future, this may depend on the gameMode your playing and the AI level
 
 
 
@@ -264,8 +264,12 @@ function tryBuyCard(cardNumber){
         gameState.playerDiscard.push(boughtCard)
         updatePurchesAreaNthSlot(cardNumber, null)
         renderGameState()
-        turnOnCardPlay()
-        enterMode(playingCard)
+
+        //temp for testing
+        startedOpponentsTurn()
+        //turnOnCardPlay()
+        //enterMode(playingCard)
+
     }
 }
 
@@ -404,7 +408,7 @@ function RefreshOpponentsHand(){
     for (slotNumber=0; slotNumber<5; slotNumber++){
         if(getOpponentsNthHandSlot(slotNumber) != null){
             gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber))
-            updateOpponentsNthHandSlot(slotNum, null)
+            updateOpponentsNthHandSlot(slotNumber, null)
         }
     }
     for (slotNumber=0; slotNumber<5; slotNumber++){
@@ -450,8 +454,8 @@ function DrawCard(slotNumber){
  */
 function opponentDrawCard(slotNumber){
     if(getOpponentsNthHandSlot(slotNumber) != null){
-        gameState.playerDiscard.push(gameState.getOpponentsNthHandSlot(slotNumber))
-        updateOpponentsNthHandSlot(slotNum, null)
+        gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber))
+        updateOpponentsNthHandSlot(slotNumber, null)
     }
     if(gameState.opponentDeck.length == 0){
         gameState.opponentDeck = gameState.opponentDiscard
@@ -469,6 +473,41 @@ function opponentDrawCard(slotNumber){
 
 function startedOpponentsTurn() {
     enterMode(OpponentPlayingCard)
+    let opponentMove = null
+    while (opponentMove === null){
+        opponentMove = opponentPlayCard()
+    }
+    if (opponentMove.type === "refresh"){
+        RefreshOpponentsHand()
+    }
+    else if(opponentMove.type === "cardPlay"){
+        playCard(getOpponentsNthHandSlot(opponentMove.slotNumber), "opponent")
+        opponentDrawCard(opponentMove.slotNumber)
+    }
+    else{
+        console.log("opponent failed to do something")
+    }
+    enterMode(OpponentBuyingCard)
+    let opponentBuy = null
+    while(opponentBuy === null){
+        opponentBuy = opponentBuyCard()
+    }
+    if (opponentBuy.type === "skip"){
+
+    }
+    else if(opponentBuy.type === "purchase"){
+        const boughtCard = getPurchesAreaNthSlot(opponentBuy.slotNumber)
+        if(boughtCard != null && gameState.opponentReputation >= boughtCard.cost){
+            gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost
+            gameState.opponentDiscard.push(boughtCard)
+            updatePurchesAreaNthSlot(opponentBuy.slotNumber, null)   
+        } 
+    }
+    else{
+        console.log("opponent failed to buy something error")
+    }
+    renderGameState()
+    enterMode(playingCard)
 
 }
 
