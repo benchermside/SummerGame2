@@ -381,8 +381,8 @@ function endPhaseButtonPlaying(){
  * the current code is a placeholder for when the opponent exists
  */
 function endPhaseButtonBuying(){
-    enterMode(playingCard)
-    turnOnCardPlay()
+    startedOpponentsTurn()
+    //turnOnCardPlay()
 }
 
 /**
@@ -508,6 +508,7 @@ function startedOpponentsTurn() {
     }
     renderGameState()
     enterMode(playingCard)
+    turnOnCardPlay()
 
 }
 
