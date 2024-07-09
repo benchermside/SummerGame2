@@ -117,7 +117,7 @@ function enterGame(){
         currCardSlot = opponentCardList[i]
         currCardSlot.classList.add("handSlot")
         currCardSlot.id = "OpponentHandSlotCard" + String(i)
-        updateOpponentsNthHandSlot(i, "cardBack")
+        //updateOpponentsNthHandSlot(i, "cardBack")
         opponetHandWrapper.appendChild(currCardSlot)
     }
     const firstElement = document.body.firstChild
@@ -128,6 +128,21 @@ function enterGame(){
     opponentReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
     opponentReputationTracker.id = "opponentReputationTracker"
     opponetHandWrapper.appendChild(opponentReputationTracker)
+    
+    //and this will make the opponents startDeck and draw the startHand
+    
+
+    //This makes the opponent's deck with it's starting cards
+    for (let i=0; i<10; i++){
+        gameState.opponentDeck.push(structuredClone(recurtor))
+    }
+    for (let i=0; i<5; i++){
+        gameState.opponentDeck.push(structuredClone(card1))
+    }
+    shuffleOpponentDeck()
+
+    //This will draw the opponents hand from there deck
+    RefreshOpponentsHand()
     
 
     
@@ -175,7 +190,8 @@ function enterGame(){
     cardPlayPlace.appendChild(buttons)
     
 
-
+    //This selects how the opponent will decides on there moves
+    opponentMovesDesider = "random" //in the future, this may depend on the gameMode your playing and the AI level
 
 
 
@@ -211,7 +227,9 @@ function enterGame(){
     //calls enter mode
     //creates the ondrop for playing a card
     enterMode(playingCard)
+    
 
+    
 
 }
 
@@ -379,6 +397,24 @@ function RefreshHand(){
 }
 
 /**
+ * Draws a new hand for the opponent. discards current hand if it exists. all cards discarded before new cards drawn
+ */
+function RefreshOpponentsHand(){
+    console.log("RefreshOpponentsHand called")
+    for (slotNumber=0; slotNumber<5; slotNumber++){
+        if(getOpponentsNthHandSlot(slotNumber) != null){
+            gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber))
+            updateOpponentsNthHandSlot(slotNum, null)
+        }
+    }
+    for (slotNumber=0; slotNumber<5; slotNumber++){
+        opponentDrawCard(slotNumber)
+    }
+}
+
+
+
+/**
  * discards the card from the cardSlot if one exists in the cardSlot
  * Does not call RenderGameState
  */
@@ -409,10 +445,32 @@ function DrawCard(slotNumber){
 }
 
 
+/**
+ * Draws a new card for the opponent
+ */
+function opponentDrawCard(slotNumber){
+    if(getOpponentsNthHandSlot(slotNumber) != null){
+        gameState.playerDiscard.push(gameState.getOpponentsNthHandSlot(slotNumber))
+        updateOpponentsNthHandSlot(slotNum, null)
+    }
+    if(gameState.opponentDeck.length == 0){
+        gameState.opponentDeck = gameState.opponentDiscard
+        gameState.opponentDiscard = []
+        shuffleOpponentDeck()
+    }
+    if(gameState.opponentDeck.length != 0){
+        updateOpponentsNthHandSlot(slotNumber, gameState.opponentDeck.pop())
+    }
+    else{
+        console.log("opponent had no cards in deck or discard pile")//possibly temporary, this should be a fine but rare case
+    }
 
+}
 
+function startedOpponentsTurn() {
+    enterMode(OpponentPlayingCard)
 
-
+}
 
 
 
@@ -543,6 +601,14 @@ const buyingCard = {
     },
 }
 
+const OpponentPlayingCard = {
+    transitions: {},
+
+}
+
+const OpponentBuyingCard = {
+    transitions: {},
+}
 
 
 

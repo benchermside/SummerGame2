@@ -47,7 +47,7 @@ const gameState = {
     currentPhase: "playing",
     CardsPlayed: 0,
     goingFirst: "player",
-
+    opponentMovesDesider: null
 
 }
 

@@ -93,7 +93,7 @@ const ninja = {
 }
 const thief = {
     name:"thief",
-    image:"dragon.jpg",
+    image:"thief.jpg",
     effectText: "steal 2 energy from your opponent",
     cost: 3,
     effectID: "thief",
@@ -128,7 +128,7 @@ const bigEnergy = {
 
 const instantPower = {
     name:"instantPower",
-    image:"dragon.jpg",
+    image:"instantPower.jpg",
     effectText: "do nothing",
     cost: -5,
     effectID: "instantPower"

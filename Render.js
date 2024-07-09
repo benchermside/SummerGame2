@@ -86,7 +86,7 @@ function renderGameState(){
                 child.remove()
             }
         }
-        else if(gameStateCardVal === "cardBack"){
+        else{
             for (const child of opponentsCardSlot.children){
                 child.remove()
             }
@@ -106,9 +106,10 @@ function renderGameState(){
         renderCard(currPurchesCard, `purchesAreaSlot${i}`)
     }
 
-    //Update playerReputationTracker
+    //Update playerReputationTracker and enerty
     const playerReputationTracker = document.getElementById("playerReputationTracker")
-    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
+    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy)
+    document.getElementById("opponentReputationTracker").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponenetEnergy)
 
 
 

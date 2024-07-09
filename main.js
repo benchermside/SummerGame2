@@ -14,7 +14,15 @@ function shufflePlayerDeck() {
     }
 }
 
-
+function shuffleOpponentDeck(){
+    const opponentDeck = gameState.opponentDeck
+    let index = opponentDeck.length
+    while(index != 0){
+        let RandomIndex = Math.floor(Math.random()*index)
+        index = index - 1;
+        [opponentDeck[index], opponentDeck[RandomIndex]] = [opponentDeck[RandomIndex], opponentDeck[index]]
+    }
+}
 
 
 function DrawNewHand(){
