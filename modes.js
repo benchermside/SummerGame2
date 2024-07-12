@@ -4,7 +4,6 @@
  */
 
 function enterGame(){
-    console.log("entered game")
     const header = document.getElementById("top")
     header.style.display = 'none'
     const soloButton = document.getElementById("soloButton")
@@ -326,7 +325,6 @@ function playerPlaysCard(){
  * this function turns off the draggability of cards in player's hand
  */
 function turnOffCardPlay(){
-    console.log("called turn off cardPlay")
     for (let i=0; i<5; i++){
         const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild
         currHandSlot.setAttribute("draggable", "false") 
@@ -337,7 +335,6 @@ function turnOffCardPlay(){
  * this function turns on the draggability of cards in player's hand
  */
 function turnOnCardPlay(){
-    console.log("called turn on card play")
     for (let i=0; i<5; i++){
         const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild
         currHandSlot.setAttribute("draggable", "true")
@@ -350,7 +347,7 @@ function turnOnCardPlay(){
             draggingCard.cardNumber = i
         });
         currHandSlot.addEventListener("dragend", (event) => {
-            console.log("draggend called")
+            //console.log("draggend called")
 
             try{
                 document.getElementById("cardPlayArea").style.borderStyle = "none"
@@ -404,7 +401,6 @@ function RefreshHand(){
  * Draws a new hand for the opponent. discards current hand if it exists. all cards discarded before new cards drawn
  */
 function RefreshOpponentsHand(){
-    console.log("RefreshOpponentsHand called")
     for (slotNumber=0; slotNumber<5; slotNumber++){
         if(getOpponentsNthHandSlot(slotNumber) != null){
             gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber))
@@ -472,6 +468,7 @@ function opponentDrawCard(slotNumber){
 }
 
 function startedOpponentsTurn() {
+    //do the opponent playing mode
     enterMode(OpponentPlayingCard)
     let opponentMove = null
     while (opponentMove === null){
@@ -479,38 +476,62 @@ function startedOpponentsTurn() {
     }
     if (opponentMove.type === "refresh"){
         RefreshOpponentsHand()
+        opponentsBuyPhase()
     }
     else if(opponentMove.type === "cardPlay"){
-        playCard(getOpponentsNthHandSlot(opponentMove.slotNumber), "opponent")
+        const cardPlayed = getOpponentsNthHandSlot(opponentMove.slotNumber)
+        playCard(cardPlayed, "opponent")
         opponentDrawCard(opponentMove.slotNumber)
+        //create the animation of the bought card
+        animateCardPlayed(cardPlayed, opponentMove.slotNumber)
+        setTimeout(opponentsBuyPhase, 5000)
     }
     else{
         console.log("opponent failed to do something")
+        opponentsBuyPhase()
     }
+}
+
+function opponentsBuyPhase(){
     enterMode(OpponentBuyingCard)
     let opponentBuy = null
+    let renderImeditly = false
     while(opponentBuy === null){
         opponentBuy = opponentBuyCard()
     }
     if (opponentBuy.type === "skip"){
-
+        renderImeditly = true
     }
     else if(opponentBuy.type === "purchase"){
         const boughtCard = getPurchesAreaNthSlot(opponentBuy.slotNumber)
         if(boughtCard != null && gameState.opponentReputation >= boughtCard.cost){
             gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost
             gameState.opponentDiscard.push(boughtCard)
-            updatePurchesAreaNthSlot(opponentBuy.slotNumber, null)   
-        } 
+            updatePurchesAreaNthSlot(opponentBuy.slotNumber, null)
+            animateCardBuy(boughtCard, opponentBuy.slotNumber)
+            setTimeout( () => {
+                renderGameState()
+                enterMode(playingCard)
+                turnOnCardPlay()        
+            }, 6500)
+        }
+        else{
+            console.log("error, opponent tryed to buy card that cannot be bought or does not exist")
+            renderImeditly = true
+        }
     }
     else{
         console.log("opponent failed to buy something error")
+        renderImeditly = true
     }
-    renderGameState()
-    enterMode(playingCard)
-    turnOnCardPlay()
+    if (renderImeditly){
+        renderGameState()
+        enterMode(playingCard)
+        turnOnCardPlay()    
+    }
 
 }
+
 
 
 

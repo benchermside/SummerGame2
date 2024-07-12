@@ -114,3 +114,21 @@ function renderGameState(){
 
 
 }
+
+
+function animateCardPlayed(card, cardSlotNum){
+    console.log("called animateCardPlay")//temporary log statment
+    renderCard(card, `OpponentHandSlotCard${cardSlotNum}`)
+    const animatingCard = document.getElementById(`OpponentHandSlotCard${cardSlotNum}`).firstChild
+    animatingCard.classList.add(`movingCard${cardSlotNum}`)
+}
+
+function animateCardBuy(card, cardSlotNumber){
+    console.log("called anomate card buy")//temp
+    console.log(cardSlotNumber)
+    renderCard(card, `purchesAreaSlot${cardSlotNumber}`)
+    const animatingCard = document.getElementById(`purchesAreaSlot${cardSlotNumber}`).firstChild
+    animatingCard.classList.add("opponentBuyCard")
+
+}
+

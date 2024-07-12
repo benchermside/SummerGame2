@@ -138,4 +138,77 @@ h1{
 }
 
 
+.movingCard0{
+    animation: opponentPlayCard0 5s forwards;
+}
+
+@keyframes opponentPlayCard0 {
+    100% {
+        transform: translateY(200px) translateX(-150px);
+        
+    }
+
+}
+
+.movingCard1{
+    animation: opponentPlayCard1 5s forwards;
+}
+
+
+@keyframes opponentPlayCard1 {
+    100% {
+        transform: translateY(200px) translateX(-300px);
+        
+    }
+
+}
+
+.movingCard2{
+    animation: opponentPlayCard2 5s forwards;
+}
+
+
+@keyframes opponentPlayCard2 {
+    100% {
+        transform: translateY(200px) translateX(-450px);
+        
+    }
+
+}
+
+.movingCard3{
+    animation: opponentPlayCard3 5s forwards;
+}
+
+
+@keyframes opponentPlayCard3 {
+    100% {
+        transform: translateY(200px) translateX(-600px);
+        
+    }
+
+}
+
+.movingCard4{
+    animation: opponentPlayCard4 5s forwards;
+}
+
+
+@keyframes opponentPlayCard4 {
+    100% {
+        transform: translateY(200px) translateX(-750px);
+        
+    }
+
+}
+
+.opponentBuyCard{
+    animation: opponentBuyCard 5s forwards;
+}
+
+@keyframes opponentBuyCard {
+    100%{
+        transform: translateY(-200px);
+    }
+}
 
