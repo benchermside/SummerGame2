@@ -12,6 +12,8 @@ const gameState = {
     //current phase is the current phase your in, It can be playing or purchesing
     //cardsPlayed indicates the number of cards played by the player going first, 0 through 5. 
     //goingFirts indicaes who is going first this round. Either Player or opponent
+    //resetIn indicates the number of turns till the row of cards for purches is refreshed
+    //resetFrequency indicates the frequency of purches area card resets
 
     playerhand: {
         slot1: null,
@@ -47,7 +49,9 @@ const gameState = {
     currentPhase: "playing",
     CardsPlayed: 0,
     goingFirst: "player",
-    opponentMovesDesider: null
+    opponentMovesDesider: null,
+    resetFrequency: 7,
+    resetIn: 7,
 
 }
 

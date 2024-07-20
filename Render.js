@@ -80,21 +80,21 @@ function renderGameState(){
     for (let i=0; i<5; i++){
         gameStateCardVal = getOpponentsNthHandSlot(i)
         opponentsCardSlot = document.getElementById("OpponentHandSlotCard" + String(i))
+        let imageSource = null
         if (gameStateCardVal === null){
-
-            for (const child of opponentsCardSlot.children){
-                child.remove()
-            }
+            imageSource = "img/blank.jpg"
         }
         else{
-            for (const child of opponentsCardSlot.children){
-                child.remove()
-            }
-            const newCardBack = document.createElement("img")
-            newCardBack.setAttribute("src", "img/cardBack.jpg")
-            newCardBack.setAttribute("draggable", "false")
-            opponentsCardSlot.appendChild(newCardBack)
+            imageSource = "img/cardBack.jpg"
         }
+        for (const child of opponentsCardSlot.children){
+            child.remove()
+        }
+        const newCardBack = document.createElement("img")
+        newCardBack.setAttribute("src", imageSource)
+        newCardBack.setAttribute("draggable", "false")
+        opponentsCardSlot.appendChild(newCardBack)
+    
     }
 
 
@@ -105,6 +105,10 @@ function renderGameState(){
         currPurchesCard = getPurchesAreaNthSlot(i)
         renderCard(currPurchesCard, `purchesAreaSlot${i}`)
     }
+    //updates time till card purches area resets
+    const timeTillRefresh = document.getElementById("refreshCountdown")
+    timeTillRefresh.innerText = "refresh in " + String(gameState.resetIn)
+
 
     //Update playerReputationTracker and enerty
     const playerReputationTracker = document.getElementById("playerReputationTracker")

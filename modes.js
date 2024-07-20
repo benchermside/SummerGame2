@@ -28,11 +28,11 @@ function enterGame(){
 
 
     //this creates the players deck
-    for (let i=0; i<10; i++){
+    for (let i=0; i<5; i++){
         gameState.playerDeck.push(structuredClone(recurtor))
     }
-    for (let i=0; i<5; i++){
-        gameState.playerDeck.push(structuredClone(card1))
+    for (let i=0; i<2; i++){
+        gameState.playerDeck.push(structuredClone(dragon))
     }
     shufflePlayerDeck()
 
@@ -132,11 +132,11 @@ function enterGame(){
     
 
     //This makes the opponent's deck with it's starting cards
-    for (let i=0; i<10; i++){
+    for (let i=0; i<5; i++){
         gameState.opponentDeck.push(structuredClone(recurtor))
     }
-    for (let i=0; i<5; i++){
-        gameState.opponentDeck.push(structuredClone(card1))
+    for (let i=0; i<2; i++){
+        gameState.opponentDeck.push(structuredClone(dragon))
     }
     shuffleOpponentDeck()
 
@@ -171,6 +171,10 @@ function enterGame(){
 
 
 
+
+
+
+
     //This creates the skipPhase button and refresh hand button
     const buttons = document.createElement("div")
     buttons.id = "buttonHolder"
@@ -187,6 +191,13 @@ function enterGame(){
     buttons.appendChild(refreshButton)
     const cardPlayPlace = document.getElementById("cardPlayArea")
     cardPlayPlace.appendChild(buttons)
+
+    //sets the time till purches area is refreshed 
+    gameState.resetIn = gameState.resetFrequency
+    const timeTillRefresh = document.createElement("div")
+    timeTillRefresh.id = "refreshCountdown"
+    document.getElementById("buttonHolder").appendChild(timeTillRefresh)
+    
     
 
     //This selects how the opponent will decides on there moves
@@ -262,6 +273,7 @@ function tryBuyCard(cardNumber){
         gameState.playerReputation = gameState.playerReputation - boughtCard.cost
         gameState.playerDiscard.push(boughtCard)
         updatePurchesAreaNthSlot(cardNumber, null)
+        endTurn("player")
         renderGameState()
 
         //temp for testing
@@ -378,6 +390,8 @@ function endPhaseButtonPlaying(){
  * the current code is a placeholder for when the opponent exists
  */
 function endPhaseButtonBuying(){
+    endTurn("player")
+    renderGameState()
     startedOpponentsTurn()
     //turnOnCardPlay()
 }
@@ -403,7 +417,7 @@ function RefreshHand(){
 function RefreshOpponentsHand(){
     for (slotNumber=0; slotNumber<5; slotNumber++){
         if(getOpponentsNthHandSlot(slotNumber) != null){
-            gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber))
+            gameState.opponentDiscard.push(getOpponentsNthHandSlot(slotNumber))
             updateOpponentsNthHandSlot(slotNumber, null)
         }
     }
@@ -449,13 +463,19 @@ function DrawCard(slotNumber){
  * Draws a new card for the opponent
  */
 function opponentDrawCard(slotNumber){
+    console.log("called opponendDrawCard")
     if(getOpponentsNthHandSlot(slotNumber) != null){
         gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber))
         updateOpponentsNthHandSlot(slotNumber, null)
     }
     if(gameState.opponentDeck.length == 0){
+        console.log("refreshing opponent discard")
+        console.log("current opponent deck is ", gameState.opponentDeck.length)
+        console.log("current opponent discard is", gameState.opponentDiscard.length)
         gameState.opponentDeck = gameState.opponentDiscard
+        console.log("opponent deck is 1", gameState.opponentDeck.length)
         gameState.opponentDiscard = []
+        console.log("opponent deck is 2, ", gameState.opponentDeck.length)
         shuffleOpponentDeck()
     }
     if(gameState.opponentDeck.length != 0){
@@ -481,6 +501,7 @@ function startedOpponentsTurn() {
     else if(opponentMove.type === "cardPlay"){
         const cardPlayed = getOpponentsNthHandSlot(opponentMove.slotNumber)
         playCard(cardPlayed, "opponent")
+        gameState.opponentDiscard.push(cardPlayed)
         opponentDrawCard(opponentMove.slotNumber)
         //create the animation of the bought card
         animateCardPlayed(cardPlayed, opponentMove.slotNumber)
@@ -510,9 +531,10 @@ function opponentsBuyPhase(){
             updatePurchesAreaNthSlot(opponentBuy.slotNumber, null)
             animateCardBuy(boughtCard, opponentBuy.slotNumber)
             setTimeout( () => {
+                endTurn("opponent")
                 renderGameState()
                 enterMode(playingCard)
-                turnOnCardPlay()        
+                turnOnCardPlay()   
             }, 6500)
         }
         else{
@@ -525,12 +547,39 @@ function opponentsBuyPhase(){
         renderImeditly = true
     }
     if (renderImeditly){
+        endTurn("opponent")
         renderGameState()
         enterMode(playingCard)
         turnOnCardPlay()    
     }
+    console.log(gameState)
 
 }
+
+
+
+/**
+ * This function is intended to be called when you end your turn
+ * It does things that happen whenever a turn ends
+ * should be called before renderGame
+ */
+function endTurn(endingPlayer){
+    gameState.resetIn = gameState.resetIn - 1
+    if (gameState.resetIn === 0){
+        for(let i=0; i<5; i++){
+            //at some future point, I may create a purches graveyard, 
+            if (wildCards.length > 0){
+                updatePurchesAreaNthSlot(i, wildCards.pop())
+            }
+            else{
+                updatePurchesAreaNthSlot(i, null)
+            }
+            
+        }
+        gameState.resetIn = gameState.resetFrequency
+    }
+}
+
 
 
 

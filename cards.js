@@ -65,12 +65,12 @@
 // 8190	5292
 // 8320	5376
 
-const card1 = {
+const dragon = {
     name:"dragon",
     image:"dragon.jpg",
-    effectText: "Dragions breath fire",
+    effectText: "gain 1 energy",
     cost: 12,
-    effectID: "card1"
+    effectID: "dragon"
 }
 
 const recurtor = {
@@ -112,7 +112,7 @@ const doomsayer = {
 
 const publicityOfficer = {
     name:"publicityOfficer",
-    image:"dragon.jpg",
+    image:"excidedPoint.jpg",
     effectText: "gain 1 reputatiin for every 3 cards you have somewhere (rounded down)",
     cost: 2,
     effectID: "publicityOfficer"
@@ -121,7 +121,7 @@ const bigEnergy = {
     name:"bigEnergy",
     image:"dragon.jpg",
     effectText: "gain 20 reputation",
-    cost: 0,
+    cost: 9,
     effectID: "bigEnergy"
 }
 
@@ -134,7 +134,52 @@ const instantPower = {
     effectID: "instantPower"
 }
 
-const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower]
+const funDude = {
+    name: "funDude",
+    image: "funDude.jpg",
+    effectText: "gain 2 reputation",
+    cost: 0,
+    effectID: "funDude"
+}
+
+const chef = {
+    name: "chef",
+    image: "chef.jpg",
+    effectText: "gain 3 reputation",
+    cost: 1,
+    effectID: "chef",
+}
+
+
+const energyGenroator = {
+    name: "energyGenroator",
+    image: "dragon.jpg",
+    effectText: "gain 7 energy",
+    cost: 4,
+    effectID: "energyGenroator",
+}
+
+const energyUser = {
+    name: "energyUser",
+    image: "energyUser.jpg",
+    effectText: "if you have at least 4 energy, turn 4 into 14 reputation",
+    cost: 5,
+    effectID: "energyUser",
+}
+
+const unpopularViglantie = {
+    name: "unpopularViglantie",
+    image: "dragon.jpg",
+    effectText: "turn your reputation into energy",
+    cost: 6,
+    effectID: "unpopularViglantie",
+}
+
+
+
+
+
+const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenroator, energyUser, unpopularViglantie]
 
 
 
@@ -191,8 +236,16 @@ cardEffects.set('recurtor', (playingPlayer) => {
     console.log("Player Reputation is ", gameState.playerReputation) //Deleate This
 })
 
-cardEffects.set("card1", (playingPlayer) => {
-    console.log("card1Played")
+cardEffects.set("dragon", (playingPlayer) => {
+    if(playingPlayer === "player"){
+        gameState.playerEnergy++
+    }
+    else if(playingPlayer === "opponent"){
+        gameState.opponenetEnergy++
+    }
+    else{
+        console.log("Error, playing player invalid")
+    }
     },
 )
 cardEffects.set("ninja", (playingPlayer) => {
@@ -264,6 +317,75 @@ cardEffects.set("bigEnergy", (playingPlayer) => {
 
 cardEffects.set("instantPower", (playeringPlayer) => {
 
+})
+
+cardEffects.set("funDude", (playingPlayer) => {
+    if(playingPlayer === "player"){
+        gameState.playerReputation = gameState.playerReputation + 2
+    }
+    else if(playingPlayer === "opponent"){
+        gameState.opponentReputation = gameState.opponentReputation + 2
+    }
+    else{
+        console.log("error playing fun dude")
+    }
+})
+
+cardEffects.set("chef", (playingPlayer) => {
+    if(playingPlayer === "player"){
+        gameState.playerReputation = gameState.playerReputation + 3
+    }
+    else if(playingPlayer === "opponent"){
+        gameState.opponentReputation = gameState.opponentReputation + 3
+    }
+    else{
+        console.log("error playing chef")
+    }
+})
+
+cardEffects.set("energyGenroator", (playingPlayer) => {
+    if(playingPlayer === "player"){
+        gameState.playerEnergy = gameState.playerEnergy + 7
+    }
+    else if(playingPlayer === "opponent"){
+        gameState.opponenetEnergy = gameState.opponenetEnergy + 7
+    }
+    else{
+        console.log("error playing energyGenroator")
+    }
+    
+})
+
+cardEffects.set("energyUser", (playingPlayer) => {
+    if(playingPlayer === "player"){
+        if(gameState.playerEnergy >= 4){
+            gameState.playerEnergy = gameState.playerEnergy - 4
+            gameState.playerReputation = gameState.playerReputation + 14
+        }
+    }
+    else if(playingPlayer === "opponent"){
+        if(gameState.opponenetEnergy >= 4){
+            gameState.opponenetEnergy = gameState.opponenetEnergy - 4
+            gameState.opponentReputation = gameState.opponentReputation + 14
+        }
+}
+    else{
+        console.log("error playing energyUser")
+    }
+})
+
+cardEffects.set("unpopularViglantie", (playingPlayer) => {
+    if(playingPlayer === "player"){
+        gameState.playerEnergy = gameState.playerEnergy - gameState.playerReputation
+        gameState.playerReputation = 0
+    }
+    else if(playingPlayer === "opponent"){
+        gameState.opponenetEnergy = gameState.opponenetEnergy - gameState.opponentReputation
+        gameState.opponentReputation = 0
+    }
+    else{
+        console.log("error playing energyUser")
+    }
 })
 
 
