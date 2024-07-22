@@ -150,3 +150,33 @@ async function animateCardBuy(card, cardSlotNumber, animationConclusionFunction)
 
 }
 
+/**
+ * @pram domElement element to move
+ * @pram containerID string id of a card container 
+ * @pram travelTime milliseconds
+ * @pram afterAction async function
+ * Moves domElement to container with ID containerID 
+ * also, animates this movement for travelTime. 
+ * Once done animating, calls afterAction function
+ * Dom element will replace whatever is in containerID, destroying it
+ * this will not update the gamestate
+ */
+async function animateMovingCard(cardElem, containerID, travelTime, afterAction){
+    //fixMe finish this
+    const containerElem = document.getElementById(containerID);
+    const startRect = cardElem.getBoundingClientRect();
+    const endRect = containerElem.getBoundingClientRect();
+    const deltaX = endRect.x - startRect.x;
+    const deltaY = endRect.y - startRect.y;
+    const animation = cardElem.animate(
+        {transform: `translate(${deltaX}px, ${deltaY}px)`},
+        {duration: travelTime, fill: "forwards"},
+    );
+    await animation.finished;
+    animation.commitStyles();
+    animation.cancel();
+    await afterAction();
+}
+
+
+

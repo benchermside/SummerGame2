@@ -201,7 +201,7 @@ function enterGame(){
     
 
     //This selects how the opponent will decides on there moves
-    gameState.opponentMovesDesider = "random" //in the future, this may depend on the gameMode your playing and the AI level
+    gameState.opponentMovesDesider = "randomIfPossable" //in the future, this may depend on the gameMode your playing and the AI level
 
 
 
@@ -528,12 +528,19 @@ async function opponentsBuyPhase(){
             gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost
             gameState.opponentDiscard.push(boughtCard)
             updatePurchesAreaNthSlot(opponentBuy.slotNumber, null)
-            await animateCardBuy(boughtCard, opponentBuy.slotNumber, async () => {
+            const boughtCardDomElem = document.getElementById(`purchesAreaSlot${opponentBuy.slotNumber}`).firstChild;
+            await animateMovingCard(boughtCardDomElem, "OpponentHandSlotCard0", 5000, async () => {
                 endTurn("opponent")
                 renderGameState()
                 enterMode(playingCard)
                 turnOnCardPlay()
             })
+            // await animateCardBuy(boughtCard, opponentBuy.slotNumber, async () => {
+            //     endTurn("opponent")
+            //     renderGameState()
+            //     enterMode(playingCard)
+            //     turnOnCardPlay()
+            // })
         }
         else{
             console.log("error, opponent tryed to buy card that cannot be bought or does not exist")

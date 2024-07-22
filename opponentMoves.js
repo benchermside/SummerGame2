@@ -14,8 +14,11 @@ function opponentPlayCard(){
     if (opponentMovesDesider === "random"){
         return randomCardPlayer()
     }
+    else if(opponentMovesDesider === "randomIfPossable"){
+        return randomCardPlayer()
+    }
     else{
-        console.log("opponent move decider not on list for play")
+        console.log("opponent move decider not on list for play", )
     }
 }
 
@@ -45,6 +48,9 @@ function opponentBuyCard(){
     if (opponentMovesDesider === "random"){
         return randomCardBuyer()
     }
+    else if (opponentMovesDesider === "randomIfPossable"){
+        return randomCardBuyerIfPossable()
+    }
     else{
         console.log("opponent move decider not on list for buy")
     }
@@ -59,3 +65,26 @@ function randomCardBuyer(){
     }
     return legalActions[Math.floor(Math.random() * legalActions.length)]
 }
+
+/**
+ * 
+ * buys a random card if any cards can be bought
+ */
+function randomCardBuyerIfPossable(){
+    console.log("entered")
+    const legalActions = []
+
+    for (let i=0; i< Object.keys(gameState.purchesArea).length; i++){
+        if(getPurchesAreaNthSlot(i) != null && getPurchesAreaNthSlot(i).cost <= gameState.opponentReputation){
+            legalActions.push({type: "purchase", slotNumber: i})
+        }
+    }
+    if (legalActions.length === 0){
+        return {type: "skip"}
+    }
+    else{
+        return legalActions[Math.floor(Math.random() * legalActions.length)]
+    }
+    
+}
+
