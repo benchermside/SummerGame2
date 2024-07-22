@@ -257,7 +257,6 @@ function setStartingPlayer(){
  */
 function playCard(card, player){
     cardEffects.get(card.effectID)(player)
-    //gameState.currentPhase = "purchasing"
 }
 
 /**
@@ -267,7 +266,7 @@ function buyCard(card, player){
 
 }
 
-function tryBuyCard(cardNumber){
+async function tryBuyCard(cardNumber){
     const boughtCard = getPurchesAreaNthSlot(cardNumber)
     if(boughtCard != null && gameState.playerReputation >= boughtCard.cost){
         gameState.playerReputation = gameState.playerReputation - boughtCard.cost
@@ -277,7 +276,7 @@ function tryBuyCard(cardNumber){
         renderGameState()
 
         //temp for testing
-        startedOpponentsTurn()
+        await startedOpponentsTurn()
         //turnOnCardPlay()
         //enterMode(playingCard)
 
@@ -287,36 +286,36 @@ function tryBuyCard(cardNumber){
 /**
  * calls tryBuyCard(0)
  */
-function tryBuyCard0(){
-    tryBuyCard(0)
+async function tryBuyCard0(){
+    await tryBuyCard(0)
 }
 
 /**
  * calls tryBuyCard(1)
  */
-function tryBuyCard1(){
-    tryBuyCard(1)
+async function tryBuyCard1(){
+    await tryBuyCard(1)
 }
 
 /**
  * calls tryBuyCard(2)
  */
-function tryBuyCard2(){
-    tryBuyCard(2)
+async function tryBuyCard2(){
+    await tryBuyCard(2)
 }
 
 /**
  * calls tryBuyCard(3)
  */
-function tryBuyCard3(){
-    tryBuyCard(3)
+async function tryBuyCard3(){
+    await tryBuyCard(3)
 }
 
 /**
  * calls tryBuyCard(4)
  */
-function tryBuyCard4(){
-    tryBuyCard(4)
+async function tryBuyCard4(){
+    await tryBuyCard(4)
 }
 
 
@@ -487,7 +486,7 @@ function opponentDrawCard(slotNumber){
 
 }
 
-function startedOpponentsTurn() {
+async function startedOpponentsTurn() {
     //do the opponent playing mode
     enterMode(OpponentPlayingCard)
     let opponentMove = null
@@ -496,7 +495,7 @@ function startedOpponentsTurn() {
     }
     if (opponentMove.type === "refresh"){
         RefreshOpponentsHand()
-        opponentsBuyPhase()
+        await opponentsBuyPhase()
     }
     else if(opponentMove.type === "cardPlay"){
         const cardPlayed = getOpponentsNthHandSlot(opponentMove.slotNumber)
@@ -509,11 +508,11 @@ function startedOpponentsTurn() {
     }
     else{
         console.log("opponent failed to do something")
-        opponentsBuyPhase()
+        await opponentsBuyPhase()
     }
 }
 
-function opponentsBuyPhase(){
+async function opponentsBuyPhase(){
     enterMode(OpponentBuyingCard)
     let opponentBuy = null
     let renderImeditly = false
@@ -529,13 +528,12 @@ function opponentsBuyPhase(){
             gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost
             gameState.opponentDiscard.push(boughtCard)
             updatePurchesAreaNthSlot(opponentBuy.slotNumber, null)
-            animateCardBuy(boughtCard, opponentBuy.slotNumber)
-            setTimeout( () => {
+            await animateCardBuy(boughtCard, opponentBuy.slotNumber, async () => {
                 endTurn("opponent")
                 renderGameState()
                 enterMode(playingCard)
-                turnOnCardPlay()   
-            }, 6500)
+                turnOnCardPlay()
+            })
         }
         else{
             console.log("error, opponent tryed to buy card that cannot be bought or does not exist")

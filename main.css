@@ -202,7 +202,7 @@ h1{
 
 }
 
-.opponentBuyCard{
+/* .opponentBuyCard{
     animation: opponentBuyCard 5s forwards;
 }
 
@@ -210,5 +210,5 @@ h1{
     100%{
         transform: translateY(-200px);
     }
-}
+} */
 

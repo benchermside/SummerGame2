@@ -127,12 +127,26 @@ function animateCardPlayed(card, cardSlotNum){
     animatingCard.classList.add(`movingCard${cardSlotNum}`)
 }
 
-function animateCardBuy(card, cardSlotNumber){
+/**
+ * 
+ * @param {the card purchased} card 
+ * @param {the number (0 to 4) of the card slot of the purchesed card} cardSlotNumber 
+ * @param {an async function to run when the animation is done} animationConclusionFunction 
+ */
+async function animateCardBuy(card, cardSlotNumber, animationConclusionFunction){
     console.log("called anomate card buy")//temp
     console.log(cardSlotNumber)
     renderCard(card, `purchesAreaSlot${cardSlotNumber}`)
     const animatingCard = document.getElementById(`purchesAreaSlot${cardSlotNumber}`).firstChild
-    animatingCard.classList.add("opponentBuyCard")
+    //animatingCard.classList.add("opponentBuyCard")
+    const animation = animatingCard.animate(
+        {transform: 'translateY(-200px)'},
+        {duration: 5000, fill: "forwards"},
+    );
+    await animation.finished;
+    animation.commitStyles();
+    animation.cancel();
+    await animationConclusionFunction();
 
 }
 
