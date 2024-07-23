@@ -2,18 +2,18 @@
 const gameState = {
     //store the gameState
     //contains, Playerhand ... PlayerHand is an object with slot1 through slot5. 
-    //these are null when no card present in slot, otherwise they are a card object repersenting the card
-    //Oppondnts hand is object with slot1-5 null when no card in slot, otherwise is the cardBack const
+    //these are null when no card present in slot, otherwise they are a card object representing the card
+    //opponentHand is object with slot1-5 null when no card in slot, otherwise is the cardBack const
     //playerDeck is a list of all cards in the player deck in order. the Last element is the top of the deck
     //opponentDeck is a list of all cards in the opponentDeck in order. the Last element is the top of the deck
-    //playerDiscard is a list of all cards in the Playes dicard pile
-    //Opponent Discard is a list of all cards in the opponents dicard pile
+    //playerDiscard is a list of all cards in the Player's discard pile
+    //Opponent Discard is a list of all cards in the opponents discard pile
     //playerTurn is Player when it's the players turn to play and opponent when it's the opponents turn to play
-    //current phase is the current phase your in, It can be playing or purchesing
+    //current phase is the current phase your in, It can be playing or purchasing
     //cardsPlayed indicates the number of cards played by the player going first, 0 through 5. 
     //goingFirts indicaes who is going first this round. Either Player or opponent
-    //resetIn indicates the number of turns till the row of cards for purches is refreshed
-    //resetFrequency indicates the frequency of purches area card resets
+    //resetIn indicates the number of turns till the row of cards for purchase is refreshed
+    //resetFrequency indicates the frequency of purchase area card resets
 
     playerhand: {
         slot1: null,
@@ -29,7 +29,7 @@ const gameState = {
         slot4: null,
         slot5: null,
     },
-    purchesArea: {
+    purchaseArea: {
         slot0: null,
         slot1: null,
         slot2: null,
@@ -44,12 +44,12 @@ const gameState = {
     playerReputation: 0,
     opponentReputation: 0,
     playerEnergy: 0,
-    opponenetEnergy: 0,
+    opponentEnergy: 0,
     playerTurn : "player",
     currentPhase: "playing",
     CardsPlayed: 0,
     goingFirst: "player",
-    opponentMovesDesider: null,
+    opponentMovesDecider: null,
     resetFrequency: 7,
     resetIn: 7,
 
@@ -170,27 +170,27 @@ function updateOpponentsNthHandSlot(n, newValue){
 
 
 /**
- * retunrs the Nth hand Slot data from gamestate in the purches area
+ * retunrs the Nth hand Slot data from gamestate in the purchase area
  * @param {the index of the handSlot you want, 0 to 4} n 
  */
-function getPurchesAreaNthSlot(n){
+function getPurchaseAreaNthSlot(n){
     if (n===0){
-        return gameState.purchesArea.slot0
+        return gameState.purchaseArea.slot0
     }
     else if (n===1){
-        return gameState.purchesArea.slot1
+        return gameState.purchaseArea.slot1
     }
     else if (n===2){
-        return gameState.purchesArea.slot2
+        return gameState.purchaseArea.slot2
     }
     else if (n===3){
-        return gameState.purchesArea.slot3
+        return gameState.purchaseArea.slot3
     }
     else if (n===4){
-        return gameState.purchesArea.slot4
+        return gameState.purchaseArea.slot4
     }
     else{
-        console.log("getPurchesAreaNthSlot input invalid")
+        console.log("getPurchaseAreaNthSlot input invalid")
     }
 
     
@@ -198,28 +198,28 @@ function getPurchesAreaNthSlot(n){
 
 
 /**
- * this function puts newVlaue in the n-1th cardSlot of the purches area, Note, this function is nothing but a side effect. 
+ * this function puts newVlaue in the n-1th cardSlot of the purchase area, Note, this function is nothing but a side effect.
  * @param {the value of the cardSlot you wish to update, from 0 to 4} n 
  * @param {the new value to add to the cardSlot} newValue 
  */
-function updatePurchesAreaNthSlot(n, newValue){
+function updatePurchaseAreaNthSlot(n, newValue){
     if (n===0){
-        gameState.purchesArea.slot0 = newValue
+        gameState.purchaseArea.slot0 = newValue
     }
     else if (n===1){
-        gameState.purchesArea.slot1 = newValue
+        gameState.purchaseArea.slot1 = newValue
     }
     else if (n===2){
-        gameState.purchesArea.slot2 = newValue
+        gameState.purchaseArea.slot2 = newValue
     }
     else if (n===3){
-        gameState.purchesArea.slot3 = newValue
+        gameState.purchaseArea.slot3 = newValue
     }
     else if (n===4){
-        gameState.purchesArea.slot4 = newValue
+        gameState.purchaseArea.slot4 = newValue
     }
     else{
-        console.log("updatePurchesAreaNthSlot n invalid")
+        console.log("updatePurchaseAreaNthSlot n invalid")
     }
 
 }

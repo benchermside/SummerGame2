@@ -47,10 +47,6 @@ function DrawNewHand(){
 
 
 function main(){
-
-
-
-
     const soloButton = document.createElement('button')
     soloButton.innerText = 'Solo'
     soloButton.id = 'soloButton'
@@ -72,15 +68,15 @@ function main(){
 
     const cardClassList = document.getElementsByClassName("cardDisplay")
     for (let classNumber = 0; classNumber<cardClassList.length; classNumber++){
-        const calssIndex = classNumber
+        const classIndex = classNumber
         cardClassList[classNumber].setAttribute("draggable", "true")
         cardClassList[classNumber].addEventListener("dragstart", (event) => {
             try{
                 document.getElementById("cardPlayArea").style.borderStyle = "dashed"
             }
             catch(TypeError){}
-            draggingCard.card = getNthHandSlot(calssIndex)
-            draggingCard.cardNumber = calssIndex
+            draggingCard.card = getNthHandSlot(classIndex)
+            draggingCard.cardNumber = classIndex
 
         });
         cardClassList[classNumber].addEventListener("dragend", (event) => {

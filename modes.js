@@ -29,16 +29,12 @@ function enterGame(){
 
     //this creates the players deck
     for (let i=0; i<5; i++){
-        gameState.playerDeck.push(structuredClone(recurtor))
+        gameState.playerDeck.push(structuredClone(recruiter))
     }
     for (let i=0; i<2; i++){
         gameState.playerDeck.push(structuredClone(dragon))
     }
     shufflePlayerDeck()
-
-
-
-
 
 
 
@@ -102,8 +98,8 @@ function enterGame(){
 
     //This creates the opponents hand
     opponentCardList = []
-    opponetHandWrapper = document.createElement("div")
-    opponetHandWrapper.classList.add("opponentHand")
+    opponentHandWrapper = document.createElement("div")
+    opponentHandWrapper.classList.add("opponentHand")
 
     //This creates the player reputation tracker
     const playerReputationTracker = document.createElement("div")
@@ -125,7 +121,7 @@ function enterGame(){
     lastPlayedDisplay.appendChild(lastPlayCard)
     
 
-    opponetHandWrapper.appendChild(lastPlayedDisplay)
+    opponentHandWrapper.appendChild(lastPlayedDisplay)
 
 
     for (let i=0; i<5; i++){
@@ -134,13 +130,13 @@ function enterGame(){
         currCardSlot.classList.add("handSlot")
         currCardSlot.id = "OpponentHandSlotCard" + String(i)
         //updateOpponentsNthHandSlot(i, "cardBack")
-        opponetHandWrapper.appendChild(currCardSlot)
+        opponentHandWrapper.appendChild(currCardSlot)
     }
     const firstElement = document.body.firstChild
+    document.body.insertBefore(opponentHandWrapper, firstElement)
 
 
-
-    //This create the last bought card displays
+    //This creates the last bought card displays
     const lastBoughtDisplay = document.createElement("div")
     lastBoughtDisplay.id = "lastBoughtDisplayWraper"
     const lastBoughtDisplayText = document.createElement("div")
@@ -151,30 +147,27 @@ function enterGame(){
     lastBoughtCard.id = "lastBoughtCard"
     lastBoughtDisplay.appendChild(lastBoughtDisplayText)
     lastBoughtDisplay.appendChild(lastBoughtCard)
-    opponetHandWrapper.appendChild(lastBoughtDisplay)
+    opponentHandWrapper.appendChild(lastBoughtDisplay)
 
     // const lastPurchasedDisplay = document.createElement("div")
     // lastPurchasedDisplay.classList.add("cardSlot")
     // lastPurchasedDisplay.id = "lastPurchasedDisplay"
     // opponetHandWrapper.appendChild(lastPurchasedDisplay)
 
-    document.body.insertBefore(opponetHandWrapper, firstElement)
+    document.body.insertBefore(opponentHandWrapper, firstElement)
     //This creates the opponents reputation tracker
     const opponentReputationTracker = document.createElement("div")
     opponentReputationTracker.classList.add("reputationTracker")
     opponentReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
     opponentReputationTracker.id = "opponentReputationTracker"
-    opponetHandWrapper.appendChild(opponentReputationTracker)
+    opponentHandWrapper.appendChild(opponentReputationTracker)
 
-
-
-    
     //and this will make the opponents startDeck and draw the startHand
     
 
     //This makes the opponent's deck with it's starting cards
     for (let i=0; i<5; i++){
-        gameState.opponentDeck.push(structuredClone(recurtor))
+        gameState.opponentDeck.push(structuredClone(recruiter))
     }
     for (let i=0; i<2; i++){
         gameState.opponentDeck.push(structuredClone(dragon))
@@ -186,20 +179,20 @@ function enterGame(){
     
 
     
-    //Handles purches area
-    const purchesArea = document.createElement("div")
-    const purchesAreaSlotList = []
-    purchesArea.classList.add("purchesArea")
-    purchesArea.id = "purchesArea"
+    //Handles purchase area
+    const purchaseArea = document.createElement("div")
+    const purchaseAreaSlotList = []
+    purchaseArea.classList.add("purchaseArea")
+    purchaseArea.id = "purchaseArea"
     for (let i=0; i<5; i++){
-        purchesAreaSlotList.push(document.createElement("div"))
-        purchesAreaSlotList[i].classList.add("cardSlot")
-        purchesAreaSlotList[i].id = `purchesAreaSlot${i}`
-        purchesArea.appendChild(purchesAreaSlotList[i])
+        purchaseAreaSlotList.push(document.createElement("div"))
+        purchaseAreaSlotList[i].classList.add("cardSlot")
+        purchaseAreaSlotList[i].id = `purchaseAreaSlot${i}`
+        purchaseArea.appendChild(purchaseAreaSlotList[i])
     }
-    cardPlayArea.appendChild(purchesArea)
+    cardPlayArea.appendChild(purchaseArea)
 
-   //creates the deck of cards for the purches area
+   //creates the deck of cards for the purchase area
     let wildCardIndex = gameState.wildCards.length
     while(wildCardIndex != 0){
        let RandomwildCardIndex = Math.floor(Math.random()*wildCardIndex)
@@ -207,7 +200,7 @@ function enterGame(){
        [gameState.wildCards[wildCardIndex], gameState.wildCards[RandomwildCardIndex]] = [gameState.wildCards[RandomwildCardIndex], gameState.wildCards[wildCardIndex]]
     }
     for (let i=0; i<5; i++){
-        updatePurchesAreaNthSlot(i, gameState.wildCards.pop())
+        updatePurchaseAreaNthSlot(i, gameState.wildCards.pop())
     }
 
 
@@ -233,7 +226,7 @@ function enterGame(){
     const cardPlayPlace = document.getElementById("cardPlayArea")
     cardPlayPlace.appendChild(buttons)
 
-    //sets the time till purches area is refreshed 
+    //sets the time till purchase area is refreshed
     gameState.resetIn = gameState.resetFrequency
     const timeTillRefresh = document.createElement("div")
     timeTillRefresh.id = "refreshCountdown"
@@ -241,8 +234,8 @@ function enterGame(){
     
     
 
-    //This selects how the opponent will decides on there moves
-    gameState.opponentMovesDesider = "randomIfPossable" //in the future, this may depend on the gameMode your playing and the AI level
+    //This selects how the opponent will decides on their moves
+    gameState.opponentMovesDecider = "randomIfPossible" //in the future, this may depend on the gameMode your playing and the AI level
 
 
 
@@ -308,11 +301,11 @@ function buyCard(card, player){
 }
 
 async function tryBuyCard(cardNumber){
-    const boughtCard = getPurchesAreaNthSlot(cardNumber)
+    const boughtCard = getPurchaseAreaNthSlot(cardNumber)
     if(boughtCard != null && gameState.playerReputation >= boughtCard.cost){
         gameState.playerReputation = gameState.playerReputation - boughtCard.cost
         gameState.playerDiscard.push(boughtCard)
-        updatePurchesAreaNthSlot(cardNumber, null)
+        updatePurchaseAreaNthSlot(cardNumber, null)
         endTurn("player")
         renderGameState()
 
@@ -440,7 +433,7 @@ function endPhaseButtonBuying(){
  * occures when player clicks refresh hand button durring the playing phase
  */
 function RefreshHand(){
-    console.log("refress button pressed")
+    console.log("refresh button pressed")
     for (slotNumber=0; slotNumber<5; slotNumber++){
         dicardCard(slotNumber)
     }
@@ -503,12 +496,12 @@ function DrawCard(slotNumber){
  * Draws a new card for the opponent
  */
 function opponentDrawCard(slotNumber){
-    console.log("called opponendDrawCard")
+    console.log("called opponentDrawCard")
     if(getOpponentsNthHandSlot(slotNumber) != null){
         gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber))
         updateOpponentsNthHandSlot(slotNumber, null)
     }
-    if(gameState.opponentDeck.length == 0){
+    if(gameState.opponentDeck.length === 0){
         console.log("refreshing opponent discard")
         console.log("current opponent deck is ", gameState.opponentDeck.length)
         console.log("current opponent discard is", gameState.opponentDiscard.length)
@@ -518,7 +511,7 @@ function opponentDrawCard(slotNumber){
         console.log("opponent deck is 2, ", gameState.opponentDeck.length)
         shuffleOpponentDeck()
     }
-    if(gameState.opponentDeck.length != 0){
+    if(gameState.opponentDeck.length !== 0){
         updateOpponentsNthHandSlot(slotNumber, gameState.opponentDeck.pop())
     }
     else{
@@ -564,12 +557,12 @@ async function opponentsBuyPhase(){
         renderImeditly = true
     }
     else if(opponentBuy.type === "purchase"){
-        const boughtCard = getPurchesAreaNthSlot(opponentBuy.slotNumber)
+        const boughtCard = getPurchaseAreaNthSlot(opponentBuy.slotNumber)
         if(boughtCard != null && gameState.opponentReputation >= boughtCard.cost){
             gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost
             gameState.opponentDiscard.push(boughtCard)
-            updatePurchesAreaNthSlot(opponentBuy.slotNumber, null)
-            const boughtCardDomElem = document.getElementById(`purchesAreaSlot${opponentBuy.slotNumber}`).firstChild;
+            updatePurchaseAreaNthSlot(opponentBuy.slotNumber, null)
+            const boughtCardDomElem = document.getElementById(`purchaseAreaSlot${opponentBuy.slotNumber}`).firstChild;
             await animateMovingCard(boughtCardDomElem, "OpponentHandSlotCard0", 5000, async () => {
                 endTurn("opponent")
                 renderGameState()
@@ -613,12 +606,12 @@ function endTurn(endingPlayer){
     gameState.resetIn = gameState.resetIn - 1
     if (gameState.resetIn === 0){
         for(let i=0; i<5; i++){
-            //at some future point, I may create a purches graveyard, 
+            //at some future point, I may create a purchases graveyard,
             if (wildCards.length > 0){
-                updatePurchesAreaNthSlot(i, wildCards.pop())
+                updatePurchaseAreaNthSlot(i, wildCards.pop())
             }
             else{
-                updatePurchesAreaNthSlot(i, null)
+                updatePurchaseAreaNthSlot(i, null)
             }
             
         }
@@ -726,31 +719,31 @@ const buyingCard = {
         },
         buyCard0: {
             funct: tryBuyCard0,
-            elementID: "purchesAreaSlot0",
+            elementID: "purchaseAreaSlot0",
             eventType: "click",
 
         },
         buyCard1: {
             funct: tryBuyCard1,
-            elementID: "purchesAreaSlot1",
+            elementID: "purchaseAreaSlot1",
             eventType: "click",
 
         },
         buyCard2: {
             funct: tryBuyCard2,
-            elementID: "purchesAreaSlot2",
+            elementID: "purchaseAreaSlot2",
             eventType: "click",
 
         },
         buyCard3: {
             funct: tryBuyCard3,
-            elementID: "purchesAreaSlot3",
+            elementID: "purchaseAreaSlot3",
             eventType: "click",
 
         },
         buyCard4: {
             funct: tryBuyCard4,
-            elementID: "purchesAreaSlot4",
+            elementID: "purchaseAreaSlot4",
             eventType: "click",
 
         },
