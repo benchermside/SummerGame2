@@ -71,6 +71,14 @@ h1{
 .handSlot{
     
 }
+
+.textExplainer{
+    background-color: greenyellow;
+    font-size: 35px;
+    text-align: center;
+}
+
+
 .playerHand{
     display: flex;
     flex-direction: row;
@@ -80,6 +88,18 @@ h1{
     height: 300px;
     width: 800px;
 }
+
+.opponentHand{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    align-self: center;
+    height: 300px;
+    width: 1440px;
+}
+
+
 
 .reputationTracker{
     height: 100px;
@@ -211,4 +231,7 @@ h1{
         transform: translateY(-200px);
     }
 } */
+
+
+
 
