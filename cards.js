@@ -178,7 +178,7 @@ const unpopularVigilante = {
 
 
 
-const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante]
+const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante];
 
 
 
@@ -224,92 +224,91 @@ const cardEffects = new Map()
 
 cardEffects.set('recruiter', (playingPlayer) => {
     if(playingPlayer === "player"){
-        gameState.playerReputation++
+        gameState.playerReputation++;
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponentReputation++
+        gameState.opponentReputation++;
     }
     else{
-        console.log("Error, playingPlayer invalid")
+        console.log("Error, playingPlayer invalid");
     }
-    console.log("Player Reputation is ", gameState.playerReputation) //Deleate This
 })
 
 cardEffects.set("dragon", (playingPlayer) => {
     if(playingPlayer === "player"){
-        gameState.playerEnergy++
+        gameState.playerEnergy++;
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponentEnergy++
+        gameState.opponentEnergy++;
     }
     else{
-        console.log("Error, playing player invalid")
+        console.log("Error, playing player invalid");
     }
     },
 )
 cardEffects.set("ninja", (playingPlayer) => {
     if(playingPlayer === "player"){
-        gameState.playerEnergy = gameState.playerEnergy + 3
+        gameState.playerEnergy = gameState.playerEnergy + 3;
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponentEnergy = gameState.opponentEnergy + 3
+        gameState.opponentEnergy = gameState.opponentEnergy + 3;
     }
     else{
-        console.log("ninja input invalid")
+        console.log("ninja input invalid");
     }
 })
 cardEffects.set("thief", (playingPlayer) => {
     if(playingPlayer === "player"){
         if (gameState.opponentEnergy >= 2){
-            gameState.playerEnergy = gameState.playerEnergy + 2
-            gameState.opponentEnergy = gameState.opponentEnergy - 2
+            gameState.playerEnergy = gameState.playerEnergy + 2;
+            gameState.opponentEnergy = gameState.opponentEnergy - 2;
         }
         else if(gameState.opponentEnergy === 1){
-            gameState.playerEnergy = gameState.playerEnergy + 1
-            gameState.opponentEnergy = 0
+            gameState.playerEnergy = gameState.playerEnergy + 1;
+            gameState.opponentEnergy = 0;
         }
     }
     else if(playingPlayer === "opponent"){
         if (gameState.playerEnergy >= 2){
-            gameState.opponentEnergy = gameState.opponentEnergy + 2
-            gameState.playerEnergy = gameState.playerEnergy - 2    
+            gameState.opponentEnergy = gameState.opponentEnergy + 2;
+            gameState.playerEnergy = gameState.playerEnergy - 2;  
         }
         else if(gameState.playerEnergy === 1){
-            gameState.opponentEnergy = gameState.opponentEnergy + 1
-            gameState.playerEnergy = 0
+            gameState.opponentEnergy = gameState.opponentEnergy + 1;
+            gameState.playerEnergy = 0;
         }
     }
     else{
-        console.log("ninja input invalid")
+        console.log("ninja input invalid");
     }
 })
 
 cardEffects.set("doomsayer", (playingPlayer) => {
-    gameState.playerEnergy = 0
-    gameState.opponentEnergy = 0
+    gameState.playerEnergy = 0;
+    gameState.opponentEnergy = 0;
 }
 )
 
 cardEffects.set("publicityOfficer", (playeringPlayer) => {
     if (playeringPlayer === "player"){
-        gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.playerDeck.length + gameState.playerDiscard.length + (gameState.playerhand.slot1 != null) + (gameState.playerhand.slot2 != null) + (gameState.playerhand.slot3 != null) + (gameState.playerhand.slot4 != null) + (gameState.playerhand.slot5 != null))/2)
+        gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.playerDeck.length + gameState.playerDiscard.length + (gameState.playerhand.slot1 != null) + (gameState.playerhand.slot2 != null) + (gameState.playerhand.slot3 != null) + (gameState.playerhand.slot4 != null) + (gameState.playerhand.slot5 != null))/2);
     }
     else if(playeringPlayer === "opponent"){
-        gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.opponentDeck.length + gameState.opponentDiscard.length + (gameState.opponentHand.slot1 != null) + (gameState.opponentHand.slot2 != null) + (gameState.opponentHand.slot3 != null) + (gameState.opponentHand.slot4 != null) + (gameState.opponentHand.slot5 != null))/2)
+        gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.opponentDeck.length + gameState.opponentDiscard.length + (gameState.opponentHand.slot1 != null) + (gameState.opponentHand.slot2 != null) + (gameState.opponentHand.slot3 != null) + (gameState.opponentHand.slot4 != null) + (gameState.opponentHand.slot5 != null))/2);
     }
     else{
-        console.log("publicityOfficer Input invalid")
+        console.log("publicityOfficer Input invalid");
     }
 })
 cardEffects.set("bigEnergy", (playingPlayer) => {
     if (playingPlayer === "player"){
-        gameState.playerReputation = gameState.playerReputation + 20
+        gameState.playerReputation = gameState.playerReputation + 20;
     }
     else if (playingPlayer === "opponent"){
-        gameState.playerReputation = gameState.playerReputation + 20
+        gameState.playerReputation = gameState.playerReputation + 20;
     }
     else{
-        console.log("bigEnergy Input invalid")        
+        console.log("bigEnergy Input invalid");
     }
     
 })
@@ -320,37 +319,37 @@ cardEffects.set("instantPower", (playingPlayer) => {
 
 cardEffects.set("funDude", (playingPlayer) => {
     if(playingPlayer === "player"){
-        gameState.playerReputation = gameState.playerReputation + 2
+        gameState.playerReputation = gameState.playerReputation + 2;
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponentReputation = gameState.opponentReputation + 2
+        gameState.opponentReputation = gameState.opponentReputation + 2;
     }
     else{
-        console.log("error playing fun dude")
+        console.log("error playing fun dude");
     }
 })
 
 cardEffects.set("chef", (playingPlayer) => {
     if(playingPlayer === "player"){
-        gameState.playerReputation = gameState.playerReputation + 3
+        gameState.playerReputation = gameState.playerReputation + 3;
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponentReputation = gameState.opponentReputation + 3
+        gameState.opponentReputation = gameState.opponentReputation + 3;
     }
     else{
-        console.log("error playing chef")
+        console.log("error playing chef");
     }
 })
 
 cardEffects.set("energyGenerator", (playingPlayer) => {
     if(playingPlayer === "player"){
-        gameState.playerEnergy = gameState.playerEnergy + 7
+        gameState.playerEnergy = gameState.playerEnergy + 7;
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponentEnergy = gameState.opponentEnergy + 7
+        gameState.opponentEnergy = gameState.opponentEnergy + 7;
     }
     else{
-        console.log("error playing energyGenerator")
+        console.log("error playing energyGenerator");
     }
     
 })
@@ -358,32 +357,32 @@ cardEffects.set("energyGenerator", (playingPlayer) => {
 cardEffects.set("energyUser", (playingPlayer) => {
     if(playingPlayer === "player"){
         if(gameState.playerEnergy >= 4){
-            gameState.playerEnergy = gameState.playerEnergy - 4
-            gameState.playerReputation = gameState.playerReputation + 14
+            gameState.playerEnergy = gameState.playerEnergy - 4;
+            gameState.playerReputation = gameState.playerReputation + 14;
         }
     }
     else if(playingPlayer === "opponent"){
         if(gameState.opponentEnergy >= 4){
-            gameState.opponentEnergy = gameState.opponentEnergy - 4
-            gameState.opponentReputation = gameState.opponentReputation + 14
+            gameState.opponentEnergy = gameState.opponentEnergy - 4;
+            gameState.opponentReputation = gameState.opponentReputation + 14;
         }
 }
     else{
-        console.log("error playing energyUser")
+        console.log("error playing energyUser");
     }
 })
 
 cardEffects.set("unpopularVigilante", (playingPlayer) => {
     if(playingPlayer === "player"){
-        gameState.playerEnergy = gameState.playerEnergy - gameState.playerReputation
-        gameState.playerReputation = 0
+        gameState.playerEnergy = gameState.playerEnergy - gameState.playerReputation;
+        gameState.playerReputation = 0;
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponentEnergy = gameState.opponentEnergy - gameState.opponentReputation
-        gameState.opponentReputation = 0
+        gameState.opponentEnergy = gameState.opponentEnergy - gameState.opponentReputation;
+        gameState.opponentReputation = 0;
     }
     else{
-        console.log("error playing energyUser")
+        console.log("error playing energyUser");
     }
 })
 

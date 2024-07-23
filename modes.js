@@ -5,51 +5,51 @@
  */
 
 function enterGame(){
-    const header = document.getElementById("top")
-    header.style.display = 'none'
-    const soloButton = document.getElementById("soloButton")
-    soloButton.style.display = "none"
-    const multButton = document.getElementById("multButton")
-    multButton.style.display = "none"
-    const sampleCard= document.getElementById("sampleCard")
-    sampleCard.style.display = "none"
+    const header = document.getElementById("top");
+    header.style.display = 'none';
+    const soloButton = document.getElementById("soloButton");
+    soloButton.style.display = "none";
+    const multButton = document.getElementById("multButton");
+    multButton.style.display = "none";
+    const sampleCard= document.getElementById("sampleCard");
+    sampleCard.style.display = "none";
 
-    const cardPlayArea = document.createElement("div")
-    cardPlayArea.id = "cardPlayArea"
-    cardPlayArea.classList.add("cardPlayArea")
+    const cardPlayArea = document.createElement("div");
+    cardPlayArea.id = "cardPlayArea";
+    cardPlayArea.classList.add("cardPlayArea");
     cardPlayArea.addEventListener("dragover", function(e){
-        e.preventDefault()
-        cardPlayArea.style.borderStyle = "solid"
+        e.preventDefault();
+        cardPlayArea.style.borderStyle = "solid";
     });
     cardPlayArea.addEventListener("dragleave", function(e){
-        cardPlayArea.style.borderStyle = "dashed"
+        cardPlayArea.style.borderStyle = "dashed";
     });
-    
+
 
 
 
     //this creates the players deck
     for (let i=0; i<5; i++){
-        gameState.playerDeck.push(structuredClone(recruiter))
+        gameState.playerDeck.push(structuredClone(recruiter));
     }
     for (let i=0; i<2; i++){
-        gameState.playerDeck.push(structuredClone(dragon))
+        gameState.playerDeck.push(structuredClone(dragon));
     }
-    shufflePlayerDeck()
+    shufflePlayerDeck();
 
 
 
 
     //this creates the players hand
-    cardSlotList = []
-    const handWraper = document.getElementById("handWraper")
-    let currCardSlot = null
+    cardSlotList = [];
+    const handWraper = document.getElementById("handWraper");
+    let currCardSlot = null;
     for (let i=0; i<5; i++){
-        const cardIndex = i
-        cardSlotList.push(document.createElement("div"))
-        currCardSlot = cardSlotList[i]
-        currCardSlot.classList.add("handSlot")
-        currCardSlot.id = "handSlotCard" + String(i)
+        const cardIndex = i;
+        cardSlotList.push(document.createElement("div"));
+        currCardSlot = cardSlotList[i];
+        currCardSlot.classList.add("handSlot");
+        currCardSlot.id = "handSlotCard" + String(i);
 
 
         // currCardSlot.addEventListener("dragover", function(e){
@@ -79,7 +79,7 @@ function enterGame(){
 
 
 
-        handWraper.appendChild(currCardSlot)
+        handWraper.appendChild(currCardSlot);
     }
     
 
@@ -87,81 +87,81 @@ function enterGame(){
     //Give the players hand it's starting cards
 
     for (let slotNum = 0; slotNum<5;slotNum++){
-        let nextCard = gameState.playerDeck.pop()
-        updateNthHandSlot(slotNum, nextCard)
+        let nextCard = gameState.playerDeck.pop();
+        updateNthHandSlot(slotNum, nextCard);
     }
 
 
 
 
-    document.body.insertBefore(cardPlayArea, handWraper)
+    document.body.insertBefore(cardPlayArea, handWraper);
 
 
     //This creates the opponents hand
-    opponentCardList = []
-    opponentHandWrapper = document.createElement("div")
-    opponentHandWrapper.classList.add("opponentHand")
+    opponentCardList = [];
+    opponentHandWrapper = document.createElement("div");
+    opponentHandWrapper.classList.add("opponentHand");
 
     //This creates the player reputation tracker
-    const playerReputationTracker = document.createElement("div")
-    playerReputationTracker.classList.add("reputationTracker")
-    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
-    playerReputationTracker.id = "playerReputationTracker"
-    handWraper.appendChild(playerReputationTracker)
+    const playerReputationTracker = document.createElement("div");
+    playerReputationTracker.classList.add("reputationTracker");
+    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation);
+    playerReputationTracker.id = "playerReputationTracker";
+    handWraper.appendChild(playerReputationTracker);
     
     //creates the lastPlay cardslot
-    const lastPlayedDisplay = document.createElement("div")
-    lastPlayedDisplay.id = "lastPlayedDisplayWraper"
-    const lastPlayDisplayText = document.createElement("div")
-    lastPlayDisplayText.classList.add("textExplainer")
-    lastPlayDisplayText.innerText = "last Played Card"
-    const lastPlayCard = document.createElement("div")
-    lastPlayCard.classList.add("cardSlot")
-    lastPlayCard.id = "lastPlayedCard"
-    lastPlayedDisplay.appendChild(lastPlayDisplayText)
-    lastPlayedDisplay.appendChild(lastPlayCard)
+    const lastPlayedDisplay = document.createElement("div");
+    lastPlayedDisplay.id = "lastPlayedDisplayWraper";
+    const lastPlayDisplayText = document.createElement("div");
+    lastPlayDisplayText.classList.add("textExplainer");
+    lastPlayDisplayText.innerText = "last Played Card";
+    const lastPlayCard = document.createElement("div");
+    lastPlayCard.classList.add("cardSlot");
+    lastPlayCard.id = "lastPlayedCard";
+    lastPlayedDisplay.appendChild(lastPlayDisplayText);
+    lastPlayedDisplay.appendChild(lastPlayCard);
 
 
-    opponentHandWrapper.appendChild(lastPlayedDisplay)
+    opponentHandWrapper.appendChild(lastPlayedDisplay);
 
 
     for (let i=0; i<5; i++){
-        opponentCardList.push(document.createElement("div"))
-        currCardSlot = opponentCardList[i]
-        currCardSlot.classList.add("handSlot")
-        currCardSlot.id = "OpponentHandSlotCard" + String(i)
-        //updateOpponentsNthHandSlot(i, "cardBack")
-        opponentHandWrapper.appendChild(currCardSlot)
+        opponentCardList.push(document.createElement("div"));
+        currCardSlot = opponentCardList[i];
+        currCardSlot.classList.add("handSlot");
+        currCardSlot.id = "OpponentHandSlotCard" + String(i);
+        //updateOpponentsNthHandSlot(i, "cardBack");
+        opponentHandWrapper.appendChild(currCardSlot);
     }
-    const firstElement = document.body.firstChild
-    document.body.insertBefore(opponentHandWrapper, firstElement)
+    const firstElement = document.body.firstChild;
+    document.body.insertBefore(opponentHandWrapper, firstElement);
 
 
     //This creates the last bought card displays
-    const lastBoughtDisplay = document.createElement("div")
-    lastBoughtDisplay.id = "lastBoughtDisplayWraper"
-    const lastBoughtDisplayText = document.createElement("div")
-    lastBoughtDisplayText.classList.add("textExplainer")
-    lastBoughtDisplayText.innerText = "last bought Card"
-    const lastBoughtCard = document.createElement("div")
-    lastBoughtCard.classList.add("cardSlot")
-    lastBoughtCard.id = "lastBoughtCard"
-    lastBoughtDisplay.appendChild(lastBoughtDisplayText)
-    lastBoughtDisplay.appendChild(lastBoughtCard)
-    opponentHandWrapper.appendChild(lastBoughtDisplay)
+    const lastBoughtDisplay = document.createElement("div");
+    lastBoughtDisplay.id = "lastBoughtDisplayWraper";
+    const lastBoughtDisplayText = document.createElement("div");
+    lastBoughtDisplayText.classList.add("textExplainer");
+    lastBoughtDisplayText.innerText = "last bought Card";
+    const lastBoughtCard = document.createElement("div");
+    lastBoughtCard.classList.add("cardSlot");
+    lastBoughtCard.id = "lastBoughtCard";
+    lastBoughtDisplay.appendChild(lastBoughtDisplayText);
+    lastBoughtDisplay.appendChild(lastBoughtCard);
+    opponentHandWrapper.appendChild(lastBoughtDisplay);
 
     // const lastPurchasedDisplay = document.createElement("div")
     // lastPurchasedDisplay.classList.add("cardSlot")
     // lastPurchasedDisplay.id = "lastPurchasedDisplay"
     // opponetHandWrapper.appendChild(lastPurchasedDisplay)
 
-    document.body.insertBefore(opponentHandWrapper, firstElement)
+    document.body.insertBefore(opponentHandWrapper, firstElement);
     //This creates the opponents reputation tracker
-    const opponentReputationTracker = document.createElement("div")
-    opponentReputationTracker.classList.add("reputationTracker")
-    opponentReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
-    opponentReputationTracker.id = "opponentReputationTracker"
-    opponentHandWrapper.appendChild(opponentReputationTracker)
+    const opponentReputationTracker = document.createElement("div");
+    opponentReputationTracker.classList.add("reputationTracker");
+    opponentReputationTracker.innerText = "reputation " + String(gameState.playerReputation);
+    opponentReputationTracker.id = "opponentReputationTracker";
+    opponentHandWrapper.appendChild(opponentReputationTracker);
 
 
 
@@ -171,39 +171,39 @@ function enterGame(){
 
     //This makes the opponent's deck with it's starting cards
     for (let i=0; i<5; i++){
-        gameState.opponentDeck.push(structuredClone(recruiter))
+        gameState.opponentDeck.push(structuredClone(recruiter));
     }
     for (let i=0; i<2; i++){
-        gameState.opponentDeck.push(structuredClone(dragon))
+        gameState.opponentDeck.push(structuredClone(dragon));
     }
-    shuffleOpponentDeck()
+    shuffleOpponentDeck();
 
     //This will draw the opponents hand from there deck
-    RefreshOpponentsHand()
+    RefreshOpponentsHand();
 
     
     //Handles purchase area
-    const purchaseArea = document.createElement("div")
-    const purchaseAreaSlotList = []
-    purchaseArea.classList.add("purchaseArea")
-    purchaseArea.id = "purchaseArea"
+    const purchaseArea = document.createElement("div");
+    const purchaseAreaSlotList = [];
+    purchaseArea.classList.add("purchaseArea");
+    purchaseArea.id = "purchaseArea";
     for (let i=0; i<5; i++){
-        purchaseAreaSlotList.push(document.createElement("div"))
-        purchaseAreaSlotList[i].classList.add("cardSlot")
-        purchaseAreaSlotList[i].id = `purchaseAreaSlot${i}`
-        purchaseArea.appendChild(purchaseAreaSlotList[i])
+        purchaseAreaSlotList.push(document.createElement("div"));
+        purchaseAreaSlotList[i].classList.add("cardSlot");
+        purchaseAreaSlotList[i].id = `purchaseAreaSlot${i}`;
+        purchaseArea.appendChild(purchaseAreaSlotList[i]);
     }
-    cardPlayArea.appendChild(purchaseArea)
+    cardPlayArea.appendChild(purchaseArea);
 
    //creates the deck of cards for the purchase area
-    let wildCardIndex = gameState.wildCards.length
+    let wildCardIndex = gameState.wildCards.length;
     while(wildCardIndex != 0){
-       let RandomwildCardIndex = Math.floor(Math.random()*wildCardIndex)
+       let RandomwildCardIndex = Math.floor(Math.random()*wildCardIndex);
        wildCardIndex = wildCardIndex - 1;
-       [gameState.wildCards[wildCardIndex], gameState.wildCards[RandomwildCardIndex]] = [gameState.wildCards[RandomwildCardIndex], gameState.wildCards[wildCardIndex]]
+       [gameState.wildCards[wildCardIndex], gameState.wildCards[RandomwildCardIndex]] = [gameState.wildCards[RandomwildCardIndex], gameState.wildCards[wildCardIndex]];
     }
     for (let i=0; i<5; i++){
-        updatePurchaseAreaNthSlot(i, gameState.wildCards.pop())
+        updatePurchaseAreaNthSlot(i, gameState.wildCards.pop());
     }
 
 
@@ -213,39 +213,39 @@ function enterGame(){
 
 
     //This creates the skipPhase button and refresh hand button
-    const buttons = document.createElement("div")
-    buttons.id = "buttonHolder"
-    buttons.classList.add("buttonHolder")
-    const skipPhaseButton = document.createElement("button")
-    skipPhaseButton.classList.add("SkipPhase")
-    skipPhaseButton.innerText = "Skip Phase"
-    skipPhaseButton.id = "skipPhaseButton"
-    const refreshButton = document.createElement("button")
-    refreshButton.classList.add("refreshButton")
-    refreshButton.innerText = "refresh hand"
-    refreshButton.id = "refreshButton"
-    buttons.appendChild(skipPhaseButton)
-    buttons.appendChild(refreshButton)
-    const cardPlayPlace = document.getElementById("cardPlayArea")
-    cardPlayPlace.appendChild(buttons)
+    const buttons = document.createElement("div");
+    buttons.id = "buttonHolder";
+    buttons.classList.add("buttonHolder");
+    const skipPhaseButton = document.createElement("button");
+    skipPhaseButton.classList.add("SkipPhase");
+    skipPhaseButton.innerText = "Skip Phase";
+    skipPhaseButton.id = "skipPhaseButton";
+    const refreshButton = document.createElement("button");
+    refreshButton.classList.add("refreshButton");
+    refreshButton.innerText = "refresh hand";
+    refreshButton.id = "refreshButton";
+    buttons.appendChild(skipPhaseButton);
+    buttons.appendChild(refreshButton);
+    const cardPlayPlace = document.getElementById("cardPlayArea");
+    cardPlayPlace.appendChild(buttons);
 
     //sets the time till purchase area is refreshed
-    gameState.resetIn = gameState.resetFrequency
-    const timeTillRefresh = document.createElement("div")
-    timeTillRefresh.id = "refreshCountdown"
-    document.getElementById("buttonHolder").appendChild(timeTillRefresh)
+    gameState.resetIn = gameState.resetFrequency;
+    const timeTillRefresh = document.createElement("div");
+    timeTillRefresh.id = "refreshCountdown";
+    document.getElementById("buttonHolder").appendChild(timeTillRefresh);
 
 
     //This selects how the opponent will decides on their moves
-    gameState.opponentMovesDecider = "randomIfPossible" //in the future, this may depend on the gameMode your playing and the AI level
+    gameState.opponentMovesDecider = "randomIfPossible"; //in the future, this may depend on the gameMode your playing and the AI level
 
 
 
 
 
     //Call update gameState
-    renderGameState()
-    turnOnCardPlay()
+    renderGameState();
+    turnOnCardPlay();
     // for(let count=0; count<5; count++){
     //     const index = count
     //     const card = document.getElementById(`handSlotCard${count}`).firstChild
@@ -272,7 +272,7 @@ function enterGame(){
 
     //calls enter mode
     //creates the ondrop for playing a card
-    enterMode(playingCard)
+    enterMode(playingCard);
 
 
 
@@ -284,7 +284,7 @@ function enterGame(){
  * for now, alwese sets to player, in future, will set or player or opponent random
  */
 function setStartingPlayer(){
-    return "player"
+    return "player";
 }
 
 
@@ -292,7 +292,7 @@ function setStartingPlayer(){
  * Plays a card
  */
 function playCard(card, player){
-    cardEffects.get(card.effectID)(player)
+    cardEffects.get(card.effectID)(player);
 }
 
 /**
@@ -303,16 +303,16 @@ function buyCard(card, player){
 }
 
 async function tryBuyCard(cardNumber){
-    const boughtCard = getPurchaseAreaNthSlot(cardNumber)
+    const boughtCard = getPurchaseAreaNthSlot(cardNumber);
     if(boughtCard != null && gameState.playerReputation >= boughtCard.cost){
-        gameState.playerReputation = gameState.playerReputation - boughtCard.cost
-        gameState.playerDiscard.push(boughtCard)
-        updatePurchaseAreaNthSlot(cardNumber, null)
-        endTurn("player")
-        renderGameState()
+        gameState.playerReputation = gameState.playerReputation - boughtCard.cost;
+        gameState.playerDiscard.push(boughtCard);
+        updatePurchaseAreaNthSlot(cardNumber, null);
+        endTurn("player");
+        renderGameState();
 
         //temp for testing
-        await startedOpponentsTurn()
+        await startedOpponentsTurn();
         //turnOnCardPlay()
         //enterMode(playingCard)
 
@@ -323,35 +323,35 @@ async function tryBuyCard(cardNumber){
  * calls tryBuyCard(0)
  */
 async function tryBuyCard0(){
-    await tryBuyCard(0)
+    await tryBuyCard(0);
 }
 
 /**
  * calls tryBuyCard(1)
  */
 async function tryBuyCard1(){
-    await tryBuyCard(1)
+    await tryBuyCard(1);
 }
 
 /**
  * calls tryBuyCard(2)
  */
 async function tryBuyCard2(){
-    await tryBuyCard(2)
+    await tryBuyCard(2);
 }
 
 /**
  * calls tryBuyCard(3)
  */
 async function tryBuyCard3(){
-    await tryBuyCard(3)
+    await tryBuyCard(3);
 }
 
 /**
  * calls tryBuyCard(4)
  */
 async function tryBuyCard4(){
-    await tryBuyCard(4)
+    await tryBuyCard(4);
 }
 
 
@@ -361,11 +361,11 @@ async function tryBuyCard4(){
  */
 function playerPlaysCard(){
    
-    playCard(draggingCard.card, "player")
-    DrawCard(draggingCard.cardNumber)
-    turnOffCardPlay()
-    renderGameState()
-    enterMode(buyingCard)
+    playCard(draggingCard.card, "player");
+    DrawCard(draggingCard.cardNumber);
+    turnOffCardPlay();
+    renderGameState();
+    enterMode(buyingCard);
 }
 
 /**
@@ -373,8 +373,8 @@ function playerPlaysCard(){
  */
 function turnOffCardPlay(){
     for (let i=0; i<5; i++){
-        const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild
-        currHandSlot.setAttribute("draggable", "false") 
+        const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild;
+        currHandSlot.setAttribute("draggable", "false");
     }
 }
 
@@ -383,21 +383,21 @@ function turnOffCardPlay(){
  */
 function turnOnCardPlay(){
     for (let i=0; i<5; i++){
-        const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild
-        currHandSlot.setAttribute("draggable", "true")
+        const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild;
+        currHandSlot.setAttribute("draggable", "true");
         currHandSlot.addEventListener("dragstart", (event) => {
             try{
-                document.getElementById("cardPlayArea").style.borderStyle = "dashed"
+                document.getElementById("cardPlayArea").style.borderStyle = "dashed";
             }
             catch(TypeError){}
-            draggingCard.card = getNthHandSlot(i)
-            draggingCard.cardNumber = i
+            draggingCard.card = getNthHandSlot(i);
+            draggingCard.cardNumber = i;
         });
         currHandSlot.addEventListener("dragend", (event) => {
             //console.log("draggend called")
 
             try{
-                document.getElementById("cardPlayArea").style.borderStyle = "none"
+                document.getElementById("cardPlayArea").style.borderStyle = "none";
             }
             catch{}
 
@@ -414,9 +414,9 @@ function turnOnCardPlay(){
  * 
  */
 function endPhaseButtonPlaying(){
-    console.log("endPhaseButtonPlaying called")
-    enterMode(buyingCard)
-    turnOffCardPlay()
+    console.log("endPhaseButtonPlaying called");
+    enterMode(buyingCard);
+    turnOffCardPlay();
 }
 
 
@@ -425,9 +425,9 @@ function endPhaseButtonPlaying(){
  * the current code is a placeholder for when the opponent exists
  */
 function endPhaseButtonBuying(){
-    endTurn("player")
-    renderGameState()
-    startedOpponentsTurn()
+    endTurn("player");
+    renderGameState();
+    startedOpponentsTurn();
     //turnOnCardPlay()
 }
 
@@ -435,15 +435,15 @@ function endPhaseButtonBuying(){
  * occures when player clicks refresh hand button durring the playing phase
  */
 function RefreshHand(){
-    console.log("refresh button pressed")
+    console.log("refresh button pressed");
     for (slotNumber=0; slotNumber<5; slotNumber++){
-        dicardCard(slotNumber)
+        dicardCard(slotNumber);
     }
     for (slotNumber=0; slotNumber<5; slotNumber++){
-        DrawCard(slotNumber)
+        DrawCard(slotNumber);
     }
-    renderGameState() 
-    enterMode(buyingCard)
+    renderGameState();
+    enterMode(buyingCard);
 }
 
 /**
@@ -452,12 +452,12 @@ function RefreshHand(){
 function RefreshOpponentsHand(){
     for (slotNumber=0; slotNumber<5; slotNumber++){
         if(getOpponentsNthHandSlot(slotNumber) != null){
-            gameState.opponentDiscard.push(getOpponentsNthHandSlot(slotNumber))
-            updateOpponentsNthHandSlot(slotNumber, null)
+            gameState.opponentDiscard.push(getOpponentsNthHandSlot(slotNumber));
+            updateOpponentsNthHandSlot(slotNumber, null);
         }
     }
     for (slotNumber=0; slotNumber<5; slotNumber++){
-        opponentDrawCard(slotNumber)
+        opponentDrawCard(slotNumber);
     }
 }
 
@@ -470,8 +470,8 @@ function RefreshOpponentsHand(){
 
 function dicardCard(slotNum){
     if(getNthHandSlot(slotNum) != null){
-        gameState.playerDiscard.push(getNthHandSlot(slotNum))
-        updateNthHandSlot(slotNum, null)
+        gameState.playerDiscard.push(getNthHandSlot(slotNum));
+        updateNthHandSlot(slotNum, null);
     }
 }
 
@@ -483,14 +483,14 @@ function dicardCard(slotNum){
 function DrawCard(slotNumber){
     //Update the gameState
     if(getNthHandSlot(slotNumber) != null){
-        dicardCard(slotNumber)
+        dicardCard(slotNumber);
     }
     if(gameState.playerDeck.length === 0){
-        gameState.playerDeck = gameState.playerDiscard
-        gameState.playerDiscard = []
-        shufflePlayerDeck()
+        gameState.playerDeck = gameState.playerDiscard;
+        gameState.playerDiscard = [];
+        shufflePlayerDeck();
     }
-    updateNthHandSlot(slotNumber, gameState.playerDeck.pop())
+    updateNthHandSlot(slotNumber, gameState.playerDeck.pop());
 }
 
 
@@ -498,26 +498,26 @@ function DrawCard(slotNumber){
  * Draws a new card for the opponent
  */
 function opponentDrawCard(slotNumber){
-    console.log("called opponentDrawCard")
+    console.log("called opponentDrawCard");
     if(getOpponentsNthHandSlot(slotNumber) != null){
-        gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber))
-        updateOpponentsNthHandSlot(slotNumber, null)
+        gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber));
+        updateOpponentsNthHandSlot(slotNumber, null);
     }
     if(gameState.opponentDeck.length === 0){
-        console.log("refreshing opponent discard")
-        console.log("current opponent deck is ", gameState.opponentDeck.length)
-        console.log("current opponent discard is", gameState.opponentDiscard.length)
-        gameState.opponentDeck = gameState.opponentDiscard
-        console.log("opponent deck is 1", gameState.opponentDeck.length)
-        gameState.opponentDiscard = []
-        console.log("opponent deck is 2, ", gameState.opponentDeck.length)
-        shuffleOpponentDeck()
+        console.log("refreshing opponent discard");
+        console.log("current opponent deck is ", gameState.opponentDeck.length);
+        console.log("current opponent discard is", gameState.opponentDiscard.length);
+        gameState.opponentDeck = gameState.opponentDiscard;
+        console.log("opponent deck is 1", gameState.opponentDeck.length);
+        gameState.opponentDiscard = [];
+        console.log("opponent deck is 2, ", gameState.opponentDeck.length);
+        shuffleOpponentDeck();
     }
     if(gameState.opponentDeck.length !== 0){
-        updateOpponentsNthHandSlot(slotNumber, gameState.opponentDeck.pop())
+        updateOpponentsNthHandSlot(slotNumber, gameState.opponentDeck.pop());
     }
     else{
-        console.log("opponent had no cards in deck or discard pile")//possibly temporary, this should be a fine but rare case
+        console.log("opponent had no cards in deck or discard pile");//possibly temporary, this should be a fine but rare case
     }
 
 }
@@ -528,53 +528,53 @@ function opponentDrawCard(slotNumber){
  */
 async function startedOpponentsTurn() {
     //do the opponent playing mode
-    enterMode(OpponentPlayingCard)
-    let opponentMove = null
+    enterMode(OpponentPlayingCard);
+    let opponentMove = null;
     while (opponentMove === null){
-        opponentMove = opponentPlayCard()
+        opponentMove = opponentPlayCard();
     }
     if (opponentMove.type === "refresh"){
-        RefreshOpponentsHand()
-        await opponentsBuyPhase()
+        RefreshOpponentsHand();
+        await opponentsBuyPhase();
     }
     else if(opponentMove.type === "cardPlay"){
-        const cardPlayed = getOpponentsNthHandSlot(opponentMove.slotNumber)
-        playCard(cardPlayed, "opponent")
-        gameState.opponentDiscard.push(cardPlayed)
-        opponentDrawCard(opponentMove.slotNumber)
-        renderCard(cardPlayed, `OpponentHandSlotCard${opponentMove.slotNumber}`)
-        const playedCardElem = document.getElementById(`OpponentHandSlotCard${opponentMove.slotNumber}`).firstChild
+        const cardPlayed = getOpponentsNthHandSlot(opponentMove.slotNumber);
+        playCard(cardPlayed, "opponent");
+        gameState.opponentDiscard.push(cardPlayed);
+        opponentDrawCard(opponentMove.slotNumber);
+        renderCard(cardPlayed, `OpponentHandSlotCard${opponentMove.slotNumber}`);
+        const playedCardElem = document.getElementById(`OpponentHandSlotCard${opponentMove.slotNumber}`).firstChild;
         //create the animation of the bought card
-        animateMovingCard(playedCardElem, "lastPlayedCard", 5000, opponentsBuyPhase)
+        animateMovingCard(playedCardElem, "lastPlayedCard", 5000, opponentsBuyPhase);
     }
     else{
-        console.log("opponent failed to do something")
-        await opponentsBuyPhase()
+        console.log("opponent failed to do something");
+        await opponentsBuyPhase();
     }
 }
 
 async function opponentsBuyPhase(){
-    enterMode(OpponentBuyingCard)
-    let opponentBuy = null
-    let renderImeditly = false
+    enterMode(OpponentBuyingCard);
+    let opponentBuy = null;
+    let renderImeditly = false;
     while(opponentBuy === null){
-        opponentBuy = opponentBuyCard()
+        opponentBuy = opponentBuyCard();
     }
     if (opponentBuy.type === "skip"){
-        renderImeditly = true
+        renderImeditly = true;
     }
     else if(opponentBuy.type === "purchase"){
-        const boughtCard = getPurchaseAreaNthSlot(opponentBuy.slotNumber)
+        const boughtCard = getPurchaseAreaNthSlot(opponentBuy.slotNumber);
         if(boughtCard != null && gameState.opponentReputation >= boughtCard.cost){
-            gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost
-            gameState.opponentDiscard.push(boughtCard)
-            updatePurchaseAreaNthSlot(opponentBuy.slotNumber, null)
+            gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost;
+            gameState.opponentDiscard.push(boughtCard);
+            updatePurchaseAreaNthSlot(opponentBuy.slotNumber, null);
             const boughtCardDomElem = document.getElementById(`purchaseAreaSlot${opponentBuy.slotNumber}`).firstChild;
             await animateMovingCard(boughtCardDomElem, "lastBoughtCard", 5000, async () => {
-                endTurn("opponent")
-                renderGameState()
-                enterMode(playingCard)
-                turnOnCardPlay()
+                endTurn("opponent");
+                renderGameState();
+                enterMode(playingCard);
+                turnOnCardPlay();
             })
             // await animateCardBuy(boughtCard, opponentBuy.slotNumber, async () => {
             //     endTurn("opponent")
@@ -584,21 +584,21 @@ async function opponentsBuyPhase(){
             // })
         }
         else{
-            console.log("error, opponent tryed to buy card that cannot be bought or does not exist")
-            renderImeditly = true
+            console.log("error, opponent tryed to buy card that cannot be bought or does not exist");
+            renderImeditly = true;
         }
     }
     else{
-        console.log("opponent failed to buy something error")
-        renderImeditly = true
+        console.log("opponent failed to buy something error");
+        renderImeditly = true;
     }
     if (renderImeditly){
-        endTurn("opponent")
-        renderGameState()
-        enterMode(playingCard)
-        turnOnCardPlay()
+        endTurn("opponent");
+        renderGameState();
+        enterMode(playingCard);
+        turnOnCardPlay();
     }
-    console.log(gameState)
+    console.log(gameState);
 
 }
 
@@ -610,18 +610,18 @@ async function opponentsBuyPhase(){
  * should be called before renderGame
  */
 function endTurn(endingPlayer){
-    gameState.resetIn = gameState.resetIn - 1
+    gameState.resetIn = gameState.resetIn - 1;
     if (gameState.resetIn === 0){
         for(let i=0; i<5; i++){
             //at some future point, I may create a purchases graveyard,
             if (wildCards.length > 0){
-                updatePurchaseAreaNthSlot(i, wildCards.pop())
+                updatePurchaseAreaNthSlot(i, wildCards.pop());
             }
             else{
-                updatePurchaseAreaNthSlot(i, null)
+                updatePurchaseAreaNthSlot(i, null);
             }
         }
-        gameState.resetIn = gameState.resetFrequency
+        gameState.resetIn = gameState.resetFrequency;
     }
 }
 
@@ -653,22 +653,22 @@ function enterMode(mode){
 
     //This will create the new Transition event listners and deleate the old ones
     if (currentMode != null){
-        const prevMode = currentMode
-        const prevModeTransitionList = Object.values(prevMode.transitions)
+        const prevMode = currentMode;
+        const prevModeTransitionList = Object.values(prevMode.transitions);
         for (let i=0; i<prevModeTransitionList.length; i++){
-            const currTransition = prevModeTransitionList[i]
-            const removedElement = document.getElementById(currTransition.elementID)
-            removedElement.removeEventListener(currTransition.eventType, currTransition.funct)
+            const currTransition = prevModeTransitionList[i];
+            const removedElement = document.getElementById(currTransition.elementID);
+            removedElement.removeEventListener(currTransition.eventType, currTransition.funct);
         }
     }
     let oldMode = currentMode
     currentMode = mode
     if (true){
-        const transitionList = Object.values(mode.transitions)
+        const transitionList = Object.values(mode.transitions);
         for (let i=0; i< transitionList.length; i++){
-            const currTransition = transitionList[i]
-            const EffectedElement = document.getElementById(currTransition.elementID)
-            EffectedElement.addEventListener(currTransition.eventType, currTransition.funct)
+            const currTransition = transitionList[i];
+            const EffectedElement = document.getElementById(currTransition.elementID);
+            EffectedElement.addEventListener(currTransition.eventType, currTransition.funct);
         }
     }
 

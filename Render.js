@@ -7,41 +7,39 @@
  * @param locationID the element the card is to be drawn on 
  */
 function renderCard(card, locationID){
-    const location = document.getElementById(locationID)
+    const location = document.getElementById(locationID);
     const cardDisplayDiv = document.createElement("div");
     if (card != null){
-        cardDisplayDiv.classList.add("cardDisplay")
+        cardDisplayDiv.classList.add("cardDisplay");
         const cardTitleDiv = document.createElement("div");
-        cardTitleDiv.classList.add("cardTitle")
+        cardTitleDiv.classList.add("cardTitle");
         const cardNameDiv = document.createElement("div");
         const cardCostDiv = document.createElement("div");
-        cardNameDiv.classList.add("cardName")
-        cardCostDiv.classList.add("cardCost")
+        cardNameDiv.classList.add("cardName");
+        cardCostDiv.classList.add("cardCost");
         const cardImageDiv = document.createElement("img");
-        
         const cardEffectDiv = document.createElement("div");
-        cardEffectDiv.classList.add("cardEffect")
+        cardEffectDiv.classList.add("cardEffect");
         const cardEffectTextDiv = document.createElement("div");
-        cardEffectTextDiv.classList.add("cardEffectText")
-        cardDisplayDiv.appendChild(cardTitleDiv)
-        cardDisplayDiv.appendChild(cardImageDiv)
-        cardDisplayDiv.appendChild(cardEffectDiv)
-        cardTitleDiv.appendChild(cardNameDiv)
-        cardTitleDiv.appendChild(cardCostDiv)
-        cardEffectDiv.appendChild(cardEffectTextDiv)
-
+        cardEffectTextDiv.classList.add("cardEffectText");
+        cardDisplayDiv.appendChild(cardTitleDiv);
+        cardDisplayDiv.appendChild(cardImageDiv);
+        cardDisplayDiv.appendChild(cardEffectDiv);
+        cardTitleDiv.appendChild(cardNameDiv);
+        cardTitleDiv.appendChild(cardCostDiv);
+        cardEffectDiv.appendChild(cardEffectTextDiv);
         const cardNameText = document.createTextNode(card.name);
-        cardNameDiv.appendChild(cardNameText)
+        cardNameDiv.appendChild(cardNameText);
         const cardCost = document.createTextNode(card.cost);
-        cardCostDiv.appendChild(cardCost)
-        const effectText = document.createTextNode(card.effectText)
-        cardEffectTextDiv.appendChild(effectText)
-        cardImageDiv.setAttribute("src", `img/${card.image}`)
-        cardImageDiv.setAttribute("draggable", "false")
+        cardCostDiv.appendChild(cardCost);
+        const effectText = document.createTextNode(card.effectText);
+        cardEffectTextDiv.appendChild(effectText);
+        cardImageDiv.setAttribute("src", `img/${card.image}`);
+        cardImageDiv.setAttribute("draggable", "false");
     }
     for (const child of location.children){
 
-        child.remove()
+        child.remove();
     }
 
 
@@ -56,64 +54,63 @@ function renderCard(card, locationID){
  */
 function renderGameState(){
     //Handles your hand
-    let cardSlot = null
-    let Slot
+    let cardSlot = null;
+    let Slot;
     for (i=0; i<5; i++){
-        Slot = getNthHandSlot(i)
-
-        cardSlot = document.getElementById(`handSlotCard${i}`)
-        cardSlotID = `handSlotCard${i}`
+        Slot = getNthHandSlot(i);
+        cardSlot = document.getElementById(`handSlotCard${i}`);
+        cardSlotID = `handSlotCard${i}`;
         if (Slot != null){
-            renderCard(Slot, cardSlotID)
+            renderCard(Slot, cardSlotID);
         }
         else{
             for (const child of cardSlot.children){
-                child.remove()
+                child.remove();
             }
         }
     }
 
 
     //Handles Opponent Hand
-    let opponentsCardSlot = null
-    let gameStateCardVal = null
+    let opponentsCardSlot = null;
+    let gameStateCardVal = null;
     for (let i=0; i<5; i++){
-        gameStateCardVal = getOpponentsNthHandSlot(i)
-        opponentsCardSlot = document.getElementById("OpponentHandSlotCard" + String(i))
-        let imageSource = null
+        gameStateCardVal = getOpponentsNthHandSlot(i);
+        opponentsCardSlot = document.getElementById("OpponentHandSlotCard" + String(i));
+        let imageSource = null;
         if (gameStateCardVal === null){
-            imageSource = "img/blank.jpg"
+            imageSource = "img/blank.jpg";
         }
         else{
-            imageSource = "img/cardBack.jpg"
+            imageSource = "img/cardBack.jpg";
         }
         for (const child of opponentsCardSlot.children){
-            child.remove()
+            child.remove();
         }
-        const newCardBack = document.createElement("img")
-        newCardBack.setAttribute("src", imageSource)
-        newCardBack.setAttribute("draggable", "false")
-        opponentsCardSlot.appendChild(newCardBack)
+        const newCardBack = document.createElement("img");
+        newCardBack.setAttribute("src", imageSource);
+        newCardBack.setAttribute("draggable", "false");
+        opponentsCardSlot.appendChild(newCardBack);
     
     }
 
 
     //Handles purchase area
-    let currPurchaseCard
-    let currPurchaseCardLocation
+    let currPurchaseCard;
+    let currPurchaseCardLocation;
     for(let i=0; i<5; i++){
-        currPurchaseCard = getPurchaseAreaNthSlot(i)
-        renderCard(currPurchaseCard, `purchaseAreaSlot${i}`)
+        currPurchaseCard = getPurchaseAreaNthSlot(i);
+        renderCard(currPurchaseCard, `purchaseAreaSlot${i}`);
     }
     //updates time till card purchases area resets
-    const timeTillRefresh = document.getElementById("refreshCountdown")
-    timeTillRefresh.innerText = "refresh in " + String(gameState.resetIn)
+    const timeTillRefresh = document.getElementById("refreshCountdown");
+    timeTillRefresh.innerText = "refresh in " + String(gameState.resetIn);
 
 
     //Update playerReputationTracker and enerty
-    const playerReputationTracker = document.getElementById("playerReputationTracker")
-    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy)
-    document.getElementById("opponentReputationTracker").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy)
+    const playerReputationTracker = document.getElementById("playerReputationTracker");
+    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy);
+    document.getElementById("opponentReputationTracker").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy);
 
 
 
@@ -121,10 +118,9 @@ function renderGameState(){
 
 
 function animateCardPlayed(card, cardSlotNum){
-    console.log("called animateCardPlay")//temporary log statement
-    renderCard(card, `OpponentHandSlotCard${cardSlotNum}`)
-    const animatingCard = document.getElementById(`OpponentHandSlotCard${cardSlotNum}`).firstChild
-    animatingCard.classList.add(`movingCard${cardSlotNum}`)
+    renderCard(card, `OpponentHandSlotCard${cardSlotNum}`);
+    const animatingCard = document.getElementById(`OpponentHandSlotCard${cardSlotNum}`).firstChild;
+    animatingCard.classList.add(`movingCard${cardSlotNum}`);
 }
 
 /**
@@ -134,10 +130,8 @@ function animateCardPlayed(card, cardSlotNum){
  * @param {an async function to run when the animation is done} animationConclusionFunction 
  */
 async function animateCardBuy(card, cardSlotNumber, animationConclusionFunction){
-    console.log("called anomate card buy")//temp
-    console.log(cardSlotNumber)
-    renderCard(card, `purchaseAreaSlot${cardSlotNumber}`)
-    const animatingCard = document.getElementById(`purchaseAreaSlot${cardSlotNumber}`).firstChild
+    renderCard(card, `purchaseAreaSlot${cardSlotNumber}`);
+    const animatingCard = document.getElementById(`purchaseAreaSlot${cardSlotNumber}`).firstChild;
     //animatingCard.classList.add("opponentBuyCard")
     const animation = animatingCard.animate(
         {transform: 'translateY(-200px)'},
@@ -177,9 +171,9 @@ async function animateMovingCard(cardElem, containerID, travelTime, afterAction)
     //animation.commitStyles();
     
     for (const child of containerElem.children){
-        child.remove()
+        child.remove();
     }
-    containerElem.appendChild(cardElem)
+    containerElem.appendChild(cardElem);
 
     animation.cancel();
     await afterAction();
