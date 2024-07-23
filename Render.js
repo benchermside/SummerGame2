@@ -172,8 +172,15 @@ async function animateMovingCard(cardElem, containerID, travelTime, afterAction)
         {transform: `translate(${deltaX}px, ${deltaY}px)`},
         {duration: travelTime, fill: "forwards"},
     );
+
     await animation.finished;
-    animation.commitStyles();
+    //animation.commitStyles();
+    
+    for (const child of containerElem.children){
+        child.remove()
+    }
+    containerElem.appendChild(cardElem)
+
     animation.cancel();
     await afterAction();
 }

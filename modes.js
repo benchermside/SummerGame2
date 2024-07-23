@@ -1,4 +1,5 @@
 //in this section are the mode transitions
+//find and replace semicolon regx [^\n|{|;]\n
 /**
  * Enters the game
  */
@@ -123,7 +124,7 @@ function enterGame(){
     lastPlayCard.id = "lastPlayedCard"
     lastPlayedDisplay.appendChild(lastPlayDisplayText)
     lastPlayedDisplay.appendChild(lastPlayCard)
-    
+
 
     opponetHandWrapper.appendChild(lastPlayedDisplay)
 
@@ -168,9 +169,9 @@ function enterGame(){
 
 
 
-    
+
     //and this will make the opponents startDeck and draw the startHand
-    
+
 
     //This makes the opponent's deck with it's starting cards
     for (let i=0; i<5; i++){
@@ -183,9 +184,9 @@ function enterGame(){
 
     //This will draw the opponents hand from there deck
     RefreshOpponentsHand()
-    
 
-    
+
+
     //Handles purches area
     const purchesArea = document.createElement("div")
     const purchesAreaSlotList = []
@@ -238,8 +239,7 @@ function enterGame(){
     const timeTillRefresh = document.createElement("div")
     timeTillRefresh.id = "refreshCountdown"
     document.getElementById("buttonHolder").appendChild(timeTillRefresh)
-    
-    
+
 
     //This selects how the opponent will decides on there moves
     gameState.opponentMovesDesider = "randomIfPossable" //in the future, this may depend on the gameMode your playing and the AI level
@@ -278,9 +278,9 @@ function enterGame(){
     //calls enter mode
     //creates the ondrop for playing a card
     enterMode(playingCard)
-    
 
-    
+
+
 
 }
 
@@ -407,7 +407,7 @@ function turnOnCardPlay(){
             catch{}
 
         });
-        
+
     }
 
 
@@ -527,6 +527,10 @@ function opponentDrawCard(slotNumber){
 
 }
 
+/**
+ * triggers when transitioning the the opponenets turn, has them buy play a card, buy a card, 
+ * than transitions back to the players turn when done
+ */
 async function startedOpponentsTurn() {
     //do the opponent playing mode
     enterMode(OpponentPlayingCard)
@@ -543,9 +547,10 @@ async function startedOpponentsTurn() {
         playCard(cardPlayed, "opponent")
         gameState.opponentDiscard.push(cardPlayed)
         opponentDrawCard(opponentMove.slotNumber)
+        renderCard(cardPlayed, `OpponentHandSlotCard${opponentMove.slotNumber}`)
+        const playedCardElem = document.getElementById(`OpponentHandSlotCard${opponentMove.slotNumber}`).firstChild
         //create the animation of the bought card
-        animateCardPlayed(cardPlayed, opponentMove.slotNumber)
-        setTimeout(opponentsBuyPhase, 5000)
+        animateMovingCard(playedCardElem, "lastPlayedCard", 5000, opponentsBuyPhase)
     }
     else{
         console.log("opponent failed to do something")
@@ -570,7 +575,7 @@ async function opponentsBuyPhase(){
             gameState.opponentDiscard.push(boughtCard)
             updatePurchesAreaNthSlot(opponentBuy.slotNumber, null)
             const boughtCardDomElem = document.getElementById(`purchesAreaSlot${opponentBuy.slotNumber}`).firstChild;
-            await animateMovingCard(boughtCardDomElem, "OpponentHandSlotCard0", 5000, async () => {
+            await animateMovingCard(boughtCardDomElem, "lastBoughtCard", 5000, async () => {
                 endTurn("opponent")
                 renderGameState()
                 enterMode(playingCard)
@@ -596,7 +601,7 @@ async function opponentsBuyPhase(){
         endTurn("opponent")
         renderGameState()
         enterMode(playingCard)
-        turnOnCardPlay()    
+        turnOnCardPlay()
     }
     console.log(gameState)
 
@@ -620,7 +625,6 @@ function endTurn(endingPlayer){
             else{
                 updatePurchesAreaNthSlot(i, null)
             }
-            
         }
         gameState.resetIn = gameState.resetFrequency
     }
