@@ -73,13 +73,12 @@ const dragon = {
     effectID: "dragon"
 }
 
-const recurtor = {
-    name: "recrutor",
-    image: "superRecrutor.jpg",
+const recruiter = {
+    name: "recruiter",
+    image: "superRecruiter.jpg",
     effectText: "Gain 1 reputation",
     cost: 1,
-    effectID: "recurtor"
-
+    effectID: "recruiter"
 }
 
 
@@ -87,7 +86,7 @@ const recurtor = {
 const ninja = {
     name:"ninja",
     image:"ninja.jpg",
-    effectText: "3 energy, loose 3 energy at the end of next turn",//not implimented yet
+    effectText: "3 energy, lose 3 energy at the end of next turn",//not implemented yet
     cost: 2,
     effectID: "ninja"
 }
@@ -112,8 +111,8 @@ const doomsayer = {
 
 const publicityOfficer = {
     name:"publicityOfficer",
-    image:"excidedPoint.jpg",
-    effectText: "gain 1 reputatiin for every 3 cards you have somewhere (rounded down)",
+    image:"excitedPoint.jpg",
+    effectText: "gain 1 reputation for every 3 cards you have somewhere (rounded down)",
     cost: 2,
     effectID: "publicityOfficer"
 }
@@ -151,12 +150,12 @@ const chef = {
 }
 
 
-const energyGenroator = {
-    name: "energyGenroator",
+const energyGenerator = {
+    name: "energyGenerator",
     image: "dragon.jpg",
     effectText: "gain 7 energy",
     cost: 4,
-    effectID: "energyGenroator",
+    effectID: "energyGenerator",
 }
 
 const energyUser = {
@@ -167,19 +166,19 @@ const energyUser = {
     effectID: "energyUser",
 }
 
-const unpopularViglantie = {
-    name: "unpopularViglantie",
+const unpopularVigilante = {
+    name: "unpopularVigilante",
     image: "dragon.jpg",
     effectText: "turn your reputation into energy",
     cost: 6,
-    effectID: "unpopularViglantie",
+    effectID: "unpopularVigilante",
 }
 
 
 
 
 
-const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenroator, energyUser, unpopularViglantie]
+const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante]
 
 
 
@@ -223,7 +222,7 @@ const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instant
  */
 const cardEffects = new Map()
 
-cardEffects.set('recurtor', (playingPlayer) => {
+cardEffects.set('recruiter', (playingPlayer) => {
     if(playingPlayer === "player"){
         gameState.playerReputation++
     }
@@ -241,7 +240,7 @@ cardEffects.set("dragon", (playingPlayer) => {
         gameState.playerEnergy++
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponenetEnergy++
+        gameState.opponentEnergy++
     }
     else{
         console.log("Error, playing player invalid")
@@ -253,7 +252,7 @@ cardEffects.set("ninja", (playingPlayer) => {
         gameState.playerEnergy = gameState.playerEnergy + 3
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponenetEnergy = gameState.opponenetEnergy + 3
+        gameState.opponentEnergy = gameState.opponentEnergy + 3
     }
     else{
         console.log("ninja input invalid")
@@ -261,22 +260,22 @@ cardEffects.set("ninja", (playingPlayer) => {
 })
 cardEffects.set("thief", (playingPlayer) => {
     if(playingPlayer === "player"){
-        if (gameState.opponenetEnergy >= 2){
+        if (gameState.opponentEnergy >= 2){
             gameState.playerEnergy = gameState.playerEnergy + 2
-            gameState.opponenetEnergy = gameState.opponenetEnergy - 2    
+            gameState.opponentEnergy = gameState.opponentEnergy - 2
         }
-        else if(gameState.opponenetEnergy === 1){
+        else if(gameState.opponentEnergy === 1){
             gameState.playerEnergy = gameState.playerEnergy + 1
-            gameState.opponenetEnergy = 0
+            gameState.opponentEnergy = 0
         }
     }
     else if(playingPlayer === "opponent"){
         if (gameState.playerEnergy >= 2){
-            gameState.opponenetEnergy = gameState.opponenetEnergy + 2
+            gameState.opponentEnergy = gameState.opponentEnergy + 2
             gameState.playerEnergy = gameState.playerEnergy - 2    
         }
         else if(gameState.playerEnergy === 1){
-            gameState.opponenetEnergy = gameState.opponenetEnergy + 1
+            gameState.opponentEnergy = gameState.opponentEnergy + 1
             gameState.playerEnergy = 0
         }
     }
@@ -287,7 +286,7 @@ cardEffects.set("thief", (playingPlayer) => {
 
 cardEffects.set("doomsayer", (playingPlayer) => {
     gameState.playerEnergy = 0
-    gameState.opponenetEnergy = 0
+    gameState.opponentEnergy = 0
 }
 )
 
@@ -315,7 +314,7 @@ cardEffects.set("bigEnergy", (playingPlayer) => {
     
 })
 
-cardEffects.set("instantPower", (playeringPlayer) => {
+cardEffects.set("instantPower", (playingPlayer) => {
 
 })
 
@@ -343,15 +342,15 @@ cardEffects.set("chef", (playingPlayer) => {
     }
 })
 
-cardEffects.set("energyGenroator", (playingPlayer) => {
+cardEffects.set("energyGenerator", (playingPlayer) => {
     if(playingPlayer === "player"){
         gameState.playerEnergy = gameState.playerEnergy + 7
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponenetEnergy = gameState.opponenetEnergy + 7
+        gameState.opponentEnergy = gameState.opponentEnergy + 7
     }
     else{
-        console.log("error playing energyGenroator")
+        console.log("error playing energyGenerator")
     }
     
 })
@@ -364,8 +363,8 @@ cardEffects.set("energyUser", (playingPlayer) => {
         }
     }
     else if(playingPlayer === "opponent"){
-        if(gameState.opponenetEnergy >= 4){
-            gameState.opponenetEnergy = gameState.opponenetEnergy - 4
+        if(gameState.opponentEnergy >= 4){
+            gameState.opponentEnergy = gameState.opponentEnergy - 4
             gameState.opponentReputation = gameState.opponentReputation + 14
         }
 }
@@ -374,13 +373,13 @@ cardEffects.set("energyUser", (playingPlayer) => {
     }
 })
 
-cardEffects.set("unpopularViglantie", (playingPlayer) => {
+cardEffects.set("unpopularVigilante", (playingPlayer) => {
     if(playingPlayer === "player"){
         gameState.playerEnergy = gameState.playerEnergy - gameState.playerReputation
         gameState.playerReputation = 0
     }
     else if(playingPlayer === "opponent"){
-        gameState.opponenetEnergy = gameState.opponenetEnergy - gameState.opponentReputation
+        gameState.opponentEnergy = gameState.opponentEnergy - gameState.opponentReputation
         gameState.opponentReputation = 0
     }
     else{

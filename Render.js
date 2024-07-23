@@ -2,15 +2,15 @@
 
 
 /**
- * Draws the card in the element who's ID is given
+ * Draws the card in the element whose ID is given
  * @param card a card object to display
  * @param locationID the element the card is to be drawn on 
  */
 function renderCard(card, locationID){
     const location = document.getElementById(locationID)
-    const cardDisplyDiv = document.createElement("div");
+    const cardDisplayDiv = document.createElement("div");
     if (card != null){
-        cardDisplyDiv.classList.add("cardDisplay")
+        cardDisplayDiv.classList.add("cardDisplay")
         const cardTitleDiv = document.createElement("div");
         cardTitleDiv.classList.add("cardTitle")
         const cardNameDiv = document.createElement("div");
@@ -23,9 +23,9 @@ function renderCard(card, locationID){
         cardEffectDiv.classList.add("cardEffect")
         const cardEffectTextDiv = document.createElement("div");
         cardEffectTextDiv.classList.add("cardEffectText")
-        cardDisplyDiv.appendChild(cardTitleDiv)
-        cardDisplyDiv.appendChild(cardImageDiv)
-        cardDisplyDiv.appendChild(cardEffectDiv)
+        cardDisplayDiv.appendChild(cardTitleDiv)
+        cardDisplayDiv.appendChild(cardImageDiv)
+        cardDisplayDiv.appendChild(cardEffectDiv)
         cardTitleDiv.appendChild(cardNameDiv)
         cardTitleDiv.appendChild(cardCostDiv)
         cardEffectDiv.appendChild(cardEffectTextDiv)
@@ -45,7 +45,7 @@ function renderCard(card, locationID){
     }
 
 
-    location.appendChild(cardDisplyDiv);
+    location.appendChild(cardDisplayDiv);
 }
 
 
@@ -98,14 +98,14 @@ function renderGameState(){
     }
 
 
-    //Handles purches area
-    let currPurchesCard
-    let currPurchesCardLocation
+    //Handles purchase area
+    let currPurchaseCard
+    let currPurchaseCardLocation
     for(let i=0; i<5; i++){
-        currPurchesCard = getPurchesAreaNthSlot(i)
-        renderCard(currPurchesCard, `purchesAreaSlot${i}`)
+        currPurchaseCard = getPurchaseAreaNthSlot(i)
+        renderCard(currPurchaseCard, `purchaseAreaSlot${i}`)
     }
-    //updates time till card purches area resets
+    //updates time till card purchases area resets
     const timeTillRefresh = document.getElementById("refreshCountdown")
     timeTillRefresh.innerText = "refresh in " + String(gameState.resetIn)
 
@@ -113,7 +113,7 @@ function renderGameState(){
     //Update playerReputationTracker and enerty
     const playerReputationTracker = document.getElementById("playerReputationTracker")
     playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy)
-    document.getElementById("opponentReputationTracker").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponenetEnergy)
+    document.getElementById("opponentReputationTracker").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy)
 
 
 
@@ -121,7 +121,7 @@ function renderGameState(){
 
 
 function animateCardPlayed(card, cardSlotNum){
-    console.log("called animateCardPlay")//temporary log statment
+    console.log("called animateCardPlay")//temporary log statement
     renderCard(card, `OpponentHandSlotCard${cardSlotNum}`)
     const animatingCard = document.getElementById(`OpponentHandSlotCard${cardSlotNum}`).firstChild
     animatingCard.classList.add(`movingCard${cardSlotNum}`)
@@ -130,14 +130,14 @@ function animateCardPlayed(card, cardSlotNum){
 /**
  * 
  * @param {the card purchased} card 
- * @param {the number (0 to 4) of the card slot of the purchesed card} cardSlotNumber 
+ * @param {the number (0 to 4) of the card slot of the purchased card} cardSlotNumber
  * @param {an async function to run when the animation is done} animationConclusionFunction 
  */
 async function animateCardBuy(card, cardSlotNumber, animationConclusionFunction){
     console.log("called anomate card buy")//temp
     console.log(cardSlotNumber)
-    renderCard(card, `purchesAreaSlot${cardSlotNumber}`)
-    const animatingCard = document.getElementById(`purchesAreaSlot${cardSlotNumber}`).firstChild
+    renderCard(card, `purchaseAreaSlot${cardSlotNumber}`)
+    const animatingCard = document.getElementById(`purchaseAreaSlot${cardSlotNumber}`).firstChild
     //animatingCard.classList.add("opponentBuyCard")
     const animation = animatingCard.animate(
         {transform: 'translateY(-200px)'},
