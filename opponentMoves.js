@@ -10,11 +10,11 @@
  * returns null if opponent has not moved yet
  */
 function opponentPlayCard(){
-    const opponentMovesDesider = gameState.opponentMovesDesider
-    if (opponentMovesDesider === "random"){
+    const opponentMovesDecider = gameState.opponentMovesDecider
+    if (opponentMovesDecider === "random"){
         return randomCardPlayer()
     }
-    else if(opponentMovesDesider === "randomIfPossable"){
+    else if(opponentMovesDecider === "randomIfPossible"){
         return randomCardPlayer()
     }
     else{
@@ -24,7 +24,7 @@ function opponentPlayCard(){
 
 /**
  * 
- * @returns for more information look at documantation for opponentPlayCard
+ * @returns for more information look at documentation for opponentPlayCard
  */
 function randomCardPlayer(){
     const legalActions = [{type: "refresh"}]
@@ -44,12 +44,12 @@ function randomCardPlayer(){
  * @returns the card the opponent will buy
  */
 function opponentBuyCard(){
-    const opponentMovesDesider = gameState.opponentMovesDesider
-    if (opponentMovesDesider === "random"){
+    const opponentMovesDecider = gameState.opponentMovesDecider
+    if (opponentMovesDecider === "random"){
         return randomCardBuyer()
     }
-    else if (opponentMovesDesider === "randomIfPossable"){
-        return randomCardBuyerIfPossable()
+    else if (opponentMovesDecider === "randomIfPossible"){
+        return randomCardBuyerIfPossible()
     }
     else{
         console.log("opponent move decider not on list for buy")
@@ -58,8 +58,8 @@ function opponentBuyCard(){
 
 function randomCardBuyer(){
     const legalActions = [{type: "skip"}]
-    for (let i=0; i< Object.keys(gameState.purchesArea).length; i++){
-        if(getPurchesAreaNthSlot(i) != null && getPurchesAreaNthSlot(i).cost <= gameState.opponentReputation){
+    for (let i=0; i< Object.keys(gameState.purchaseArea).length; i++){
+        if(getPurchaseAreaNthSlot(i) != null && getPurchaseAreaNthSlot(i).cost <= gameState.opponentReputation){
             legalActions.push({type: "purchase", slotNumber: i})
         }
     }
@@ -70,12 +70,12 @@ function randomCardBuyer(){
  * 
  * buys a random card if any cards can be bought
  */
-function randomCardBuyerIfPossable(){
+function randomCardBuyerIfPossible(){
     console.log("entered")
     const legalActions = []
 
-    for (let i=0; i< Object.keys(gameState.purchesArea).length; i++){
-        if(getPurchesAreaNthSlot(i) != null && getPurchesAreaNthSlot(i).cost <= gameState.opponentReputation){
+    for (let i=0; i< Object.keys(gameState.purchaseArea).length; i++){
+        if(getPurchaseAreaNthSlot(i) != null && getPurchaseAreaNthSlot(i).cost <= gameState.opponentReputation){
             legalActions.push({type: "purchase", slotNumber: i})
         }
     }
