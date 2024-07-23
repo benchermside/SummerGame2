@@ -92,13 +92,6 @@ function enterGame(){
 
 
 
-    //This creates the player reputation tracker
-    const playerReputationTracker = document.createElement("div")
-    playerReputationTracker.classList.add("reputationTracker")
-    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
-    playerReputationTracker.id = "playerReputationTracker"
-    handWraper.appendChild(playerReputationTracker)
-
 
     document.body.insertBefore(cardPlayArea, handWraper)
 
@@ -106,7 +99,31 @@ function enterGame(){
     //This creates the opponents hand
     opponentCardList = []
     opponentHandWrapper = document.createElement("div")
-    opponentHandWrapper.classList.add("playerHand")
+    opponentHandWrapper.classList.add("opponentHand")
+
+    //This creates the player reputation tracker
+    const playerReputationTracker = document.createElement("div")
+    playerReputationTracker.classList.add("reputationTracker")
+    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
+    playerReputationTracker.id = "playerReputationTracker"
+    handWraper.appendChild(playerReputationTracker)
+    
+    //creates the lastPlay cardslot
+    const lastPlayedDisplay = document.createElement("div")
+    lastPlayedDisplay.id = "lastPlayedDisplayWraper"
+    const lastPlayDisplayText = document.createElement("div")
+    lastPlayDisplayText.classList.add("textExplainer")
+    lastPlayDisplayText.innerText = "last Played Card"
+    const lastPlayCard = document.createElement("div")
+    lastPlayCard.classList.add("cardSlot")
+    lastPlayCard.id = "lastPlayedCard"
+    lastPlayedDisplay.appendChild(lastPlayDisplayText)
+    lastPlayedDisplay.appendChild(lastPlayCard)
+    
+
+    opponentHandWrapper.appendChild(lastPlayedDisplay)
+
+
     for (let i=0; i<5; i++){
         opponentCardList.push(document.createElement("div"))
         currCardSlot = opponentCardList[i]
@@ -117,13 +134,34 @@ function enterGame(){
     }
     const firstElement = document.body.firstChild
     document.body.insertBefore(opponentHandWrapper, firstElement)
+
+
+    //This creates the last bought card displays
+    const lastBoughtDisplay = document.createElement("div")
+    lastBoughtDisplay.id = "lastBoughtDisplayWraper"
+    const lastBoughtDisplayText = document.createElement("div")
+    lastBoughtDisplayText.classList.add("textExplainer")
+    lastBoughtDisplayText.innerText = "last bought Card"
+    const lastBoughtCard = document.createElement("div")
+    lastBoughtCard.classList.add("cardSlot")
+    lastBoughtCard.id = "lastBoughtCard"
+    lastBoughtDisplay.appendChild(lastBoughtDisplayText)
+    lastBoughtDisplay.appendChild(lastBoughtCard)
+    opponentHandWrapper.appendChild(lastBoughtDisplay)
+
+    // const lastPurchasedDisplay = document.createElement("div")
+    // lastPurchasedDisplay.classList.add("cardSlot")
+    // lastPurchasedDisplay.id = "lastPurchasedDisplay"
+    // opponetHandWrapper.appendChild(lastPurchasedDisplay)
+
+    document.body.insertBefore(opponentHandWrapper, firstElement)
     //This creates the opponents reputation tracker
     const opponentReputationTracker = document.createElement("div")
     opponentReputationTracker.classList.add("reputationTracker")
     opponentReputationTracker.innerText = "reputation " + String(gameState.playerReputation)
     opponentReputationTracker.id = "opponentReputationTracker"
     opponentHandWrapper.appendChild(opponentReputationTracker)
-    
+
     //and this will make the opponents startDeck and draw the startHand
     
 
