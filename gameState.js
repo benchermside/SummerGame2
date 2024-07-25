@@ -14,6 +14,10 @@ const gameState = {
     //goingFirts indicaes who is going first this round. Either Player or opponent
     //resetIn indicates the number of turns till the row of cards for purchase is refreshed
     //resetFrequency indicates the frequency of purchase area card resets
+    //lastCardOpponentPlayed stors the last card the was played by opponent, should be a card object or null
+    //lastCardOpponentBouth stores the last card bought by the opponent. should be a card object or null
+    //playerStatuses is all the status effects applied to the player
+    //opponentStatuses is all the status effects applied to the opponent
 
     playerhand: {
         slot1: null,
@@ -52,6 +56,16 @@ const gameState = {
     opponentMovesDecider: null,
     resetFrequency: 7,
     resetIn: 7,
+    lastCardOpponentPlayed: null,
+    lastCardOpponentBought: null,
+    playerStatuses: {
+        passiveReputation: 0,//the amount of reputation you get at the end of each of your turns
+        passiveEnergy: 0,//the amount of energy you get at the end of each of your turns
+    },
+    opponentStatuses: {
+        passiveReputation: 0,//the amount of reputation you get at the end of each of your turns
+        passiveEnergy: 0,//the amount of energy you get at the end of each of your turns
+    },
 
 }
 

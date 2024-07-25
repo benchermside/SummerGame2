@@ -93,6 +93,9 @@ function renderGameState(){
         opponentsCardSlot.appendChild(newCardBack);
     
     }
+    //opponent last card bought and played
+    renderCard(gameState.lastCardOpponentPlayed, "lastPlayedCard")
+    renderCard(gameState.lastCardOpponentBought, "lastBoughtCard")
 
 
     //Handles purchase area

@@ -174,11 +174,19 @@ const unpopularVigilante = {
     effectID: "unpopularVigilante",
 }
 
+const batteryFactory = {
+    name: "batteryFactory",
+    image: "dragon.jpg",
+    effectText: "at the end of every future turn you take, gain 1 energy",
+    cost: 0,//will the upped in future, low for testing
+    effectID: "batteryFactory",
+}
 
 
 
 
-const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante];
+
+const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante, batteryFactory];
 
 
 
@@ -386,5 +394,7 @@ cardEffects.set("unpopularVigilante", (playingPlayer) => {
     }
 })
 
-
+cardEffects.set("batteryFactory", (playingPlayer) => {
+    gameState[`${playingPlayer}Statuses`].passiveEnergy = gameState[`${playingPlayer}Statuses`].passiveEnergy + 1
+})
 

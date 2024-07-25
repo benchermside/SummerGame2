@@ -498,9 +498,8 @@ function DrawCard(slotNumber){
  * Draws a new card for the opponent
  */
 function opponentDrawCard(slotNumber){
-    console.log("called opponentDrawCard");
     if(getOpponentsNthHandSlot(slotNumber) != null){
-        gameState.playerDiscard.push(getOpponentsNthHandSlot(slotNumber));
+        gameState.opponentDiscard.push(getOpponentsNthHandSlot(slotNumber));
         updateOpponentsNthHandSlot(slotNumber, null);
     }
     if(gameState.opponentDeck.length === 0){
@@ -541,6 +540,7 @@ async function startedOpponentsTurn() {
         const cardPlayed = getOpponentsNthHandSlot(opponentMove.slotNumber);
         playCard(cardPlayed, "opponent");
         gameState.opponentDiscard.push(cardPlayed);
+        gameState.lastCardOpponentPlayed = cardPlayed;
         opponentDrawCard(opponentMove.slotNumber);
         renderCard(cardPlayed, `OpponentHandSlotCard${opponentMove.slotNumber}`);
         const playedCardElem = document.getElementById(`OpponentHandSlotCard${opponentMove.slotNumber}`).firstChild;
@@ -568,6 +568,7 @@ async function opponentsBuyPhase(){
         if(boughtCard != null && gameState.opponentReputation >= boughtCard.cost){
             gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost;
             gameState.opponentDiscard.push(boughtCard);
+            gameState.lastCardOpponentBought = boughtCard;
             updatePurchaseAreaNthSlot(opponentBuy.slotNumber, null);
             const boughtCardDomElem = document.getElementById(`purchaseAreaSlot${opponentBuy.slotNumber}`).firstChild;
             await animateMovingCard(boughtCardDomElem, "lastBoughtCard", 5000, async () => {
@@ -610,6 +611,8 @@ async function opponentsBuyPhase(){
  * should be called before renderGame
  */
 function endTurn(endingPlayer){
+    gameState[`${endingPlayer}Energy`] = gameState[`${endingPlayer}Energy`] + gameState[`${endingPlayer}Statuses`].passiveEnergy
+    gameState[`${endingPlayer}Reputation`] = gameState[`${endingPlayer}Reputation`] + gameState[`${endingPlayer}Statuses`].passiveReputation
     gameState.resetIn = gameState.resetIn - 1;
     if (gameState.resetIn === 0){
         for(let i=0; i<5; i++){
