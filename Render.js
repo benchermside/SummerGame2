@@ -124,7 +124,15 @@ function renderGameState(){
 
     //this list contain the information needed by one impliment of a for loop to put an arbitraty 
     //status with just an integer value and display it on the screen
-    const numberedStatusInformation = [
+    //Information used in render game to loop through the statuses and apply each visualy
+    // name is the name of the status
+    // value refers to the actual value of the status currently
+    // color is the color of the status display, ment to be unique to each status
+    // discription is the discription of the status that displays when clicked
+    //defult is the defult value this status is at, most often 0. if the status is at defult, it will not display as it is "not doing anything" 
+    //example of defult, the defult passive reputation is 0 sence having passive reputation of 0 does nothing.
+
+const numberedStatusInformation = [
         {
             name: "passiveReputation",
             value: gameState.playerStatuses.passiveReputation,
@@ -137,6 +145,20 @@ function renderGameState(){
             value: gameState.playerStatuses.passiveEnergy,
             color: "#4f771f",
             discription: `This is the amout of energy you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveEnergy}`,
+            default: 0,
+        },
+        {
+            name: "energyLossThisTurn",
+            value: gameState.playerStatuses.energyLossThisTurn,
+            color: "#749b09",
+            discription: `This is the amount of energy you will lose after you take your turn, currently ${gameState.playerStatuses.energyLossThisTurn}`,
+            default: 0,
+        },
+        {
+            name: "energyLossNextTurn",
+            value: gameState.playerStatuses.energyLossNextTurn,
+            color: "#39490d",
+            discription: `The amount of energy you will once you finish 2 turns,  currently, you will lose ${gameState.playerStatuses.energyLossNextTurn} energy`,
             default: 0,
         },
     ];

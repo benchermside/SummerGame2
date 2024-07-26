@@ -588,8 +588,20 @@ async function opponentsBuyPhase(){
  * should be called before renderGame
  */
 function endTurn(endingPlayer){
-    gameState[`${endingPlayer}Energy`] = gameState[`${endingPlayer}Energy`] + gameState[`${endingPlayer}Statuses`].passiveEnergy
-    gameState[`${endingPlayer}Reputation`] = gameState[`${endingPlayer}Reputation`] + gameState[`${endingPlayer}Statuses`].passiveReputation
+    //applies some statuses
+    const losingEnergy = gameState[`${endingPlayer}Statuses`].energyLossThisTurn;
+    if (losingEnergy <= gameState[`${endingPlayer}Energy`]){
+        gameState[`${endingPlayer}Energy`] = gameState[`${endingPlayer}Energy`] - losingEnergy;
+    }
+    else{
+        gameState[`${endingPlayer}Energy`] = 0;
+    }
+    gameState[`${endingPlayer}Statuses`].energyLossThisTurn = gameState[`${endingPlayer}Statuses`].energyLossNextTurn;
+    gameState[`${endingPlayer}Statuses`].energyLossNextTurn = 0;    
+    gameState[`${endingPlayer}Energy`] = gameState[`${endingPlayer}Energy`] + gameState[`${endingPlayer}Statuses`].passiveEnergy;
+    gameState[`${endingPlayer}Reputation`] = gameState[`${endingPlayer}Reputation`] + gameState[`${endingPlayer}Statuses`].passiveReputation;
+
+
     gameState.resetIn = gameState.resetIn - 1;
     if (gameState.resetIn === 0){
         for(let i=0; i<5; i++){
