@@ -59,8 +59,8 @@ const gameState = {
     lastCardOpponentPlayed: null,
     lastCardOpponentBought: null,
     playerStatuses: {
-        passiveReputation: 0,//the amount of reputation you get at the end of each of your turns
-        passiveEnergy: 0,//the amount of energy you get at the end of each of your turns
+        passiveReputation: 1,//the amount of reputation you get at the end of each of your turns
+        passiveEnergy: 1,//the amount of energy you get at the end of each of your turns
     },
     opponentStatuses: {
         passiveReputation: 0,//the amount of reputation you get at the end of each of your turns

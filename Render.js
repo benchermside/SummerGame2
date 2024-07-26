@@ -115,6 +115,63 @@ function renderGameState(){
     playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy);
     document.getElementById("opponentReputationTracker").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy);
 
+    //updates the list and quanitity of status makers
+    const playerStatusesDisplay = document.getElementById("playerStatusesDisplay");
+    for(const prevStatus of playerStatusesDisplay.children){
+        prevStatus.remove();
+    }
+
+
+    //this list contain the information needed by one impliment of a for loop to put an arbitraty 
+    //status with just an integer value and display it on the screen
+    const numberedStatusInformation = [
+        {
+            name: "passiveReputation",
+            value: gameState.playerStatuses.passiveReputation,
+            color: "#ce0e08",
+            discription: `This is the amout of reputation you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveReputation}`,
+            default: 0,
+        },
+        {
+            name: "passiveEnergy",
+            value: gameState.playerStatuses.passiveEnergy,
+            color: "#4f771f",
+            discription: `This is the amout of energy you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveEnergy}`,
+            default: 0,
+        },
+    ];
+    for(let i=0; i<numberedStatusInformation.length; i++){
+        if(numberedStatusInformation[i].value !== numberedStatusInformation[i].default){
+            const currStatusDisplay = document.createElement("div");
+            currStatusDisplay.classList.add("statusShower");
+            currStatusDisplay.style.backgroundColor = numberedStatusInformation[i].color;
+            currStatusDisplay.innerText = String(numberedStatusInformation[i].value);
+            const displayFunction = () => {
+                const statusInformation = document.createElement("span");
+                statusInformation.classList.add("statusInformation");
+                statusInformation.innerText = numberedStatusInformation[i].discription;
+                const boundingRect = currStatusDisplay.getBoundingClientRect();
+                const VewRec = document.body.getBoundingClientRect();
+                statusInformation.style.left = String(boundingRect.right - VewRec.left) + "px";
+                statusInformation.style.top = String(boundingRect.y - VewRec.top) + "px";
+                currStatusDisplay.appendChild(statusInformation);
+            };
+            const clickFunction = () => {
+                const unclickFunction = () => {
+                    currStatusDisplay.lastChild.remove();
+                    currStatusDisplay.removeEventListener("click", unclickFunction)
+                    currStatusDisplay.addEventListener("click", clickFunction)
+                };
+                displayFunction();
+                currStatusDisplay.removeEventListener("click", clickFunction);
+                currStatusDisplay.addEventListener("click", unclickFunction);
+            }
+            currStatusDisplay.addEventListener("click", clickFunction)
+            //currStatusDisplay.addEventListener("mouseover", displayFunction)
+            playerStatusesDisplay.appendChild(currStatusDisplay)
+        }
+    }
+
 
 
 }

@@ -37,12 +37,18 @@ function enterGame(){
     }
     shufflePlayerDeck();
 
+    //get the handWraper
+    const handWraper = document.getElementById("handWraper");
 
+    //This create the playerStatusesDisplay
+    const playerStatusesDisplay = document.createElement("div");
+    playerStatusesDisplay.classList.add("playerStatusesDisplay");
+    playerStatusesDisplay.id = "playerStatusesDisplay";
+    handWraper.appendChild(playerStatusesDisplay);
 
 
     //this creates the players hand
     cardSlotList = [];
-    const handWraper = document.getElementById("handWraper");
     let currCardSlot = null;
     for (let i=0; i<5; i++){
         const cardIndex = i;
@@ -50,35 +56,6 @@ function enterGame(){
         currCardSlot = cardSlotList[i];
         currCardSlot.classList.add("handSlot");
         currCardSlot.id = "handSlotCard" + String(i);
-
-
-        // currCardSlot.addEventListener("dragover", function(e){
-        //     e.preventDefault()
-        // });
-        // cardSlotList[i].addEventListener("drop", (event) => {
-        //     cardSlotList[i].style.border = "none"
-        //     renderCard(card1, cardSlotList[i].getAttribute("id"))
-        //     cardSlotList[i].lastChild.setAttribute("draggable", "true")
-        //     cardSlotList[i].addEventListener("dragstart", (event) => {
-        //         try{
-        //             document.getElementById("cardPlayArea").style.borderStyle = "dashed"
-        //         }
-        //         catch(TypeError){}    
-                
-        //         draggingCard = getNthHandSlot(cardIndex)
-
-        //     })
-        //     cardSlotList[i].addEventListener("dragend", (event) => {
-        //         try{
-        //             document.getElementById("cardPlayArea").style.borderStyle = "none"
-        //         }
-        //         catch(TypeError){}   
-
-        //     })
-        // })
-
-
-
         handWraper.appendChild(currCardSlot);
     }
     
