@@ -195,6 +195,12 @@ h1{
     overflow: scroll;
 }
 
+.toast{
+    position: absolute;
+    background-color: goldenrod;
+    overflow: scroll;
+}
+
 
 /* .movingCard0{
     animation: opponentPlayCard0 5s forwards;

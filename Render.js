@@ -267,4 +267,45 @@ async function animateMovingCard(cardElem, containerID, travelTime, afterAction)
 }
 
 
+/**
+ * displays a popup box that goes away when clicked on containing some text. box will be near to some critical element
+ * @param {some nearbyElement to the tost to display near} nearbyElement 
+ * @param {a string repersenting the text for the tost to display} text 
+ */
+function displayToast(nearbyElement, text){
+    const elemBoundingRect = nearbyElement.getBoundingClientRect();
+    const displayBouningRect = document.body.getBoundingClientRect();
+    const focalPoint = [763, 320];
+    const elemCenter = [(elemBoundingRect.right - elemBoundingRect.left)/2 + elemBoundingRect.left, (elemBoundingRect.bottom - elemBoundingRect.top)/2 + elemBoundingRect.top];
+    const elemCenterAbslute = [elemCenter[0] - displayBouningRect.left, elemCenter[1] - displayBouningRect.top];
+    const leftRightDistance = elemCenterAbslute[0] - focalPoint[0];
+    const upDownDistance = elemCenterAbslute[1] - focalPoint[1];
+    let displayDirection = null;
+    if(Math.abs(leftRightDistance) > Math.abs(upDownDistance)){
+        if(leftRightDistance > 0){
+            displayDirection = "left";
+        }
+        else{
+            displayDirection = "right";
+        }
+    }
+    else{
+        if(upDownDistance > 0){
+            displayDirection = "up";
+        }
+        else{
+            displayDirection = "down";
+        }
+    }
+    const toastElem = document.createElement("div");
+    toastElem.classList.add("toast");
+    toastElem.innerText = text;
+    const toastLenght = 160;//Temporary
+    const toastHight = 80;//Temp
+    toastElem.style.width = String(toastLenght) + "px";
+    toastElem.style.height = String(toastHight) + "px";
+    toastElem.style.top = elemBoundingRect.top - displayBouningRect.top + (displayDirection === "down")*(elemBoundingRect.bottom - elemBoundingRect.top) - (displayDirection === "up")*(toastHight);
+    toastElem.style.left = elemBoundingRect.left - displayBouningRect.left + (displayDirection === "right")*(elemBoundingRect.right - elemBoundingRect.left) - (displayDirection === "left")*(toastLenght);
+    document.getElementById("toastContainer").appendChild(toastElem);
+}
 

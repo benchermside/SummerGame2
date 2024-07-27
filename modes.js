@@ -251,6 +251,9 @@ function enterGame(){
     //creates the ondrop for playing a card
     enterMode(playingCard);
 
+    //for testing
+    displayToast(document.getElementById("handSlotCard0"), "this is a toast that is displayed");
+    displayToast(document.getElementById("handSlotCard4"), "this is also toast, pretty cool");
 
 
 
