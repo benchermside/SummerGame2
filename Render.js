@@ -195,27 +195,32 @@ const numberedStatusInformation = [
             currStatusDisplay.classList.add("statusShower");
             currStatusDisplay.style.backgroundColor = numberedStatusInformation[i].color;
             currStatusDisplay.innerText = String(numberedStatusInformation[i].value);
-            const displayFunction = () => {
-                const statusInformation = document.createElement("span");
-                statusInformation.classList.add("statusInformation");
-                statusInformation.innerText = numberedStatusInformation[i].discription;
-                const boundingRect = currStatusDisplay.getBoundingClientRect();
-                const VewRec = document.body.getBoundingClientRect();
-                statusInformation.style.left = String(boundingRect.right - VewRec.left) + "px";
-                statusInformation.style.top = String(boundingRect.y - VewRec.top) + "px";
-                currStatusDisplay.appendChild(statusInformation);
-            };
-            const clickFunction = () => {
-                const unclickFunction = () => {
-                    currStatusDisplay.lastChild.remove();
-                    currStatusDisplay.removeEventListener("click", unclickFunction)
-                    currStatusDisplay.addEventListener("click", clickFunction)
-                };
-                displayFunction();
-                currStatusDisplay.removeEventListener("click", clickFunction);
-                currStatusDisplay.addEventListener("click", unclickFunction);
-            }
-            currStatusDisplay.addEventListener("click", clickFunction)
+            // const displayFunction = () => {
+            //     const statusInformation = document.createElement("span");
+            //     statusInformation.classList.add("statusInformation");
+            //     statusInformation.innerText = numberedStatusInformation[i].discription;
+            //     const boundingRect = currStatusDisplay.getBoundingClientRect();
+            //     const VewRec = document.body.getBoundingClientRect();
+            //     statusInformation.style.left = String(boundingRect.right - VewRec.left) + "px";
+            //     statusInformation.style.top = String(boundingRect.y - VewRec.top) + "px";
+            //     currStatusDisplay.appendChild(statusInformation);
+            // };
+            // const clickFunction = () => {
+            //     console.log("click function called");
+            //     const unclickFunction = () => {
+            //         currStatusDisplay.lastChild.remove();
+            //         currStatusDisplay.removeEventListener("click", unclickFunction)
+            //         currStatusDisplay.addEventListener("click", clickFunction)
+            //     };
+            //     displayFunction();
+            //     currStatusDisplay.removeEventListener("click", clickFunction);
+            //     currStatusDisplay.addEventListener("click", unclickFunction);
+            // }
+            currStatusDisplay.addEventListener("click", () => {
+                displayToast(currStatusDisplay, numberedStatusInformation[i].discription)
+            });
+            //currStatusDisplay.addEventListener("click", clickFunction);
+
             //currStatusDisplay.addEventListener("mouseover", displayFunction)
             playerStatusesDisplay.appendChild(currStatusDisplay)
         }
@@ -333,7 +338,7 @@ function displayToast(nearbyElement, text){
     const backroundDimmer = document.createElement("div");
     backroundDimmer.classList.add("backroundDim");
     backroundDimmer.style.width = String(displayBouningRect.right - displayBouningRect.left)  + "px";
-    backroundDimmer.style.height = String(displayBouningRect.bottom - displayBouningRect.top) + "px";
+    backroundDimmer.style.height = String(displayBouningRect.bottom - displayBouningRect.top + 30) + "px";
     backroundDimmer.style.top = "0px";
     backroundDimmer.style.left = "0px";
     const deleateFunct = () => {
