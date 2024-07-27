@@ -169,9 +169,6 @@ function enterGame(){
     enterMode(playingCard);
 
     //for testing
-    displayToast(document.getElementById("playerHandSlotCard0"), "this is a toast that is displayed");
-    displayToast(document.getElementById("playerHandSlotCard4"), "this is also toast, pretty cool");
-
 }
 
 /**
@@ -344,6 +341,9 @@ async function tryBuyCard(cardNumber){
         //turnOnCardPlay()
         //enterMode(playingCard)
 
+    }
+    else if(gameState.playerReputation < boughtCard.cost){
+        displayToast(document.getElementById(`purchaseAreaSlot${cardNumber}`), `${getPurchaseAreaNthSlot(cardNumber).name} costs ${getPurchaseAreaNthSlot(cardNumber).cost} reputation but you only have ${gameState.playerReputation} reputation`)
     }
 }
 
