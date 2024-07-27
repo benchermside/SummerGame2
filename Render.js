@@ -46,7 +46,46 @@ function renderCard(card, locationID){
     location.appendChild(cardDisplayDiv);
 }
 
+/**
+ * Draws the card (or null) in the element whose ID is given, but face down. So REALLY,
+ * all it does is to draw "blank" if card is null, and draw a card back if card is not
+ * null.
+ *
+ * @param card a card object to display the back of, OR null
+ * @param locationID the element the card is to be drawn on
+ */
+function renderFaceDownCard(card, locationID) {
+    const cardSlot = document.getElementById(locationID);
+    let imageSource = null;
+    if (card === null){
+        imageSource = "img/blank.jpg";
+    }
+    else{
+        imageSource = "img/cardBack.jpg";
+    }
+    for (const child of cardSlot.children){
+        child.remove();
+    }
+    const newCardBack = document.createElement("img");
+    newCardBack.setAttribute("src", imageSource);
+    newCardBack.setAttribute("draggable", "false");
+    newCardBack.classList.add("cardBack");
+    cardSlot.appendChild(newCardBack);
+}
 
+/**
+ * Draws a stack of cards (in face-down format) within the element whose ID is given.
+ * NOTE: For now, this just leaves it empty or shows a card back, depending on whether
+ * there are 0 items in the stack or > 0 items. BUT in the future it might also show some
+ * indicator of how many cards are in the stack.
+ *
+ * @param listOfCards a list of card objects to be displayed (is allowed to be an empty list)
+ * @param locationID the element the cards are to be drawn on
+ */
+function renderFaceDownStack(listOfCards, locationID) {
+    const firstCard = listOfCards.length === 0 ? null : listOfCards[0];
+    renderFaceDownCard(firstCard, locationID);
+}
 
 
 /**
@@ -72,31 +111,15 @@ function renderGameState(){
 
 
     //Handles Opponent Hand
-    let opponentsCardSlot = null;
-    let gameStateCardVal = null;
     for (let i=0; i<5; i++){
-        gameStateCardVal = getOpponentsNthHandSlot(i);
-        opponentsCardSlot = document.getElementById("OpponentHandSlotCard" + String(i));
-        let imageSource = null;
-        if (gameStateCardVal === null){
-            imageSource = "img/blank.jpg";
-        }
-        else{
-            imageSource = "img/cardBack.jpg";
-        }
-        for (const child of opponentsCardSlot.children){
-            child.remove();
-        }
-        const newCardBack = document.createElement("img");
-        newCardBack.setAttribute("src", imageSource);
-        newCardBack.setAttribute("draggable", "false");
-        newCardBack.classList.add("cardBack");
-        opponentsCardSlot.appendChild(newCardBack);
-    
+        const gameStateCardVal = getOpponentsNthHandSlot(i);
+        const opponentsCardSlotID = "OpponentHandSlotCard" + String(i);
+        renderFaceDownCard(gameStateCardVal, opponentsCardSlotID);
     }
     //opponent last card bought and played
-    renderCard(gameState.lastCardOpponentPlayed, "opponentLastPlayedCard")
-    renderCard(gameState.lastCardOpponentBought, "opponentLastBoughtCard")
+    renderCard(gameState.lastCardOpponentPlayed, "opponentLastPlayedCard");
+    renderCard(gameState.lastCardOpponentBought, "opponentLastBoughtCard");
+    renderFaceDownStack(gameState.opponentDeck, "opponentDrawPileCard");
 
 
     //Handles purchase area
