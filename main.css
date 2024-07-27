@@ -8,6 +8,12 @@ h1{
     text-align: center;
     font-size: 90px;
 }
+.cardBack{
+    border: 5px solid black;
+    border-radius: 18px;
+    width: 130px;
+    height: 200px;
+}
 .cardDisplay{
     display: flex;
     flex-direction: column; 
@@ -55,13 +61,12 @@ h1{
 .cardEffectText{
     overflow: auto;
     text-align: center;
-    
-
 }
+
 .handSlot, .cardSlot{
-    width: 130px;
-    height: 200px;
-    border-radius: 18px;
+    width: 140px; /* 130px wide card + 2 * 5px border */
+    height: 210px; /* 200px tall card + 2 * 5px border */
+    border-radius: 23px; /* 18px radius + 5px border */
     border: 4px dashed gray; 
     margin: 5px;
 }
