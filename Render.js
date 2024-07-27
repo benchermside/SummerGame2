@@ -163,14 +163,14 @@ const numberedStatusInformation = [
             name: "passiveReputation",
             value: gameState.playerStatuses.passiveReputation,
             color: "#ce0e08",
-            discription: `This is the amout of reputation you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveReputation}`,
+            discription: `This is the amount of reputation you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveReputation}`,
             default: 0,
         },
         {
             name: "passiveEnergy",
             value: gameState.playerStatuses.passiveEnergy,
             color: "#4f771f",
-            discription: `This is the amout of energy you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveEnergy}`,
+            discription: `This is the amount of energy you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveEnergy}`,
             default: 0,
         },
         {
@@ -184,11 +184,11 @@ const numberedStatusInformation = [
             name: "energyLossNextTurn",
             value: gameState.playerStatuses.energyLossNextTurn,
             color: "#39490d",
-            discription: `The amount of energy you will once you finish 2 turns,  currently, you will lose ${gameState.playerStatuses.energyLossNextTurn} energy`,
+            discription: `The amount of energy you will once you finish 2 turns, currently, you will lose ${gameState.playerStatuses.energyLossNextTurn} energy`,
             default: 0,
         },
     ];
-    //This loop add all the statuses to the display except ones where the status is defult value
+    //This loop add all the statuses to the display except ones where the status is default value
     for(let i=0; i<numberedStatusInformation.length; i++){
         if(numberedStatusInformation[i].value !== numberedStatusInformation[i].default){
             const currStatusDisplay = document.createElement("div");

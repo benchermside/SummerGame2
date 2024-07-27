@@ -119,7 +119,7 @@ h1{
 }
 
 
-.cardPlayArea{
+.betweenPlayersArea{
     height: 240px;
     align-self: stretch;
     display: flex;

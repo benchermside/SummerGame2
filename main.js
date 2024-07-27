@@ -72,7 +72,7 @@ function main(){
         cardClassList[classNumber].setAttribute("draggable", "true");
         cardClassList[classNumber].addEventListener("dragstart", (event) => {
             try{
-                document.getElementById("cardPlayArea").style.borderStyle = "dashed";
+                document.getElementById("betweenPlayersArea").style.borderStyle = "dashed";
             }
             catch(TypeError){};
             draggingCard.card = getNthHandSlot(classIndex);
@@ -81,7 +81,7 @@ function main(){
         });
         cardClassList[classNumber].addEventListener("dragend", (event) => {
             try{
-                document.getElementById("cardPlayArea").style.borderStyle = "none";
+                document.getElementById("betweenPlayersArea").style.borderStyle = "none";
             }
             catch{}
 

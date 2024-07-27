@@ -15,20 +15,6 @@ function enterGame(){
     sampleCard.style.display = "none";
 
 
-    const cardPlayArea = document.createElement("div");
-    cardPlayArea.id = "cardPlayArea";
-    cardPlayArea.classList.add("cardPlayArea");
-    cardPlayArea.addEventListener("dragover", function(e){
-        e.preventDefault();
-        cardPlayArea.style.borderStyle = "solid";
-    });
-    cardPlayArea.addEventListener("dragleave", function(e){
-        cardPlayArea.style.borderStyle = "dashed";
-    });
-
-
-
-
     //this creates the players deck
     for (let i=0; i<5; i++){
         gameState.playerDeck.push(structuredClone(recruiter));
@@ -38,28 +24,6 @@ function enterGame(){
     }
     shufflePlayerDeck();
 
-    //get the handWraper
-    const handWraper = document.getElementById("handWraper");
-
-    //This creates the playerStatusesDisplay
-    const playerStatusesDisplay = document.createElement("div");
-    playerStatusesDisplay.classList.add("playerStatusesDisplay");
-    playerStatusesDisplay.id = "playerStatusesDisplay";
-    handWraper.appendChild(playerStatusesDisplay);
-
-
-    //this creates the players hand
-    cardSlotList = [];
-    let currCardSlot = null;
-    for (let i=0; i<5; i++){
-        const cardIndex = i;
-        cardSlotList.push(document.createElement("div"));
-        currCardSlot = cardSlotList[i];
-        currCardSlot.classList.add("handSlot");
-        currCardSlot.id = "playerHandSlotCard" + String(i);
-        handWraper.appendChild(currCardSlot);
-    }
-    
 
 
     //Give the players hand it's starting cards
@@ -69,22 +33,6 @@ function enterGame(){
         updateNthHandSlot(slotNum, nextCard);
     }
 
-
-
-
-    document.body.insertBefore(cardPlayArea, handWraper);
-
-
-    //This creates the opponents hand
-    opponentCardList = [];
-
-    // FIXME: Moved elsewhere Later?
-    //This creates the player reputation tracker
-    const playerResourceDisplay = document.createElement("div");
-    playerResourceDisplay.classList.add("reputationTracker");
-    playerResourceDisplay.innerText = "reputation " + String(gameState.playerReputation);
-    playerResourceDisplay.id = "playerResourceDisplay";
-    handWraper.appendChild(playerResourceDisplay);
 
     //and this will make the opponents startDeck and draw the startHand
 
@@ -101,19 +49,6 @@ function enterGame(){
     //This will draw the opponents hand from there deck
     RefreshOpponentsHand();
 
-    
-    //Handles purchase area
-    const purchaseArea = document.createElement("div");
-    const purchaseAreaSlotList = [];
-    purchaseArea.classList.add("purchaseArea");
-    purchaseArea.id = "purchaseArea";
-    for (let i=0; i<5; i++){
-        purchaseAreaSlotList.push(document.createElement("div"));
-        purchaseAreaSlotList[i].classList.add("cardSlot");
-        purchaseAreaSlotList[i].id = `purchaseAreaSlot${i}`;
-        purchaseArea.appendChild(purchaseAreaSlotList[i]);
-    }
-    cardPlayArea.appendChild(purchaseArea);
 
    //creates the deck of cards for the purchase area
     let wildCardIndex = gameState.wildCards.length;
@@ -127,33 +62,11 @@ function enterGame(){
     }
 
 
-    //This creates the skipPhase button and refresh hand button
-    const buttons = document.createElement("div");
-    buttons.id = "buttonHolder";
-    buttons.classList.add("buttonHolder");
-    const skipPhaseButton = document.createElement("button");
-    skipPhaseButton.classList.add("SkipPhase");
-    skipPhaseButton.innerText = "Skip Phase";
-    skipPhaseButton.id = "skipPhaseButton";
-    const refreshButton = document.createElement("button");
-    refreshButton.classList.add("refreshButton");
-    refreshButton.innerText = "Refresh Hand";
-    refreshButton.id = "refreshButton";
-    buttons.appendChild(skipPhaseButton);
-    buttons.appendChild(refreshButton);
-    const cardPlayPlace = document.getElementById("cardPlayArea");
-    cardPlayPlace.appendChild(buttons);
-
-    //sets the time till purchase area is refreshed
-    gameState.resetIn = gameState.resetFrequency;
-    const timeTillRefresh = document.createElement("div");
-    timeTillRefresh.id = "refreshCountdown";
-    document.getElementById("buttonHolder").appendChild(timeTillRefresh);
-
-    // Create the player and opponent play area:
+    // Create the player and opponent play area and the stuff between them:
     const allPlayAreasElement = document.getElementById("allPlayAreas");
     allPlayAreasElement.appendChild(makePlayerArea("opponent"));
-
+    allPlayAreasElement.appendChild(makeBetweenPlayersArea());
+    allPlayAreasElement.appendChild(makePlayerArea("player"));
 
     //This selects how the opponent will decides on their moves
     gameState.opponentMovesDecider = "randomIfPossible"; //in the future, this may depend on the gameMode your playing and the AI level
@@ -280,8 +193,7 @@ function makeHandDisplay(whosePlayArea) {
     const hand = document.createElement("div");
     hand.classList.add("hand");
     for (let i=0; i<5; i++){
-        opponentCardList.push(document.createElement("div"));
-        const currCardSlot = opponentCardList[i];
+        const currCardSlot = document.createElement("div");
         currCardSlot.classList.add("handSlot");
         currCardSlot.id = `${whosePlayArea}HandSlotCard` + String(i);
         hand.appendChild(currCardSlot);
@@ -303,6 +215,71 @@ function makeStatusesDisplay(whosePlayArea) {
     return statusesDisplay;
 }
 
+
+/**
+ * Render the elements that show the area where you make purchases.
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makeBetweenPlayersArea() {
+    const betweenPlayersArea = document.createElement("div");
+    betweenPlayersArea.id = "betweenPlayersArea";
+    betweenPlayersArea.classList.add("betweenPlayersArea");
+    betweenPlayersArea.addEventListener("dragover", function(e){
+        e.preventDefault();
+        betweenPlayersArea.style.borderStyle = "solid";
+    });
+    betweenPlayersArea.addEventListener("dragleave", function(e){
+        betweenPlayersArea.style.borderStyle = "dashed";
+    });
+    betweenPlayersArea.appendChild(makePurchaseArea());
+    betweenPlayersArea.appendChild(makeButtonsArea());
+    return betweenPlayersArea;
+}
+
+
+/**
+ * Render the elements that show the area where the turn-taking buttons are.
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makeButtonsArea() {
+    const buttons = document.createElement("div");
+    buttons.id = "buttonHolder";
+    buttons.classList.add("buttonHolder");
+    const skipPhaseButton = document.createElement("button");
+    skipPhaseButton.classList.add("SkipPhase");
+    skipPhaseButton.innerText = "Skip Phase";
+    skipPhaseButton.id = "skipPhaseButton";
+    const refreshButton = document.createElement("button");
+    refreshButton.classList.add("refreshButton");
+    refreshButton.innerText = "Refresh Hand";
+    refreshButton.id = "refreshButton";
+    buttons.appendChild(skipPhaseButton);
+    buttons.appendChild(refreshButton);
+    //sets the time till purchase area is refreshed
+    gameState.resetIn = gameState.resetFrequency;
+    const timeTillRefresh = document.createElement("div");
+    timeTillRefresh.id = "refreshCountdown";
+    buttons.appendChild(timeTillRefresh);
+    return buttons;
+}
+
+/**
+ * Render the elements that show the area where you make purchases.
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makePurchaseArea() {
+    const purchaseArea = document.createElement("div");
+    const purchaseAreaSlotList = [];
+    purchaseArea.classList.add("purchaseArea");
+    purchaseArea.id = "purchaseArea";
+    for (let i=0; i<5; i++){
+        purchaseAreaSlotList.push(document.createElement("div"));
+        purchaseAreaSlotList[i].classList.add("cardSlot");
+        purchaseAreaSlotList[i].id = `purchaseAreaSlot${i}`;
+        purchaseArea.appendChild(purchaseAreaSlotList[i]);
+    }
+    return purchaseArea;
+}
 
 /**
  * sets the starting player and enters the corrosponding mode
@@ -415,7 +392,7 @@ function turnOnCardPlay(){
         currHandSlot.setAttribute("draggable", "true");
         currHandSlot.addEventListener("dragstart", (event) => {
             try{
-                document.getElementById("cardPlayArea").style.borderStyle = "dashed";
+                document.getElementById("betweenPlayersArea").style.borderStyle = "dashed";
             }
             catch(TypeError){}
             draggingCard.card = getNthHandSlot(i);
@@ -425,7 +402,7 @@ function turnOnCardPlay(){
             //console.log("draggend called")
 
             try{
-                document.getElementById("cardPlayArea").style.borderStyle = "none";
+                document.getElementById("betweenPlayersArea").style.borderStyle = "none";
             }
             catch{}
 
@@ -742,7 +719,7 @@ const playingCard = {
     transitions: {
         cardPlayed: {
             funct: playerPlaysCard,
-            elementID: "cardPlayArea",
+            elementID: "betweenPlayersArea",
             eventType: "drop",
         },
         skipPhaseButton: {
