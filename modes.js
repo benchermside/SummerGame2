@@ -321,6 +321,9 @@ async function tryBuyCard(cardNumber){
         //enterMode(playingCard)
 
     }
+    else if(gameState.playerReputation < boughtCard.cost){
+        displayToast(document.getElementById(`purchaseAreaSlot${cardNumber}`), `${getPurchaseAreaNthSlot(cardNumber).name} costs ${getPurchaseAreaNthSlot(cardNumber).cost} reputation but you only have ${gameState.playerReputation} reputation`)
+    }
 }
 
 /**
