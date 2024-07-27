@@ -85,54 +85,16 @@ function enterGame(){
     playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation);
     playerReputationTracker.id = "playerReputationTracker";
     handWraper.appendChild(playerReputationTracker);
-    
-    //creates the lastPlay cardslot
-    const lastPlayedDisplay = document.createElement("div");
-    lastPlayedDisplay.id = "lastPlayedDisplayWraper";
-    const lastPlayDisplayText = document.createElement("div");
-    lastPlayDisplayText.classList.add("textExplainer");
-    lastPlayDisplayText.innerText = "last Played Card";
-    const lastPlayCard = document.createElement("div");
-    lastPlayCard.classList.add("cardSlot");
-    lastPlayCard.id = "opponentLastPlayedCard";
-    lastPlayedDisplay.appendChild(lastPlayDisplayText);
-    lastPlayedDisplay.appendChild(lastPlayCard);
 
+    // Create the opponent side of the field ("opponentHandWrapper"):
+    opponentHandWrapper.appendChild(makeLastPlayedCardDisplay());
+    opponentHandWrapper.appendChild(makeLastBoughtCardDisplay());
+    opponentHandWrapper.appendChild(makeDrawPileDisplay());
+    opponentHandWrapper.appendChild(makeHandDisplay());
 
-    opponentHandWrapper.appendChild(lastPlayedDisplay);
-
-
-    for (let i=0; i<5; i++){
-        opponentCardList.push(document.createElement("div"));
-        currCardSlot = opponentCardList[i];
-        currCardSlot.classList.add("handSlot");
-        currCardSlot.id = "OpponentHandSlotCard" + String(i);
-        //updateOpponentsNthHandSlot(i, "cardBack");
-        opponentHandWrapper.appendChild(currCardSlot);
-    }
     const firstElement = document.body.firstChild;
     document.body.insertBefore(opponentHandWrapper, firstElement);
 
-
-    //This creates the last bought card displays
-    const lastBoughtDisplay = document.createElement("div");
-    lastBoughtDisplay.id = "lastBoughtDisplayWraper";
-    const lastBoughtDisplayText = document.createElement("div");
-    lastBoughtDisplayText.classList.add("textExplainer");
-    lastBoughtDisplayText.innerText = "last bought Card";
-    const lastBoughtCard = document.createElement("div");
-    lastBoughtCard.classList.add("cardSlot");
-    lastBoughtCard.id = "opponentLastBoughtCard";
-    lastBoughtDisplay.appendChild(lastBoughtDisplayText);
-    lastBoughtDisplay.appendChild(lastBoughtCard);
-    opponentHandWrapper.appendChild(lastBoughtDisplay);
-
-    // const lastPurchasedDisplay = document.createElement("div")
-    // lastPurchasedDisplay.classList.add("cardSlot")
-    // lastPurchasedDisplay.id = "lastPurchasedDisplay"
-    // opponetHandWrapper.appendChild(lastPurchasedDisplay)
-
-    document.body.insertBefore(opponentHandWrapper, firstElement);
     //This creates the opponents reputation tracker
     const opponentReputationTracker = document.createElement("div");
     opponentReputationTracker.classList.add("reputationTracker");
@@ -251,10 +213,73 @@ function enterGame(){
     //creates the ondrop for playing a card
     enterMode(playingCard);
 
+}
 
+function makeLastPlayedCardDisplay() {
+    const lastPlayedDisplay = document.createElement("div");
+    lastPlayedDisplay.id = "lastPlayedDisplayWrapper";
+    const lastPlayDisplayText = document.createElement("div");
+    lastPlayDisplayText.classList.add("textExplainer");
+    lastPlayDisplayText.innerText = "Cards Played";
+    const lastPlayCard = document.createElement("div");
+    lastPlayCard.classList.add("cardSlot");
+    lastPlayCard.id = "opponentLastPlayedCard";
+    lastPlayedDisplay.appendChild(lastPlayDisplayText);
+    lastPlayedDisplay.appendChild(lastPlayCard);
+    return lastPlayedDisplay;
+}
 
+function makeLastBoughtCardDisplay() {
+    const lastBoughtDisplay = document.createElement("div");
+    lastBoughtDisplay.id = "lastBoughtDisplayWrapper";
+    const lastBoughtDisplayText = document.createElement("div");
+    lastBoughtDisplayText.classList.add("textExplainer");
+    lastBoughtDisplayText.innerText = "Cards Bought";
+    const lastBoughtCard = document.createElement("div");
+    lastBoughtCard.classList.add("cardSlot");
+    lastBoughtCard.id = "opponentLastBoughtCard";
+    lastBoughtDisplay.appendChild(lastBoughtDisplayText);
+    lastBoughtDisplay.appendChild(lastBoughtCard);
+    return lastBoughtDisplay;
+}
+
+function makeDrawPileDisplay() {
+    const drawPileDisplay = document.createElement("div");
+    drawPileDisplay.id = "drawPileDisplayWrapper";
+    const drawPileDisplayText = document.createElement("div");
+    drawPileDisplayText.classList.add("textExplainer");
+    drawPileDisplayText.innerText = "Draw Pile";
+    const drawPileCard = document.createElement("div");
+    drawPileCard.classList.add("cardSlot");
+    drawPileCard.id = "opponentDrawPileCard";
+    drawPileDisplay.appendChild(drawPileDisplayText);
+    drawPileDisplay.appendChild(drawPileCard);
+    return drawPileDisplay;
+}
+
+function makeHandDisplay() {
+    const handDisplay = document.createElement("div");
+    handDisplay.id = "handDisplayWrapper";
+    const handDisplayText = document.createElement("div");
+    handDisplayText.classList.add("textExplainer");
+    handDisplayText.innerText = "Hand";
+    hand = document.createElement("div");
+    hand.classList.add("hand");
+    for (let i=0; i<5; i++){
+        opponentCardList.push(document.createElement("div"));
+        currCardSlot = opponentCardList[i];
+        currCardSlot.classList.add("handSlot");
+        currCardSlot.id = "OpponentHandSlotCard" + String(i);
+        //updateOpponentsNthHandSlot(i, "cardBack");
+        hand.appendChild(currCardSlot);
+    }
+    handDisplay.appendChild(handDisplayText);
+    handDisplay.appendChild(hand);
+    return handDisplay;
 
 }
+
+
 
 /**
  * sets the starting player and enters the corrosponding mode
