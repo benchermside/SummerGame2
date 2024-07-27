@@ -14,6 +14,7 @@ function enterGame(){
     const sampleCard= document.getElementById("sampleCard");
     sampleCard.style.display = "none";
 
+
     const cardPlayArea = document.createElement("div");
     cardPlayArea.id = "cardPlayArea";
     cardPlayArea.classList.add("cardPlayArea");
@@ -40,7 +41,7 @@ function enterGame(){
     //get the handWraper
     const handWraper = document.getElementById("handWraper");
 
-    //This create the playerStatusesDisplay
+    //This creates the playerStatusesDisplay
     const playerStatusesDisplay = document.createElement("div");
     playerStatusesDisplay.classList.add("playerStatusesDisplay");
     playerStatusesDisplay.id = "playerStatusesDisplay";
@@ -76,34 +77,14 @@ function enterGame(){
 
     //This creates the opponents hand
     opponentCardList = [];
-    opponentHandWrapper = document.createElement("div");
-    opponentHandWrapper.classList.add("opponentHand");
 
+    // FIXME: Moved elsewhere Later?
     //This creates the player reputation tracker
     const playerResourceDisplay = document.createElement("div");
     playerResourceDisplay.classList.add("reputationTracker");
     playerResourceDisplay.innerText = "reputation " + String(gameState.playerReputation);
     playerResourceDisplay.id = "playerResourceDisplay";
     handWraper.appendChild(playerResourceDisplay);
-
-    // Create the opponent side of the field ("opponentHandWrapper"):
-    opponentHandWrapper.appendChild(makeLastPlayedCardDisplay());
-    opponentHandWrapper.appendChild(makeLastBoughtCardDisplay());
-    opponentHandWrapper.appendChild(makeDrawPileDisplay());
-    opponentHandWrapper.appendChild(makeHandDisplay());
-
-    const firstElement = document.body.firstChild;
-    document.body.insertBefore(opponentHandWrapper, firstElement);
-
-    //This creates the opponents reputation tracker
-    const opponentResourceDisplay = document.createElement("div");
-    opponentResourceDisplay.classList.add("reputationTracker");
-    opponentResourceDisplay.innerText = "reputation " + String(gameState.playerReputation);
-    opponentResourceDisplay.id = "opponentResourceDisplay";
-    opponentHandWrapper.appendChild(opponentResourceDisplay);
-
-
-
 
     //and this will make the opponents startDeck and draw the startHand
 
@@ -146,11 +127,6 @@ function enterGame(){
     }
 
 
-
-
-
-
-
     //This creates the skipPhase button and refresh hand button
     const buttons = document.createElement("div");
     buttons.id = "buttonHolder";
@@ -161,7 +137,7 @@ function enterGame(){
     skipPhaseButton.id = "skipPhaseButton";
     const refreshButton = document.createElement("button");
     refreshButton.classList.add("refreshButton");
-    refreshButton.innerText = "refresh hand";
+    refreshButton.innerText = "Refresh Hand";
     refreshButton.id = "refreshButton";
     buttons.appendChild(skipPhaseButton);
     buttons.appendChild(refreshButton);
@@ -174,39 +150,18 @@ function enterGame(){
     timeTillRefresh.id = "refreshCountdown";
     document.getElementById("buttonHolder").appendChild(timeTillRefresh);
 
+    // Create the player and opponent play area:
+    const allPlayAreasElement = document.getElementById("allPlayAreas");
+    allPlayAreasElement.appendChild(makePlayerArea("opponent"));
+
 
     //This selects how the opponent will decides on their moves
     gameState.opponentMovesDecider = "randomIfPossible"; //in the future, this may depend on the gameMode your playing and the AI level
 
 
-
-
-
     //Call update gameState
     renderGameState();
     turnOnCardPlay();
-    // for(let count=0; count<5; count++){
-    //     const index = count
-    //     const card = document.getElementById(`playerHandSlotCard${count}`).firstChild
-    //     card.setAttribute("draggable", "true")
-    //     card.addEventListener("dragstart", (event) => {
-    //         try{
-    //             document.getElementById("cardPlayArea").style.borderStyle = "dashed"
-    //         }
-    //         catch(TypeError){}
-    //         draggingCard = getNthHandSlot(index)
-    //     });
-    //     card.addEventListener("dragend", (event) => {
-    //         console.log("draggend called")
-
-    //         try{
-    //             document.getElementById("cardPlayArea").style.borderStyle = "none"
-    //         }
-    //         catch{}
-
-    //     });
-    // }
-    //Temporary code to create a starting card to play around with
 
 
     //calls enter mode
@@ -219,71 +174,137 @@ function enterGame(){
 
 }
 
+/**
+ * Render all the pieces of a play area (the hand, draw pile, etc.).
+ *
+ * @param whosePlayArea either "opponent" or "player".
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makePlayerArea(whosePlayArea) {
+    const playAreaWrapper = document.createElement("div");
+    playAreaWrapper.classList.add("playArea");
+    playAreaWrapper.appendChild(makeLastPlayedCardDisplay(whosePlayArea));
+    playAreaWrapper.appendChild(makeLastBoughtCardDisplay(whosePlayArea));
+    playAreaWrapper.appendChild(makeDrawPileDisplay(whosePlayArea));
+    playAreaWrapper.appendChild(makeHandDisplay(whosePlayArea));
+    playAreaWrapper.appendChild(makeStatusesDisplay(whosePlayArea));
+    playAreaWrapper.appendChild(makeResourceDisplay(whosePlayArea));
+    return playAreaWrapper;
+}
 
-function makeLastPlayedCardDisplay() {
+/**
+ * Render the elements that show the stack of cards that have been played.
+ *
+ * @param whosePlayArea either "opponent" or "player".
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makeLastPlayedCardDisplay(whosePlayArea) {
     const lastPlayedDisplay = document.createElement("div");
-    lastPlayedDisplay.id = "lastPlayedDisplayWrapper";
+    lastPlayedDisplay.classList.add("lastPlayedDisplayWrapper");
     const lastPlayDisplayText = document.createElement("div");
     lastPlayDisplayText.classList.add("textExplainer");
     lastPlayDisplayText.innerText = "Cards Played";
     const lastPlayCard = document.createElement("div");
     lastPlayCard.classList.add("cardSlot");
-    lastPlayCard.id = "opponentPlayedCards";
+    lastPlayCard.id = `${whosePlayArea}PlayedCards`;
     lastPlayedDisplay.appendChild(lastPlayDisplayText);
     lastPlayedDisplay.appendChild(lastPlayCard);
     return lastPlayedDisplay;
 }
 
-function makeLastBoughtCardDisplay() {
+/**
+ * Render the elements that show the stack of cards that have been bought.
+ *
+ * @param whosePlayArea either "opponent" or "player".
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makeLastBoughtCardDisplay(whosePlayArea) {
     const lastBoughtDisplay = document.createElement("div");
-    lastBoughtDisplay.id = "lastBoughtDisplayWrapper";
+    lastBoughtDisplay.classList.add("lastBoughtDisplayWrapper");
     const lastBoughtDisplayText = document.createElement("div");
     lastBoughtDisplayText.classList.add("textExplainer");
     lastBoughtDisplayText.innerText = "Cards Bought";
     const lastBoughtCard = document.createElement("div");
     lastBoughtCard.classList.add("cardSlot");
-    lastBoughtCard.id = "opponentBoughtCards";
+    lastBoughtCard.id = `${whosePlayArea}BoughtCards`;
     lastBoughtDisplay.appendChild(lastBoughtDisplayText);
     lastBoughtDisplay.appendChild(lastBoughtCard);
     return lastBoughtDisplay;
 }
 
-function makeDrawPileDisplay() {
+/**
+ * Render the elements that show the draw pile.
+ *
+ * @param whosePlayArea either "opponent" or "player".
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makeDrawPileDisplay(whosePlayArea) {
     const drawPileDisplay = document.createElement("div");
-    drawPileDisplay.id = "drawPileDisplayWrapper";
+    drawPileDisplay.classList.add("drawPileDisplayWrapper");
     const drawPileDisplayText = document.createElement("div");
     drawPileDisplayText.classList.add("textExplainer");
     drawPileDisplayText.innerText = "Draw Pile";
     const drawPileCard = document.createElement("div");
     drawPileCard.classList.add("cardSlot");
-    drawPileCard.id = "opponentDrawPile";
+    drawPileCard.id = `${whosePlayArea}DrawPile`;
     drawPileDisplay.appendChild(drawPileDisplayText);
     drawPileDisplay.appendChild(drawPileCard);
     return drawPileDisplay;
 }
 
-function makeHandDisplay() {
+/**
+ * Render the elements that show the resource display.
+ *
+ * @param whosePlayArea either "opponent" or "player".
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makeResourceDisplay(whosePlayArea) {
+    const resourceDisplay = document.createElement("div");
+    resourceDisplay.classList.add("reputationTracker");
+    resourceDisplay.innerText = "reputation " + String(gameState.playerReputation);
+    resourceDisplay.id = `${whosePlayArea}ResourceDisplay`;
+    return resourceDisplay;
+}
+
+
+/**
+ * Render the elements that show the hand in play.
+ *
+ * @param whosePlayArea either "opponent" or "player".
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makeHandDisplay(whosePlayArea) {
     const handDisplay = document.createElement("div");
-    handDisplay.id = "handDisplayWrapper";
+    handDisplay.classList.add("handDisplayWrapper");
     const handDisplayText = document.createElement("div");
     handDisplayText.classList.add("textExplainer");
     handDisplayText.innerText = "Hand";
-    hand = document.createElement("div");
+    handDisplay.appendChild(handDisplayText);
+    const hand = document.createElement("div");
     hand.classList.add("hand");
     for (let i=0; i<5; i++){
         opponentCardList.push(document.createElement("div"));
-        currCardSlot = opponentCardList[i];
+        const currCardSlot = opponentCardList[i];
         currCardSlot.classList.add("handSlot");
-        currCardSlot.id = "opponentHandSlotCard" + String(i);
-        //updateOpponentsNthHandSlot(i, "cardBack");
+        currCardSlot.id = `${whosePlayArea}HandSlotCard` + String(i);
         hand.appendChild(currCardSlot);
     }
-    handDisplay.appendChild(handDisplayText);
     handDisplay.appendChild(hand);
     return handDisplay;
-
 }
 
+/**
+ * Render the elements that show the statuses display.
+ *
+ * @param whosePlayArea either "opponent" or "player".
+ * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
+ */
+function makeStatusesDisplay(whosePlayArea) {
+    const statusesDisplay = document.createElement("div");
+    statusesDisplay.classList.add("statusesDisplay");
+    statusesDisplay.id = `${whosePlayArea}StatusesDisplay`;
+    return statusesDisplay;
+}
 
 
 /**

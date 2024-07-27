@@ -94,7 +94,7 @@ h1{
     width: 1190px;
 }
 
-.opponentHand{
+.playArea{
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -163,7 +163,7 @@ h1{
 }
 
 
-.playerStatusesDisplay, .opponentStatusesDisplay{
+.statusesDisplay{
     height: 208px;
     width: 200px;
     display: flex;
@@ -172,8 +172,6 @@ h1{
     justify-content: flex-start;
     align-content: flex-start;
     gap: 10px;
-    
-
 }
 
 
