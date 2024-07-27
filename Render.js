@@ -90,6 +90,7 @@ function renderGameState(){
         const newCardBack = document.createElement("img");
         newCardBack.setAttribute("src", imageSource);
         newCardBack.setAttribute("draggable", "false");
+        newCardBack.classList.add("cardBack");
         opponentsCardSlot.appendChild(newCardBack);
     
     }
