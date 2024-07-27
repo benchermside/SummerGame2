@@ -62,7 +62,9 @@ h1{
     overflow: auto;
     text-align: center;
 }
-
+.hand{
+    display: flex;
+}
 .handSlot, .cardSlot{
     width: 140px; /* 130px wide card + 2 * 5px border */
     height: 210px; /* 200px tall card + 2 * 5px border */
@@ -70,17 +72,15 @@ h1{
     border: 4px dashed gray; 
     margin: 5px;
 }
-.cardSlot:has(> .cardDisplay){
-    border:0px
-}
 .handSlot{
     
 }
 
 .textExplainer{
     background-color: greenyellow;
-    font-size: 35px;
+    font-size: 20px;
     text-align: center;
+    margin: 0 10px;
 }
 
 
