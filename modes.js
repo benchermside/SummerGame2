@@ -214,9 +214,6 @@ function enterGame(){
     enterMode(playingCard);
 
     //for testing
-    displayToast(document.getElementById("playerHandSlotCard0"), "this is a toast that is displayed");
-    displayToast(document.getElementById("playerHandSlotCard4"), "this is also toast, pretty cool");
-
 }
 
 

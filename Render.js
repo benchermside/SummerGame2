@@ -324,14 +324,28 @@ function displayToast(nearbyElement, text){
     const toastElem = document.createElement("div");
     toastElem.classList.add("toast");
     toastElem.innerText = text;
-    const toastLength = 160;//Temporary
-    const toastHeight = 80;//Temp
-    toastElem.style.width = String(toastLength) + "px";
-    toastElem.style.height = String(toastHeight) + "px";
-    toastElem.style.top = String(elemBoundingRect.top - displayBouningRect.top + (displayDirection === "down")*(elemBoundingRect.bottom - elemBoundingRect.top) - (displayDirection === "up")*(toastHeight)) + "px";
-    toastElem.style.left = String(elemBoundingRect.left - displayBouningRect.left + (displayDirection === "right")*(elemBoundingRect.right - elemBoundingRect.left) - (displayDirection === "left")*(toastLength)) + "px";
-    console.log(toastElem.style.top);
-    console.log(toastElem.style.left);
+    const toastLenght = 300;//Temporary
+    const toastHight = 200;//Temp
+    toastElem.style.width = String(toastLenght) + "px";
+    toastElem.style.height = String(toastHight) + "px";
+    toastElem.style.top = String(elemBoundingRect.top - displayBouningRect.top + (displayDirection === "down")*(elemBoundingRect.bottom - elemBoundingRect.top) - (displayDirection === "up")*(toastHight)) + "px";
+    toastElem.style.left = String(elemBoundingRect.left - displayBouningRect.left + (displayDirection === "right")*(elemBoundingRect.right - elemBoundingRect.left) - (displayDirection === "left")*(toastLenght)) + "px";
+    const backroundDimmer = document.createElement("div");
+    backroundDimmer.classList.add("backroundDim");
+    backroundDimmer.style.width = String(displayBouningRect.right - displayBouningRect.left)  + "px";
+    backroundDimmer.style.height = String(displayBouningRect.bottom - displayBouningRect.top) + "px";
+    backroundDimmer.style.top = "0px";
+    backroundDimmer.style.left = "0px";
+    const deleateFunct = () => {
+        console.log("called");
+        const toastParts = document.getElementById("toastContainer").children;
+        for(i=toastParts.length-1; i>-1; i=i-1){
+            toastParts[i].remove();
+        }
+    }
+    backroundDimmer.addEventListener("click", deleateFunct);
+    toastElem.addEventListener("click", deleateFunct);
+    document.getElementById("toastContainer").appendChild(backroundDimmer);
     document.getElementById("toastContainer").appendChild(toastElem);
 }
 
