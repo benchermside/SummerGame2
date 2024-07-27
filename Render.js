@@ -38,7 +38,6 @@ function renderCard(card, locationID){
         cardImageDiv.setAttribute("draggable", "false");
     }
     for (const child of location.children){
-
         child.remove();
     }
 
@@ -97,8 +96,8 @@ function renderGameState(){
     let Slot;
     for (i=0; i<5; i++){
         Slot = getNthHandSlot(i);
-        cardSlot = document.getElementById(`handSlotCard${i}`);
-        cardSlotID = `handSlotCard${i}`;
+        const cardSlotID = `playerHandSlotCard${i}`;
+        cardSlot = document.getElementById(cardSlotID);
         if (Slot != null){
             renderCard(Slot, cardSlotID);
         }
@@ -113,13 +112,13 @@ function renderGameState(){
     //Handles Opponent Hand
     for (let i=0; i<5; i++){
         const gameStateCardVal = getOpponentsNthHandSlot(i);
-        const opponentsCardSlotID = "OpponentHandSlotCard" + String(i);
+        const opponentsCardSlotID = "opponentHandSlotCard" + String(i);
         renderFaceDownCard(gameStateCardVal, opponentsCardSlotID);
     }
     //opponent last card bought and played
-    renderCard(gameState.lastCardOpponentPlayed, "opponentLastPlayedCard");
-    renderCard(gameState.lastCardOpponentBought, "opponentLastBoughtCard");
-    renderFaceDownStack(gameState.opponentDeck, "opponentDrawPileCard");
+    renderCard(gameState.lastCardOpponentPlayed, "opponentPlayedCards");
+    renderCard(gameState.lastCardOpponentBought, "opponentBoughtCards");
+    renderFaceDownStack(gameState.opponentDeck, "opponentDrawPile");
 
 
     //Handles purchase area
@@ -134,10 +133,10 @@ function renderGameState(){
     timeTillRefresh.innerText = "refresh in " + String(gameState.resetIn);
 
 
-    //Update playerReputationTracker and enerty
-    const playerReputationTracker = document.getElementById("playerReputationTracker");
-    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy);
-    document.getElementById("opponentReputationTracker").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy);
+    //Update playerResourceDisplay and enerty
+    const playerResourceDisplay = document.getElementById("playerResourceDisplay");
+    playerResourceDisplay.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy);
+    document.getElementById("opponentResourceDisplay").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy);
 
     //updates the list and quanitity of status makers
     
@@ -228,8 +227,8 @@ const numberedStatusInformation = [
 
 
 function animateCardPlayed(card, cardSlotNum){
-    renderCard(card, `OpponentHandSlotCard${cardSlotNum}`);
-    const animatingCard = document.getElementById(`OpponentHandSlotCard${cardSlotNum}`).firstChild;
+    renderCard(card, `opponentHandSlotCard${cardSlotNum}`);
+    const animatingCard = document.getElementById(`opponentHandSlotCard${cardSlotNum}`).firstChild;
     animatingCard.classList.add(`movingCard${cardSlotNum}`);
 }
 

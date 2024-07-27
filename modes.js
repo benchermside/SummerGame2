@@ -55,7 +55,7 @@ function enterGame(){
         cardSlotList.push(document.createElement("div"));
         currCardSlot = cardSlotList[i];
         currCardSlot.classList.add("handSlot");
-        currCardSlot.id = "handSlotCard" + String(i);
+        currCardSlot.id = "playerHandSlotCard" + String(i);
         handWraper.appendChild(currCardSlot);
     }
     
@@ -80,11 +80,11 @@ function enterGame(){
     opponentHandWrapper.classList.add("opponentHand");
 
     //This creates the player reputation tracker
-    const playerReputationTracker = document.createElement("div");
-    playerReputationTracker.classList.add("reputationTracker");
-    playerReputationTracker.innerText = "reputation " + String(gameState.playerReputation);
-    playerReputationTracker.id = "playerReputationTracker";
-    handWraper.appendChild(playerReputationTracker);
+    const playerResourceDisplay = document.createElement("div");
+    playerResourceDisplay.classList.add("reputationTracker");
+    playerResourceDisplay.innerText = "reputation " + String(gameState.playerReputation);
+    playerResourceDisplay.id = "playerResourceDisplay";
+    handWraper.appendChild(playerResourceDisplay);
 
     // Create the opponent side of the field ("opponentHandWrapper"):
     opponentHandWrapper.appendChild(makeLastPlayedCardDisplay());
@@ -96,11 +96,11 @@ function enterGame(){
     document.body.insertBefore(opponentHandWrapper, firstElement);
 
     //This creates the opponents reputation tracker
-    const opponentReputationTracker = document.createElement("div");
-    opponentReputationTracker.classList.add("reputationTracker");
-    opponentReputationTracker.innerText = "reputation " + String(gameState.playerReputation);
-    opponentReputationTracker.id = "opponentReputationTracker";
-    opponentHandWrapper.appendChild(opponentReputationTracker);
+    const opponentResourceDisplay = document.createElement("div");
+    opponentResourceDisplay.classList.add("reputationTracker");
+    opponentResourceDisplay.innerText = "reputation " + String(gameState.playerReputation);
+    opponentResourceDisplay.id = "opponentResourceDisplay";
+    opponentHandWrapper.appendChild(opponentResourceDisplay);
 
 
 
@@ -187,7 +187,7 @@ function enterGame(){
     turnOnCardPlay();
     // for(let count=0; count<5; count++){
     //     const index = count
-    //     const card = document.getElementById(`handSlotCard${count}`).firstChild
+    //     const card = document.getElementById(`playerHandSlotCard${count}`).firstChild
     //     card.setAttribute("draggable", "true")
     //     card.addEventListener("dragstart", (event) => {
     //         try{
@@ -214,8 +214,8 @@ function enterGame(){
     enterMode(playingCard);
 
     //for testing
-    displayToast(document.getElementById("handSlotCard0"), "this is a toast that is displayed");
-    displayToast(document.getElementById("handSlotCard4"), "this is also toast, pretty cool");
+    displayToast(document.getElementById("playerHandSlotCard0"), "this is a toast that is displayed");
+    displayToast(document.getElementById("playerHandSlotCard4"), "this is also toast, pretty cool");
 
 }
 
@@ -228,7 +228,7 @@ function makeLastPlayedCardDisplay() {
     lastPlayDisplayText.innerText = "Cards Played";
     const lastPlayCard = document.createElement("div");
     lastPlayCard.classList.add("cardSlot");
-    lastPlayCard.id = "opponentLastPlayedCard";
+    lastPlayCard.id = "opponentPlayedCards";
     lastPlayedDisplay.appendChild(lastPlayDisplayText);
     lastPlayedDisplay.appendChild(lastPlayCard);
     return lastPlayedDisplay;
@@ -242,7 +242,7 @@ function makeLastBoughtCardDisplay() {
     lastBoughtDisplayText.innerText = "Cards Bought";
     const lastBoughtCard = document.createElement("div");
     lastBoughtCard.classList.add("cardSlot");
-    lastBoughtCard.id = "opponentLastBoughtCard";
+    lastBoughtCard.id = "opponentBoughtCards";
     lastBoughtDisplay.appendChild(lastBoughtDisplayText);
     lastBoughtDisplay.appendChild(lastBoughtCard);
     return lastBoughtDisplay;
@@ -256,7 +256,7 @@ function makeDrawPileDisplay() {
     drawPileDisplayText.innerText = "Draw Pile";
     const drawPileCard = document.createElement("div");
     drawPileCard.classList.add("cardSlot");
-    drawPileCard.id = "opponentDrawPileCard";
+    drawPileCard.id = "opponentDrawPile";
     drawPileDisplay.appendChild(drawPileDisplayText);
     drawPileDisplay.appendChild(drawPileCard);
     return drawPileDisplay;
@@ -274,7 +274,7 @@ function makeHandDisplay() {
         opponentCardList.push(document.createElement("div"));
         currCardSlot = opponentCardList[i];
         currCardSlot.classList.add("handSlot");
-        currCardSlot.id = "OpponentHandSlotCard" + String(i);
+        currCardSlot.id = "opponentHandSlotCard" + String(i);
         //updateOpponentsNthHandSlot(i, "cardBack");
         hand.appendChild(currCardSlot);
     }
@@ -380,7 +380,7 @@ function playerPlaysCard(){
  */
 function turnOffCardPlay(){
     for (let i=0; i<5; i++){
-        const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild;
+        const currHandSlot = document.getElementById(`playerHandSlotCard${i}`).firstChild;
         currHandSlot.setAttribute("draggable", "false");
     }
 }
@@ -390,7 +390,7 @@ function turnOffCardPlay(){
  */
 function turnOnCardPlay(){
     for (let i=0; i<5; i++){
-        const currHandSlot = document.getElementById(`handSlotCard${i}`).firstChild;
+        const currHandSlot = document.getElementById(`playerHandSlotCard${i}`).firstChild;
         currHandSlot.setAttribute("draggable", "true");
         currHandSlot.addEventListener("dragstart", (event) => {
             try{
@@ -549,10 +549,10 @@ async function startedOpponentsTurn() {
         gameState.opponentDiscard.push(cardPlayed);
         gameState.lastCardOpponentPlayed = cardPlayed;
         opponentDrawCard(opponentMove.slotNumber);
-        renderCard(cardPlayed, `OpponentHandSlotCard${opponentMove.slotNumber}`);
-        const playedCardElem = document.getElementById(`OpponentHandSlotCard${opponentMove.slotNumber}`).firstChild;
+        renderCard(cardPlayed, `opponentHandSlotCard${opponentMove.slotNumber}`);
+        const playedCardElem = document.getElementById(`opponentHandSlotCard${opponentMove.slotNumber}`).firstChild;
         //create the animation of the bought card
-        animateMovingCard(playedCardElem, "opponentLastPlayedCard", 5000, opponentsBuyPhase);
+        animateMovingCard(playedCardElem, "opponentPlayedCards", 5000, opponentsBuyPhase);
     }
     else{
         console.log("opponent failed to do something");
@@ -578,7 +578,7 @@ async function opponentsBuyPhase(){
             gameState.lastCardOpponentBought = boughtCard;
             updatePurchaseAreaNthSlot(opponentBuy.slotNumber, null);
             const boughtCardDomElem = document.getElementById(`purchaseAreaSlot${opponentBuy.slotNumber}`).firstChild;
-            await animateMovingCard(boughtCardDomElem, "opponentLastBoughtCard", 5000, async () => {
+            await animateMovingCard(boughtCardDomElem, "opponentBoughtCards", 5000, async () => {
                 endTurn("opponent");
                 renderGameState();
                 enterMode(playingCard);
