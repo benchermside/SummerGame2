@@ -116,9 +116,12 @@ function renderGameState(){
     document.getElementById("opponentReputationTracker").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy);
 
     //updates the list and quanitity of status makers
+    
+    //remove old statuses
     const playerStatusesDisplay = document.getElementById("playerStatusesDisplay");
-    for(const prevStatus of playerStatusesDisplay.children){
-        prevStatus.remove();
+    const stasusList = playerStatusesDisplay.children;
+    for(let i=stasusList.length-1; i>-1; i = i-1){
+        stasusList[i].remove();
     }
 
 
@@ -162,6 +165,7 @@ const numberedStatusInformation = [
             default: 0,
         },
     ];
+    //This loop add all the statuses to the display except ones where the status is defult value
     for(let i=0; i<numberedStatusInformation.length; i++){
         if(numberedStatusInformation[i].value !== numberedStatusInformation[i].default){
             const currStatusDisplay = document.createElement("div");
