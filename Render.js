@@ -324,12 +324,12 @@ function displayToast(nearbyElement, text){
     const toastElem = document.createElement("div");
     toastElem.classList.add("toast");
     toastElem.innerText = text;
-    const toastLenght = 160;//Temporary
-    const toastHight = 80;//Temp
-    toastElem.style.width = String(toastLenght) + "px";
-    toastElem.style.height = String(toastHight) + "px";
-    toastElem.style.top = String(elemBoundingRect.top - displayBouningRect.top + (displayDirection === "down")*(elemBoundingRect.bottom - elemBoundingRect.top) - (displayDirection === "up")*(toastHight)) + "px";
-    toastElem.style.left = String(elemBoundingRect.left - displayBouningRect.left + (displayDirection === "right")*(elemBoundingRect.right - elemBoundingRect.left) - (displayDirection === "left")*(toastLenght)) + "px";
+    const toastLength = 160;//Temporary
+    const toastHeight = 80;//Temp
+    toastElem.style.width = String(toastLength) + "px";
+    toastElem.style.height = String(toastHeight) + "px";
+    toastElem.style.top = String(elemBoundingRect.top - displayBouningRect.top + (displayDirection === "down")*(elemBoundingRect.bottom - elemBoundingRect.top) - (displayDirection === "up")*(toastHeight)) + "px";
+    toastElem.style.left = String(elemBoundingRect.left - displayBouningRect.left + (displayDirection === "right")*(elemBoundingRect.right - elemBoundingRect.left) - (displayDirection === "left")*(toastLength)) + "px";
     console.log(toastElem.style.top);
     console.log(toastElem.style.left);
     document.getElementById("toastContainer").appendChild(toastElem);
