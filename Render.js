@@ -95,8 +95,8 @@ function renderGameState(){
     
     }
     //opponent last card bought and played
-    renderCard(gameState.lastCardOpponentPlayed, "lastPlayedCard")
-    renderCard(gameState.lastCardOpponentBought, "lastBoughtCard")
+    renderCard(gameState.lastCardOpponentPlayed, "opponentLastPlayedCard")
+    renderCard(gameState.lastCardOpponentBought, "opponentLastBoughtCard")
 
 
     //Handles purchase area

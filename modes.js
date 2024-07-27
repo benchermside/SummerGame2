@@ -94,7 +94,7 @@ function enterGame(){
     lastPlayDisplayText.innerText = "last Played Card";
     const lastPlayCard = document.createElement("div");
     lastPlayCard.classList.add("cardSlot");
-    lastPlayCard.id = "lastPlayedCard";
+    lastPlayCard.id = "opponentLastPlayedCard";
     lastPlayedDisplay.appendChild(lastPlayDisplayText);
     lastPlayedDisplay.appendChild(lastPlayCard);
 
@@ -122,7 +122,7 @@ function enterGame(){
     lastBoughtDisplayText.innerText = "last bought Card";
     const lastBoughtCard = document.createElement("div");
     lastBoughtCard.classList.add("cardSlot");
-    lastBoughtCard.id = "lastBoughtCard";
+    lastBoughtCard.id = "opponentLastBoughtCard";
     lastBoughtDisplay.appendChild(lastBoughtDisplayText);
     lastBoughtDisplay.appendChild(lastBoughtCard);
     opponentHandWrapper.appendChild(lastBoughtDisplay);
@@ -522,7 +522,7 @@ async function startedOpponentsTurn() {
         renderCard(cardPlayed, `OpponentHandSlotCard${opponentMove.slotNumber}`);
         const playedCardElem = document.getElementById(`OpponentHandSlotCard${opponentMove.slotNumber}`).firstChild;
         //create the animation of the bought card
-        animateMovingCard(playedCardElem, "lastPlayedCard", 5000, opponentsBuyPhase);
+        animateMovingCard(playedCardElem, "opponentLastPlayedCard", 5000, opponentsBuyPhase);
     }
     else{
         console.log("opponent failed to do something");
@@ -548,7 +548,7 @@ async function opponentsBuyPhase(){
             gameState.lastCardOpponentBought = boughtCard;
             updatePurchaseAreaNthSlot(opponentBuy.slotNumber, null);
             const boughtCardDomElem = document.getElementById(`purchaseAreaSlot${opponentBuy.slotNumber}`).firstChild;
-            await animateMovingCard(boughtCardDomElem, "lastBoughtCard", 5000, async () => {
+            await animateMovingCard(boughtCardDomElem, "opponentLastBoughtCard", 5000, async () => {
                 endTurn("opponent");
                 renderGameState();
                 enterMode(playingCard);
