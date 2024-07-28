@@ -313,7 +313,7 @@ async function tryBuyCard(cardNumber){
         updatePurchaseAreaNthSlot(cardNumber, null);
         endTurn("player");
         renderGameState();
-
+        playerEndTurn();
         //temp for testing
         await startedOpponentsTurn();
         //turnOnCardPlay()
@@ -371,6 +371,7 @@ function playerPlaysCard(){
     DrawCard(draggingCard.cardNumber);
     turnOffCardPlay();
     renderGameState();
+    enterPlayerBuyingPhase();
     enterMode(buyingCard);
 }
 
@@ -380,6 +381,7 @@ function playerPlaysCard(){
 function turnOffCardPlay(){
     for (let i=0; i<5; i++){
         const currHandSlot = document.getElementById(`playerHandSlotCard${i}`).firstChild;
+        currHandSlot.classList.remove("glowing");
         currHandSlot.setAttribute("draggable", "false");
     }
 }
@@ -391,6 +393,7 @@ function turnOnCardPlay(){
     for (let i=0; i<5; i++){
         const currHandSlot = document.getElementById(`playerHandSlotCard${i}`).firstChild;
         currHandSlot.setAttribute("draggable", "true");
+        currHandSlot.classList.add("glowing");
         currHandSlot.addEventListener("dragstart", (event) => {
             try{
                 document.getElementById("betweenPlayersArea").style.borderStyle = "dashed";
@@ -421,9 +424,14 @@ function turnOnCardPlay(){
  */
 function endPhaseButtonPlaying(){
     console.log("endPhaseButtonPlaying called");
+    enterPlayerBuyingPhase();
     enterMode(buyingCard);
     turnOffCardPlay();
 }
+
+
+
+
 
 
 /**
@@ -433,9 +441,26 @@ function endPhaseButtonPlaying(){
 function endPhaseButtonBuying(){
     endTurn("player");
     renderGameState();
+    playerEndTurn();
     startedOpponentsTurn();
     //turnOnCardPlay()
 }
+
+
+/**
+ * makes purchable cards glow
+ * in future, may do other stuff that happens whenever you enter the player buying phase
+ */
+function enterPlayerBuyingPhase(){
+    for(let i=0; i<5; i++){
+        const card = getPurchaseAreaNthSlot(i);
+        if(card !== null && card.cost <= gameState.playerReputation){
+            document.getElementById(`purchaseAreaSlot${i}`).classList.add("glowing");
+        }
+    }
+}
+
+
 
 /**
  * occures when player clicks refresh hand button durring the playing phase
@@ -449,6 +474,7 @@ function RefreshHand(){
         DrawCard(slotNumber);
     }
     renderGameState();
+    enterPlayerBuyingPhase();
     enterMode(buyingCard);
 }
 
@@ -646,7 +672,16 @@ function endTurn(endingPlayer){
     }
 }
 
-
+/**
+ * called when player ends there turn
+ * does stuff that only happens when the player ends there turn that doesnt apply to the opponent.
+ */
+function playerEndTurn(){
+    //remove glow from any glowing cards
+    for(let i=0;i<5;i++){
+        document.getElementById(`purchaseAreaSlot${i}`).classList.remove("glowing")
+    }
+}
 
 
 
@@ -700,6 +735,10 @@ function enterMode(mode){
 
 
 //these are the possible modes
+//modes contain a list of transitions with 
+//funct, a function to run when truggered by the event, 
+//elementID, the ID of the element needed to be interacted with to trigger the transition
+//eventType, a string determining the method of interaction with the element needed to triger the transition
 
 const startMode = {
     transitions: {
