@@ -108,6 +108,23 @@ function renderGameState(){
         }
     }
 
+    //adds last played card to its display
+    if(gameState.lastCardPlayerPlayed !== null){
+        renderCard(gameState.lastCardPlayerPlayed, "playerPlayedCards");
+    }
+    //adds last bought card to it's display
+    if(gameState.lastCardPlayerBought !== null){
+        renderCard(gameState.lastCardPlayerBought, "playerBoughtCards")
+    }
+    //updates Player deck
+    const playerDeckSize = gameState.playerDeck.length;
+    if(playerDeckSize>0){
+        renderFaceDownCard(gameState.playerDeck[playerDeckSize-1], "playerDrawPile")
+    }
+    else{
+        renderFaceDownCard(null, "playerDrawPile")
+    }
+    
 
     //Handles Opponent Hand
     for (let i=0; i<5; i++){
@@ -119,6 +136,12 @@ function renderGameState(){
     renderCard(gameState.lastCardOpponentPlayed, "opponentPlayedCards");
     renderCard(gameState.lastCardOpponentBought, "opponentBoughtCards");
     renderFaceDownStack(gameState.opponentDeck, "opponentDrawPile");
+
+    //gives both drawPileSizes
+    document.getElementById(`playerdrawPileDisplayText`).innerText = `Draw Pile ${gameState.playerDeck.length}`;
+    document.getElementById(`opponentdrawPileDisplayText`).innerText = `Draw Pile ${gameState.opponentDeck.length}`;
+    
+
 
 
     //Handles purchase area
@@ -158,7 +181,7 @@ function renderGameState(){
     //defult is the defult value this status is at, most often 0. if the status is at defult, it will not display as it is "not doing anything" 
     //example of defult, the defult passive reputation is 0 sence having passive reputation of 0 does nothing.
 
-const numberedStatusInformation = [
+    const numberedStatusInformation = [
         {
             name: "passiveReputation",
             value: gameState.playerStatuses.passiveReputation,

@@ -155,6 +155,7 @@ function makeDrawPileDisplay(whosePlayArea) {
     const drawPileDisplayText = document.createElement("div");
     drawPileDisplayText.classList.add("textExplainer");
     drawPileDisplayText.innerText = "Draw Pile";
+    drawPileDisplayText.id = `${whosePlayArea}drawPileDisplayText`;
     const drawPileCard = document.createElement("div");
     drawPileCard.classList.add("cardSlot");
     drawPileCard.id = `${whosePlayArea}DrawPile`;
@@ -310,15 +311,12 @@ async function tryBuyCard(cardNumber){
     if(boughtCard != null && gameState.playerReputation >= boughtCard.cost){
         gameState.playerReputation = gameState.playerReputation - boughtCard.cost;
         gameState.playerDiscard.push(boughtCard);
+        gameState.lastCardPlayerBought = boughtCard;
         updatePurchaseAreaNthSlot(cardNumber, null);
         endTurn("player");
         renderGameState();
         playerEndTurn();
-        //temp for testing
         await startedOpponentsTurn();
-        //turnOnCardPlay()
-        //enterMode(playingCard)
-
     }
     else if(gameState.playerReputation < boughtCard.cost){
         displayToast(document.getElementById(`purchaseAreaSlot${cardNumber}`), `${getPurchaseAreaNthSlot(cardNumber).name} costs ${getPurchaseAreaNthSlot(cardNumber).cost} reputation but you only have ${gameState.playerReputation} reputation`)
@@ -370,6 +368,7 @@ function playerPlaysCard(){
     playCard(draggingCard.card, "player");
     DrawCard(draggingCard.cardNumber);
     turnOffCardPlay();
+    gameState.lastCardPlayerPlayed = draggingCard.card;
     renderGameState();
     enterPlayerBuyingPhase();
     enterMode(buyingCard);

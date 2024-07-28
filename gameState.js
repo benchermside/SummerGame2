@@ -59,7 +59,9 @@ const gameState = {
     resetFrequency: 7,
     resetIn: 7,
     lastCardOpponentPlayed: null,
+    lastCardPlayerPlayed: null,
     lastCardOpponentBought: null,
+    lastCardPlayerBought: null,
     playerStatuses: {
         passiveReputation: 1,//the amount of reputation you get at the end of each of your turns
         passiveEnergy: 1,//the amount of energy you get at the end of each of your turns
