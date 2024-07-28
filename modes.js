@@ -64,6 +64,7 @@ function enterGame(){
 
     // Create the player and opponent play area and the stuff between them:
     const allPlayAreasElement = document.getElementById("allPlayAreas");
+    allPlayAreasElement.classList.add("allPlayArea");
     allPlayAreasElement.appendChild(makePlayerArea("opponent"));
     allPlayAreasElement.appendChild(makeBetweenPlayersArea());
     allPlayAreasElement.appendChild(makePlayerArea("player"));

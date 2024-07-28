@@ -44,6 +44,8 @@ const gameState = {
     opponentDeck: [],
     playerDiscard: [],
     opponentDiscard: [],
+    playerBoughtCards: [],
+    opponentBaughtCards: [],
     wildCards: wildCards,
     playerReputation: 0,
     opponentReputation: 0,
