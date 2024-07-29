@@ -24,7 +24,9 @@ function shuffleOpponentDeck(){
     }
 }
 
-
+/**
+ * I suspect this is not used anywhere in the code, will likly deleat soon
+ */
 function DrawNewHand(){
     for (let i=0; i<5; i++){
         if (gameState.playerDeck.length === 0){

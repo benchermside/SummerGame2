@@ -115,6 +115,7 @@ function makeLastPlayedCardDisplay(whosePlayArea) {
     const lastPlayDisplayText = document.createElement("div");
     lastPlayDisplayText.classList.add("textExplainer");
     lastPlayDisplayText.innerText = "Cards Played";
+    lastPlayDisplayText.id = `${whosePlayArea}LastPlayDisplayText`;
     const lastPlayCard = document.createElement("div");
     lastPlayCard.classList.add("cardSlot");
     lastPlayCard.id = `${whosePlayArea}PlayedCards`;
@@ -135,6 +136,7 @@ function makeLastBoughtCardDisplay(whosePlayArea) {
     const lastBoughtDisplayText = document.createElement("div");
     lastBoughtDisplayText.classList.add("textExplainer");
     lastBoughtDisplayText.innerText = "Cards Bought";
+    lastBoughtDisplayText.id = `${whosePlayArea}LastBoughtDisplayText`
     const lastBoughtCard = document.createElement("div");
     lastBoughtCard.classList.add("cardSlot");
     lastBoughtCard.id = `${whosePlayArea}BoughtCards`;
@@ -155,7 +157,7 @@ function makeDrawPileDisplay(whosePlayArea) {
     const drawPileDisplayText = document.createElement("div");
     drawPileDisplayText.classList.add("textExplainer");
     drawPileDisplayText.innerText = "Draw Pile";
-    drawPileDisplayText.id = `${whosePlayArea}drawPileDisplayText`;
+    drawPileDisplayText.id = `${whosePlayArea}DrawPileDisplayText`;
     const drawPileCard = document.createElement("div");
     drawPileCard.classList.add("cardSlot");
     drawPileCard.id = `${whosePlayArea}DrawPile`;
@@ -310,7 +312,7 @@ async function tryBuyCard(cardNumber){
     const boughtCard = getPurchaseAreaNthSlot(cardNumber);
     if(boughtCard != null && gameState.playerReputation >= boughtCard.cost){
         gameState.playerReputation = gameState.playerReputation - boughtCard.cost;
-        gameState.playerDiscard.push(boughtCard);
+        gameState.playerBoughtCards.push(boughtCard);
         gameState.lastCardPlayerBought = boughtCard;
         updatePurchaseAreaNthSlot(cardNumber, null);
         endTurn("player");
@@ -366,7 +368,7 @@ async function tryBuyCard4(){
 function playerPlaysCard(){
    
     playCard(draggingCard.card, "player");
-    DrawCard(draggingCard.cardNumber);
+    playerDrawCard(draggingCard.cardNumber);
     turnOffCardPlay();
     gameState.lastCardPlayerPlayed = draggingCard.card;
     renderGameState();
@@ -470,7 +472,7 @@ function RefreshHand(){
         dicardCard(slotNumber);
     }
     for (slotNumber=0; slotNumber<5; slotNumber++){
-        DrawCard(slotNumber);
+        playerDrawCard(slotNumber);
     }
     renderGameState();
     enterPlayerBuyingPhase();
@@ -507,18 +509,19 @@ function dicardCard(slotNum){
 }
 
 /**
- * Draws a new card for slot, 
+ * Draws a new card for slot for the player
  * If a card alredy exists in slot, card will be discarded before drawing a new card
  * This does not call renderGamestate
  */
-function DrawCard(slotNumber){
+function playerDrawCard(slotNumber){
     //Update the gameState
     if(getNthHandSlot(slotNumber) != null){
         dicardCard(slotNumber);
     }
     if(gameState.playerDeck.length === 0){
-        gameState.playerDeck = gameState.playerDiscard;
+        gameState.playerDeck = gameState.playerDiscard.concat(gameState.playerBoughtCards);
         gameState.playerDiscard = [];
+        gameState.playerBoughtCards = [];
         shufflePlayerDeck();
     }
     updateNthHandSlot(slotNumber, gameState.playerDeck.pop());
@@ -529,18 +532,11 @@ function DrawCard(slotNumber){
  * Draws a new card for the opponent
  */
 function opponentDrawCard(slotNumber){
-    if(getOpponentsNthHandSlot(slotNumber) != null){
-        gameState.opponentDiscard.push(getOpponentsNthHandSlot(slotNumber));
-        updateOpponentsNthHandSlot(slotNumber, null);
-    }
+    opponentDiscardCard(slotNumber);
     if(gameState.opponentDeck.length === 0){
-        console.log("refreshing opponent discard");
-        console.log("current opponent deck is ", gameState.opponentDeck.length);
-        console.log("current opponent discard is", gameState.opponentDiscard.length);
-        gameState.opponentDeck = gameState.opponentDiscard;
-        console.log("opponent deck is 1", gameState.opponentDeck.length);
+        gameState.opponentDeck = gameState.opponentDiscard.concat(gameState.opponentBaughtCards);
         gameState.opponentDiscard = [];
-        console.log("opponent deck is 2, ", gameState.opponentDeck.length);
+        gameState.opponentBaughtCards = [];
         shuffleOpponentDeck();
     }
     if(gameState.opponentDeck.length !== 0){
@@ -551,6 +547,17 @@ function opponentDrawCard(slotNumber){
     }
 
 }
+/**
+ * discards the card in slot number without drawing a new one
+ */
+function opponentDiscardCard(slotNumber){
+    if(getOpponentsNthHandSlot(slotNumber) !== null){
+        gameState.opponentDiscard.push(getOpponentsNthHandSlot(slotNumber));
+        updateOpponentsNthHandSlot(slotNumber, null);
+    }
+}
+
+
 
 /**
  * triggers when transitioning the the opponenets turn, has them buy play a card, buy a card, 
@@ -570,7 +577,7 @@ async function startedOpponentsTurn() {
     else if(opponentMove.type === "cardPlay"){
         const cardPlayed = getOpponentsNthHandSlot(opponentMove.slotNumber);
         playCard(cardPlayed, "opponent");
-        gameState.opponentDiscard.push(cardPlayed);
+        opponentDiscardCard(opponentMove.slotNumber);
         gameState.lastCardOpponentPlayed = cardPlayed;
         opponentDrawCard(opponentMove.slotNumber);
         renderCard(cardPlayed, `opponentHandSlotCard${opponentMove.slotNumber}`);
@@ -598,7 +605,7 @@ async function opponentsBuyPhase(){
         const boughtCard = getPurchaseAreaNthSlot(opponentBuy.slotNumber);
         if(boughtCard != null && gameState.opponentReputation >= boughtCard.cost){
             gameState.opponentReputation = gameState.opponentReputation - boughtCard.cost;
-            gameState.opponentDiscard.push(boughtCard);
+            gameState.opponentBaughtCards.push(boughtCard);
             gameState.lastCardOpponentBought = boughtCard;
             updatePurchaseAreaNthSlot(opponentBuy.slotNumber, null);
             const boughtCardDomElem = document.getElementById(`purchaseAreaSlot${opponentBuy.slotNumber}`).firstChild;

@@ -112,10 +112,14 @@ function renderGameState(){
     if(gameState.lastCardPlayerPlayed !== null){
         renderCard(gameState.lastCardPlayerPlayed, "playerPlayedCards");
     }
+    document.getElementById(`playerLastPlayDisplayText`).innerText = `Cards Played ${gameState.playerDiscard.length}`;
+    
     //adds last bought card to it's display
     if(gameState.lastCardPlayerBought !== null){
         renderCard(gameState.lastCardPlayerBought, "playerBoughtCards")
     }
+    document.getElementById("playerLastBoughtDisplayText").innerText = `Cards Bought ${gameState.playerBoughtCards.length}`;
+
     //updates Player deck
     const playerDeckSize = gameState.playerDeck.length;
     if(playerDeckSize>0){
@@ -124,6 +128,7 @@ function renderGameState(){
     else{
         renderFaceDownCard(null, "playerDrawPile")
     }
+    // document.getElementById("playerDrawPileDisplayText").innerText = `Draw Pile ${gameState.playerDeck.length}`;
     
 
     //Handles Opponent Hand
@@ -136,10 +141,13 @@ function renderGameState(){
     renderCard(gameState.lastCardOpponentPlayed, "opponentPlayedCards");
     renderCard(gameState.lastCardOpponentBought, "opponentBoughtCards");
     renderFaceDownStack(gameState.opponentDeck, "opponentDrawPile");
+    document.getElementById("opponentLastBoughtDisplayText").innerText = `Cards Bought ${gameState.opponentBaughtCards.length}`;
+    document.getElementById("opponentLastPlayDisplayText").innerText = `Cards Played ${gameState.opponentDiscard.length}`;
+    console.log("cards played are", gameState.opponentDiscard);
 
     //gives both drawPileSizes
-    document.getElementById(`playerdrawPileDisplayText`).innerText = `Draw Pile ${gameState.playerDeck.length}`;
-    document.getElementById(`opponentdrawPileDisplayText`).innerText = `Draw Pile ${gameState.opponentDeck.length}`;
+    document.getElementById(`playerDrawPileDisplayText`).innerText = `Draw Pile ${gameState.playerDeck.length}`;
+    document.getElementById(`opponentDrawPileDisplayText`).innerText = `Draw Pile ${gameState.opponentDeck.length}`;
     
 
 
@@ -156,7 +164,7 @@ function renderGameState(){
     timeTillRefresh.innerText = "refresh in " + String(gameState.resetIn);
 
 
-    //Update playerResourceDisplay and enerty
+    //Update playerResourceDisplay and energy
     const playerResourceDisplay = document.getElementById("playerResourceDisplay");
     playerResourceDisplay.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy);
     document.getElementById("opponentResourceDisplay").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy);
