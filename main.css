@@ -61,6 +61,14 @@ h1{
 .cardEffectText{
     overflow: auto;
     text-align: center;
+    display: flex;
+    justify-content: center;
+}
+.cardType{
+    align-self: stretch;
+    font-size: x-small;
+    background-color: #f7f9f9;
+    text-align: center;
 }
 .hand{
     display: flex;

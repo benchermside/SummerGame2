@@ -65,12 +65,21 @@
 // 8190	5292
 // 8320	5376
 
+
+//A card has a 
+//Name: the name displayed on the card
+//image source, the filepath to image on the card
+//effectText the text displayed on the card
+//cost, the cost of purchesing the card
+//effectID the 
+//type the cardtype ("team", "")
 const dragon = {
     name:"dragon",
     image:"dragon.jpg",
     effectText: "gain 1 energy",
     cost: 12,
-    effectID: "dragon"
+    effectID: "dragon",
+    type: "team",
 }
 
 const recruiter = {
@@ -78,7 +87,8 @@ const recruiter = {
     image: "superRecruiter.jpg",
     effectText: "Gain 1 reputation",
     cost: 1,
-    effectID: "recruiter"
+    effectID: "recruiter",
+    type: "team",
 }
 
 
@@ -88,7 +98,8 @@ const ninja = {
     image:"ninja.jpg",
     effectText: "3 energy, lose 3 energy at the end of next turn",//not implemented yet
     cost: 2,
-    effectID: "ninja"
+    effectID: "ninja",
+    type: "team",
 }
 const thief = {
     name:"thief",
@@ -96,6 +107,7 @@ const thief = {
     effectText: "steal 2 energy from your opponent",
     cost: 3,
     effectID: "thief",
+    type: "team",
 }
 
 
@@ -105,7 +117,8 @@ const doomsayer = {
     image:"dragon.jpg",
     effectText: "set both players reputation to 0",
     cost: 5,
-    effectID: "doomsayer"
+    effectID: "doomsayer",
+    type: "team",
 }
 
 
@@ -114,14 +127,16 @@ const publicityOfficer = {
     image:"excitedPoint.jpg",
     effectText: "gain 1 reputation for every 3 cards you have somewhere (rounded down)",
     cost: 2,
-    effectID: "publicityOfficer"
+    effectID: "publicityOfficer",
+    type: "team",
 }
 const bigEnergy = {
     name:"bigEnergy",
     image:"dragon.jpg",
     effectText: "gain 20 reputation",
     cost: 9,
-    effectID: "bigEnergy"
+    effectID: "bigEnergy",
+    type: "team",
 }
 
 
@@ -130,7 +145,8 @@ const instantPower = {
     image:"instantPower.jpg",
     effectText: "do nothing",
     cost: -5,
-    effectID: "instantPower"
+    effectID: "instantPower",
+    type: "team",
 }
 
 const funDude = {
@@ -138,7 +154,8 @@ const funDude = {
     image: "funDude.jpg",
     effectText: "gain 2 reputation",
     cost: 0,
-    effectID: "funDude"
+    effectID: "funDude",
+    type: "team",
 }
 
 const chef = {
@@ -147,6 +164,7 @@ const chef = {
     effectText: "gain 3 reputation",
     cost: 1,
     effectID: "chef",
+    type: "team",
 }
 
 
@@ -156,6 +174,7 @@ const energyGenerator = {
     effectText: "gain 7 energy",
     cost: 4,
     effectID: "energyGenerator",
+    type: "team",
 }
 
 const energyUser = {
@@ -164,6 +183,7 @@ const energyUser = {
     effectText: "if you have at least 4 energy, turn 4 into 14 reputation",
     cost: 5,
     effectID: "energyUser",
+    type: "team",
 }
 
 const unpopularVigilante = {
@@ -172,6 +192,7 @@ const unpopularVigilante = {
     effectText: "turn your reputation into energy",
     cost: 6,
     effectID: "unpopularVigilante",
+    type: "team",
 }
 
 const batteryFactory = {
@@ -180,44 +201,48 @@ const batteryFactory = {
     effectText: "at the end of every future turn you take, gain 1 energy",
     cost: 0,//will the upped in future, low for testing
     effectID: "batteryFactory",
+    type: "team",
+}
+
+const flyingSquaralMan = {
+    name: "flyingSquaralMan",
+    image: "dragon.jpg",
+    effectText: "9 investigate, 1 fight",
+    cost: 1,
+    effectID: "flyingSquaralMan",
+    type: "hero",
+}
+
+const theLoom = {
+    name: "theLoom",
+    image: "dragon.jpg",
+    effectText: "0 investigate, 10 fight",
+    cost: 1,
+    effectID: "theLoom",
+    type: "hero",
 }
 
 
+const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante,
+     batteryFactory, flyingSquaralMan, theLoom,];
 
 
 
-const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante, batteryFactory];
 
 
 
-// const card1 = {
-//     name:"dragon",
-//     image:"dragon.jpg",
-//     effectText: "Dragions breath fire",
-//     cost: 12,
-//     effectID: "card1"
-// }
-// const card1 = {
-//     name:"dragon",
-//     image:"dragon.jpg",
-//     effectText: "Dragions breath fire",
-//     cost: 12,
-//     effectID: "card1"
-// }
-// const card1 = {
-//     name:"dragon",
-//     image:"dragon.jpg",
-//     effectText: "Dragions breath fire",
-//     cost: 12,
-//     effectID: "card1"
-// }
-// const card1 = {
-//     name:"dragon",
-//     image:"dragon.jpg",
-//     effectText: "Dragions breath fire",
-//     cost: 12,
-//     effectID: "card1"
-// }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -257,9 +282,11 @@ cardEffects.set("dragon", (playingPlayer) => {
 cardEffects.set("ninja", (playingPlayer) => {
     if(playingPlayer === "player"){
         gameState.playerEnergy = gameState.playerEnergy + 3;
+        gameState.playerStatuses.energyLossNextTurn = gameState.playerStatuses.energyLossNextTurn + 3;
     }
     else if(playingPlayer === "opponent"){
         gameState.opponentEnergy = gameState.opponentEnergy + 3;
+        gameState.opponentStatuses.energyLossNextTurn = gameState.opponentStatuses.energyLossNextTurn + 3;
     }
     else{
         console.log("ninja input invalid");
@@ -396,5 +423,13 @@ cardEffects.set("unpopularVigilante", (playingPlayer) => {
 
 cardEffects.set("batteryFactory", (playingPlayer) => {
     gameState[`${playingPlayer}Statuses`].passiveEnergy = gameState[`${playingPlayer}Statuses`].passiveEnergy + 1
+})
+
+cardEffects.set("flyingSquaralMan", (playingPlayer) => {
+    console.log("cardEffect not implimented");
+})
+
+cardEffects.set("theLoom", (playingPlayer) => {
+    console.log("cardEffect not implimented");
 })
 

@@ -22,8 +22,12 @@ function renderCard(card, locationID){
         cardEffectDiv.classList.add("cardEffect");
         const cardEffectTextDiv = document.createElement("div");
         cardEffectTextDiv.classList.add("cardEffectText");
+        const cardTypeDiv = document.createElement("div");
+        cardTypeDiv.classList.add("cardType");
+        cardTypeDiv.innerText = card.type;
         cardDisplayDiv.appendChild(cardTitleDiv);
         cardDisplayDiv.appendChild(cardImageDiv);
+        cardDisplayDiv.appendChild(cardTypeDiv);
         cardDisplayDiv.appendChild(cardEffectDiv);
         cardTitleDiv.appendChild(cardNameDiv);
         cardTitleDiv.appendChild(cardCostDiv);
