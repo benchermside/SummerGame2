@@ -25,6 +25,11 @@ function renderCard(card, locationID){
         const cardTypeDiv = document.createElement("div");
         cardTypeDiv.classList.add("cardType");
         cardTypeDiv.innerText = card.type;
+        cardTypeDiv.style.color = (() => {
+            if (card.type === "team"){return "#1330ef";}
+            else if (card.type === "hero"){return "#fc0800";}
+            else {return "#050505";}
+        })()
         cardDisplayDiv.appendChild(cardTitleDiv);
         cardDisplayDiv.appendChild(cardImageDiv);
         cardDisplayDiv.appendChild(cardTypeDiv);
