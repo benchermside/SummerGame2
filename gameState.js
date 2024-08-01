@@ -18,6 +18,13 @@ const gameState = {
     //lastCardOpponentBouth stores the last card bought by the opponent. should be a card object or null
     //playerStatuses is all the status effects applied to the player
     //opponentStatuses is all the status effects applied to the opponent
+    //player and opponent reputation is the amount of reputation that the player/opponent have
+    //player and opponent energy is the amount of energy the player and opponent have
+    //player and opponent honor is the amount of honor the player and opponent have 
+    //wildCards the list of all cards not used in the game
+    //villains the list of possable villains that can exist in the game
+    //currVillain is the villan that players can work agenst at the current time.
+
 
     playerhand: {
         slot1: null,
@@ -47,10 +54,18 @@ const gameState = {
     playerBoughtCards: [],
     opponentBaughtCards: [],
     wildCards: wildCards,
+    villains: villains,
+    currVillain: null,
     playerReputation: 0,
     opponentReputation: 0,
     playerEnergy: 0,
     opponentEnergy: 0,
+    playerHonor: 0,
+    opponentHonor: 0,
+    playerInvestigate: 0,
+    opponentInvestigate: 0,
+    playerFight: 0,
+    opponentFight: 0,
     playerTurn : "player",
     currentPhase: "playing",
     CardsPlayed: 0,

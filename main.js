@@ -3,25 +3,32 @@
 
 
 
-
+/**
+ * shuffles the gamestate.playerDeck
+ */
 function shufflePlayerDeck() {
-    const PlayerDeck = gameState.playerDeck;
-    let index = PlayerDeck.length;
+    shuffleList(gameState.playerDeck)
+}
+
+/**
+ * @param list a list you want shuffled
+ * randomizes the order of the list 
+ */
+function shuffleList(list){
+    let index = list.length;
     while(index != 0){
         let RandomIndex = Math.floor(Math.random()*index);
         index = index - 1;
-        [PlayerDeck[index], PlayerDeck[RandomIndex]] = [PlayerDeck[RandomIndex], PlayerDeck[index]];
+        [list[index], list[RandomIndex]] = [list[RandomIndex], list[index]];
     }
 }
 
+/**
+ * shuffles the gamestate.opponentDeck
+ */
+
 function shuffleOpponentDeck(){
-    const opponentDeck = gameState.opponentDeck;
-    let index = opponentDeck.length;
-    while(index != 0){
-        let RandomIndex = Math.floor(Math.random()*index);
-        index = index - 1;
-        [opponentDeck[index], opponentDeck[RandomIndex]] = [opponentDeck[RandomIndex], opponentDeck[index]];
-    }
+    shuffleList(gameState.opponentDeck);
 }
 
 /**

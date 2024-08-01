@@ -60,6 +60,9 @@ function enterGame(){
     for (let i=0; i<5; i++){
         updatePurchaseAreaNthSlot(i, gameState.wildCards.pop());
     }
+    //selects the first villain
+    shuffleList(gameState.villains);
+    gameState.currVillain = gameState.villains.pop();
 
 
     // Create the player and opponent play area and the stuff between them:
@@ -235,6 +238,7 @@ function makeBetweenPlayersArea() {
     betweenPlayersArea.addEventListener("dragleave", function(e){
         betweenPlayersArea.style.borderStyle = "dashed";
     });
+    betweenPlayersArea.appendChild(makeVillainsArea());
     betweenPlayersArea.appendChild(makePurchaseArea());
     betweenPlayersArea.appendChild(makeButtonsArea());
     return betweenPlayersArea;
@@ -283,6 +287,41 @@ function makePurchaseArea() {
         purchaseArea.appendChild(purchaseAreaSlotList[i]);
     }
     return purchaseArea;
+}
+
+/**
+ * render the elements that show the current villain
+ * @returns a div to be shown for creating the display of the current villan
+ */
+function makeVillainsArea() {
+    const villainsArea = document.createElement("div");
+    villainsArea.id = "villainsArea";
+    villainsArea.classList.add("villainsArea");
+    villainsArea.appendChild(makeVillainsProgressDisplay("opponent"));
+    villainsArea.appendChild(villainNameDisplay());
+    villainsArea.appendChild(makeVillainsProgressDisplay("player"));
+    return villainsArea;
+}
+
+/**
+ * createst the display of how much progress a player has made in catching a villain
+ */
+function makeVillainsProgressDisplay(whoseProgressDisplay){
+    const villanCarchingProgressDisplay = document.createElement("div");
+    villanCarchingProgressDisplay.classList.add("villanCarchingProgressDisplay");
+    villanCarchingProgressDisplay.id = `${whoseProgressDisplay}ProgressDisplay`;
+    return villanCarchingProgressDisplay;
+
+}
+
+/**
+ * createst the element that displays the name of the current villain
+ */
+function villainNameDisplay(){
+    const nameDisplay = document.createElement("div");
+    nameDisplay.classList.add("villainNameDisplay");
+    nameDisplay.id = "villainNameDisplay";
+    return nameDisplay;
 }
 
 /**

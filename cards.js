@@ -204,12 +204,12 @@ const batteryFactory = {
     type: "team",
 }
 
-const flyingSquaralMan = {
-    name: "flyingSquaralMan",
-    image: "dragon.jpg",
+const flyingSquirrelMan = {
+    name: "flyingSquirrelMan",
+    image: "flyingSquirrelMan.jpg",
     effectText: "9 investigate, 1 fight",
     cost: 1,
-    effectID: "flyingSquaralMan",
+    effectID: "flyingSquirrelMan",
     type: "hero",
 }
 
@@ -224,7 +224,7 @@ const theLoom = {
 
 
 const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante,
-     batteryFactory, flyingSquaralMan, theLoom,];
+     batteryFactory, flyingSquirrelMan, theLoom,];
 
 
 
@@ -425,11 +425,12 @@ cardEffects.set("batteryFactory", (playingPlayer) => {
     gameState[`${playingPlayer}Statuses`].passiveEnergy = gameState[`${playingPlayer}Statuses`].passiveEnergy + 1
 })
 
-cardEffects.set("flyingSquaralMan", (playingPlayer) => {
-    console.log("cardEffect not implimented");
+cardEffects.set("flyingSquirrelMan", (playingPlayer) => {
+    gameState[`${playingPlayer}Fight`] = gameState[`${playingPlayer}Fight`] + 1;
+    gameState[`${playingPlayer}Investigate`] = gameState[`${playingPlayer}Investigate`] + 9;
 })
 
 cardEffects.set("theLoom", (playingPlayer) => {
-    console.log("cardEffect not implimented");
+    gameState[`${playingPlayer}Fight`] = gameState[`${playingPlayer}Fight`] + 10;
 })
 

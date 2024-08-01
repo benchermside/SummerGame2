@@ -160,6 +160,11 @@ function renderGameState(){
     
 
 
+    //updates villian area
+    document.getElementById("opponentProgressDisplay").innerText = "investigate: " + String(gameState.opponentInvestigate) + "/" + gameState.currVillain.investigate + "\nfight: " + String(gameState.opponentFight) + "/" + gameState.currVillain.fight;
+    document.getElementById("villainNameDisplay").innerText = gameState.currVillain.name;
+    document.getElementById("playerProgressDisplay").innerText = "investigate: " + String(gameState.playerInvestigate) + "/" + gameState.currVillain.investigate + "\nfight: " + String(gameState.playerFight) + "/" + gameState.currVillain.fight;
+
 
     //Handles purchase area
     let currPurchaseCard;
@@ -175,8 +180,8 @@ function renderGameState(){
 
     //Update playerResourceDisplay and energy
     const playerResourceDisplay = document.getElementById("playerResourceDisplay");
-    playerResourceDisplay.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy);
-    document.getElementById("opponentResourceDisplay").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy);
+    playerResourceDisplay.innerText = "reputation " + String(gameState.playerReputation) + "\n energy " + String(gameState.playerEnergy) + "\n honor " + String(gameState.playerHonor);
+    document.getElementById("opponentResourceDisplay").innerText = "reputation " + String(gameState.opponentReputation) + "\n energy " + String(gameState.opponentEnergy) + "\n honor " + String(gameState.opponentHonor);
 
     //updates the list and quanitity of status makers
     
@@ -228,6 +233,7 @@ function renderGameState(){
             default: 0,
         },
     ];
+
     //This loop add all the statuses to the display except ones where the status is default value
     for(let i=0; i<numberedStatusInformation.length; i++){
         if(numberedStatusInformation[i].value !== numberedStatusInformation[i].default){
@@ -235,33 +241,10 @@ function renderGameState(){
             currStatusDisplay.classList.add("statusShower");
             currStatusDisplay.style.backgroundColor = numberedStatusInformation[i].color;
             currStatusDisplay.innerText = String(numberedStatusInformation[i].value);
-            // const displayFunction = () => {
-            //     const statusInformation = document.createElement("span");
-            //     statusInformation.classList.add("statusInformation");
-            //     statusInformation.innerText = numberedStatusInformation[i].discription;
-            //     const boundingRect = currStatusDisplay.getBoundingClientRect();
-            //     const VewRec = document.body.getBoundingClientRect();
-            //     statusInformation.style.left = String(boundingRect.right - VewRec.left) + "px";
-            //     statusInformation.style.top = String(boundingRect.y - VewRec.top) + "px";
-            //     currStatusDisplay.appendChild(statusInformation);
-            // };
-            // const clickFunction = () => {
-            //     console.log("click function called");
-            //     const unclickFunction = () => {
-            //         currStatusDisplay.lastChild.remove();
-            //         currStatusDisplay.removeEventListener("click", unclickFunction)
-            //         currStatusDisplay.addEventListener("click", clickFunction)
-            //     };
-            //     displayFunction();
-            //     currStatusDisplay.removeEventListener("click", clickFunction);
-            //     currStatusDisplay.addEventListener("click", unclickFunction);
-            // }
+
             currStatusDisplay.addEventListener("click", () => {
                 displayToast(currStatusDisplay, numberedStatusInformation[i].discription)
             });
-            //currStatusDisplay.addEventListener("click", clickFunction);
-
-            //currStatusDisplay.addEventListener("mouseover", displayFunction)
             playerStatusesDisplay.appendChild(currStatusDisplay)
         }
     }
