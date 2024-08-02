@@ -118,24 +118,30 @@ function renderGameState(){
     }
 
     //adds last played card to its display
-    if(gameState.lastCardPlayerPlayed !== null){
-        renderCard(gameState.lastCardPlayerPlayed, "playerPlayedCards");
+    if(gameState.playerDiscard.length !== 0){
+        renderCard(gameState.playerDiscard[gameState.playerDiscard.length - 1], "playerPlayedCards");
+    }
+    else{
+        renderCard(null, "playerPlayedCards");
     }
     document.getElementById(`playerLastPlayDisplayText`).innerText = `Cards Played ${gameState.playerDiscard.length}`;
     
     //adds last bought card to it's display
-    if(gameState.lastCardPlayerBought !== null){
-        renderCard(gameState.lastCardPlayerBought, "playerBoughtCards")
+    if(gameState.playerBoughtCards.length !== 0){
+        renderCard(gameState.playerBoughtCards[gameState.playerBoughtCards.length - 1], "playerBoughtCards");
+    }
+    else{
+        renderCard(null, "playerBoughtCards");
     }
     document.getElementById("playerLastBoughtDisplayText").innerText = `Cards Bought ${gameState.playerBoughtCards.length}`;
 
     //updates Player deck
     const playerDeckSize = gameState.playerDeck.length;
     if(playerDeckSize>0){
-        renderFaceDownCard(gameState.playerDeck[playerDeckSize-1], "playerDrawPile")
+        renderFaceDownCard(gameState.playerDeck[playerDeckSize-1], "playerDrawPile");
     }
     else{
-        renderFaceDownCard(null, "playerDrawPile")
+        renderFaceDownCard(null, "playerDrawPile");
     }
     // document.getElementById("playerDrawPileDisplayText").innerText = `Draw Pile ${gameState.playerDeck.length}`;
     
@@ -147,8 +153,18 @@ function renderGameState(){
         renderFaceDownCard(gameStateCardVal, opponentsCardSlotID);
     }
     //opponent last card bought and played
-    renderCard(gameState.lastCardOpponentPlayed, "opponentPlayedCards");
-    renderCard(gameState.lastCardOpponentBought, "opponentBoughtCards");
+    if(gameState.opponentDiscard.length !== 0){
+        renderCard(gameState.opponentDiscard[gameState.opponentDiscard.length - 1], "opponentPlayedCards");
+    }
+    else{
+        renderCard(null, "opponentPlayedCards");
+    }
+    if(gameState.opponentBaughtCards.length !== 0){
+        renderCard(gameState.opponentBaughtCards[gameState.opponentBaughtCards.length - 1], "opponentBoughtCards");
+    }
+    else{
+        renderCard(null, "opponentBoughtCards");
+    }
     renderFaceDownStack(gameState.opponentDeck, "opponentDrawPile");
     document.getElementById("opponentLastBoughtDisplayText").innerText = `Cards Bought ${gameState.opponentBaughtCards.length}`;
     document.getElementById("opponentLastPlayDisplayText").innerText = `Cards Played ${gameState.opponentDiscard.length}`;

@@ -75,6 +75,9 @@ function enterGame(){
     //This selects how the opponent will decides on their moves
     gameState.opponentMovesDecider = "randomIfPossible"; //in the future, this may depend on the gameMode your playing and the AI level
 
+    //TEMP FOR TESTING
+    updateNthHandSlot(2, flyingSquirrelMan)
+
 
     //Call update gameState
     renderGameState();
@@ -238,6 +241,7 @@ function makeBetweenPlayersArea() {
     betweenPlayersArea.addEventListener("dragleave", function(e){
         betweenPlayersArea.style.borderStyle = "dashed";
     });
+    betweenPlayersArea.appendChild(makeDisplayCurrHeroTeam());
     betweenPlayersArea.appendChild(makeVillainsArea());
     betweenPlayersArea.appendChild(makePurchaseArea());
     betweenPlayersArea.appendChild(makeButtonsArea());
@@ -290,6 +294,28 @@ function makePurchaseArea() {
 }
 
 /**
+ * creates the display of the current hero team for both players
+ * @returns the display
+ */
+function makeDisplayCurrHeroTeam(){
+    const heroTeam = document.createElement("div");
+    heroTeam.classList.add("heroTeam");
+    heroTeam.id = "heroTeamWrapper";
+    heroTeam.appendChild(makePlayerHeroTeam("opponent"));
+    heroTeam.appendChild(makePlayerHeroTeam("player"));
+    return heroTeam;
+}
+
+function makePlayerHeroTeam(whoseTeam){
+    const playerHeroTeam = document.createElement("div");
+    playerHeroTeam.classList.add("playerHeroTeam");
+    playerHeroTeam.id = `${whoseTeam}HeroTeam`;
+    return playerHeroTeam;
+}
+
+
+
+/**
  * render the elements that show the current villain
  * @returns a div to be shown for creating the display of the current villan
  */
@@ -335,9 +361,29 @@ function setStartingPlayer(){
 
 /**
  * Plays a card
+ * if the card is a hero, puts the hero in the hero team
+ * draws a new card for the slot
  */
-function playCard(card, player){
+function playCard(card, player, cardSlotNumber){
     cardEffects.get(card.effectID)(player);
+    if(card.type === "hero"){
+        gameState[`${player}HeroTeam`].push(card);
+        if(player === "player"){
+            updateNthHandSlot(cardSlotNumber, null);
+        }
+        else if(player === "opponent"){
+            updateOpponentsNthHandSlot(cardSlotNumber, null);
+        }
+    }
+    else{
+    }
+    if(player === player){
+        playerDrawCard(cardSlotNumber);
+    }
+    else if(player === "opponent"){
+        opponentDiscardCard(opponentMove.slotNumber);
+        opponentDrawCard(cardSlotNumber);
+    }
 }
 
 /**
@@ -352,7 +398,7 @@ async function tryBuyCard(cardNumber){
     if(boughtCard != null && gameState.playerReputation >= boughtCard.cost){
         gameState.playerReputation = gameState.playerReputation - boughtCard.cost;
         gameState.playerBoughtCards.push(boughtCard);
-        gameState.lastCardPlayerBought = boughtCard;
+        //gameState.lastCardPlayerBought = boughtCard;
         updatePurchaseAreaNthSlot(cardNumber, null);
         endTurn("player");
         renderGameState();
@@ -405,11 +451,10 @@ async function tryBuyCard4(){
  * and calls the play card function
  */
 function playerPlaysCard(){
-   
-    playCard(draggingCard.card, "player");
-    playerDrawCard(draggingCard.cardNumber);
+    playCard(draggingCard.card, "player", draggingCard.cardNumber);
+    //playerDrawCard(draggingCard.cardNumber);
     turnOffCardPlay();
-    gameState.lastCardPlayerPlayed = draggingCard.card;
+    endPlayCardPhase();
     renderGameState();
     enterPlayerBuyingPhase();
     enterMode(buyingCard);
@@ -465,6 +510,7 @@ function turnOnCardPlay(){
 function endPhaseButtonPlaying(){
     console.log("endPhaseButtonPlaying called");
     enterPlayerBuyingPhase();
+    endPlayCardPhase();
     enterMode(buyingCard);
     turnOffCardPlay();
 }
@@ -513,6 +559,7 @@ function RefreshHand(){
     for (slotNumber=0; slotNumber<5; slotNumber++){
         playerDrawCard(slotNumber);
     }
+    endPlayCardPhase();
     renderGameState();
     enterPlayerBuyingPhase();
     enterMode(buyingCard);
@@ -611,14 +658,18 @@ async function startedOpponentsTurn() {
     }
     if (opponentMove.type === "refresh"){
         RefreshOpponentsHand();
+        resulveVillain();
+        endPlayCardPhase();
+        renderGameState();
         await opponentsBuyPhase();
     }
     else if(opponentMove.type === "cardPlay"){
         const cardPlayed = getOpponentsNthHandSlot(opponentMove.slotNumber);
-        playCard(cardPlayed, "opponent");
-        opponentDiscardCard(opponentMove.slotNumber);
-        gameState.lastCardOpponentPlayed = cardPlayed;
-        opponentDrawCard(opponentMove.slotNumber);
+        playCard(cardPlayed, "opponent", opponentMove.slotNumber);
+        //opponentDiscardCard(opponentMove.slotNumber);
+        //gameState.lastCardOpponentPlayed = cardPlayed;
+        //opponentDrawCard(opponentMove.slotNumber);
+        endPlayCardPhase();
         renderCard(cardPlayed, `opponentHandSlotCard${opponentMove.slotNumber}`);
         const playedCardElem = document.getElementById(`opponentHandSlotCard${opponentMove.slotNumber}`).firstChild;
         //create the animation of the bought card
@@ -702,6 +753,12 @@ function endTurn(endingPlayer){
     gameState[`${endingPlayer}Reputation`] = gameState[`${endingPlayer}Reputation`] + gameState[`${endingPlayer}Statuses`].passiveReputation;
 
 
+
+    resulveVillain();
+
+
+
+    //handle the reset of the purches area
     gameState.resetIn = gameState.resetIn - 1;
     if (gameState.resetIn === 0){
         for(let i=0; i<5; i++){
@@ -717,6 +774,14 @@ function endTurn(endingPlayer){
     }
 }
 
+
+/**
+ * called at the end of every buy phase before renderGameState
+ */
+function endPlayCardPhase(endingPlayer){
+    resulveVillain();
+}
+
 /**
  * called when player ends there turn
  * does stuff that only happens when the player ends there turn that doesnt apply to the opponent.
@@ -728,6 +793,36 @@ function playerEndTurn(){
     }
 }
 
+
+/**
+ * checks if the villain was defeated by either player and assignes rewars and replaces with new one, does not render screen
+ */
+function resulveVillain(){
+    const playersList = ["player", "opponent"];
+    let villainCaught = false;
+    for (let i=0; i<2; i++){
+        const checkingPlayer = playersList[i];
+        if(gameState[`${checkingPlayer}Investigate`] >= gameState.currVillain.investigate && gameState[`${checkingPlayer}Fight`] >= gameState.currVillain.fight){
+            villainCaught = true;
+            console.log(villainRewards);
+            console.log(gameState.currVillain);
+            villainRewards.get(gameState.currVillain.rewardID)(checkingPlayer);
+        }
+    }
+    if(villainCaught){
+        if(gameState.villains.length !== 0){
+            gameState.currVillain = gameState.villains.pop();
+        }
+        else{
+            alert("villain stalk ran out");//deleat this when game has a proper ending
+        }
+        gameState.playerFight = 0;
+        gameState.playerInvestigate = 0;
+        gameState.opponentFight = 0;
+        gameState.opponentInvestigate = 0;
+    }
+
+}
 
 
 

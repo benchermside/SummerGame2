@@ -24,6 +24,7 @@ const gameState = {
     //wildCards the list of all cards not used in the game
     //villains the list of possable villains that can exist in the game
     //currVillain is the villan that players can work agenst at the current time.
+    //Player hero team is the list of hero cards that the current player has on the case of the current villian
 
 
     playerhand: {
@@ -53,6 +54,8 @@ const gameState = {
     opponentDiscard: [],
     playerBoughtCards: [],
     opponentBaughtCards: [],
+    playerHeroTeam: [],
+    opponentHeroTeam: [],
     wildCards: wildCards,
     villains: villains,
     currVillain: null,
@@ -73,8 +76,8 @@ const gameState = {
     opponentMovesDecider: null,
     resetFrequency: 7,
     resetIn: 7,
-    lastCardOpponentPlayed: null,
-    lastCardPlayerPlayed: null,
+    // lastCardOpponentPlayed: null,
+    // lastCardPlayerPlayed: null,
     lastCardOpponentBought: null,
     lastCardPlayerBought: null,
     playerStatuses: {

@@ -47,13 +47,13 @@ const villains = [mastermind, mindlessBlob]
 //here starts the reward functions
 
 
-const villainRewards = new Map();
+const villainRewards = new Map()
 
 
 villainRewards.set("mastermind", (playingPlayer) => {
-    gamestate[`${playingPlayer}Honor`] = gamestate[`${playingPlayer}Honor`] + 3;
+    gameState[`${playingPlayer}Honor`] = gameState[`${playingPlayer}Honor`] + 3;
 })
 
 villainRewards.set("mindlessBlob", (playingPlayer) => {
-    gamestate[`${playingPlayer}Honor`] = gamestate[`${playingPlayer}Honor`] + 3;
+    gameState[`${playingPlayer}Honor`] = gameState[`${playingPlayer}Honor`] + 3;
 })
