@@ -325,6 +325,7 @@ function makeVillainsArea() {
     villainsArea.classList.add("villainsArea");
     villainsArea.appendChild(makeVillainsProgressDisplay("opponent"));
     villainsArea.appendChild(villainNameDisplay());
+    villainsArea.appendChild(makeVillainImageDisplay());
     villainsArea.appendChild(makeVillainsProgressDisplay("player"));
     return villainsArea;
 }
@@ -348,6 +349,18 @@ function villainNameDisplay(){
     nameDisplay.classList.add("villainNameDisplay");
     nameDisplay.id = "villainNameDisplay";
     return nameDisplay;
+}
+
+/**
+ * createst the element that displays the image accocated with the current villain
+ */
+
+function makeVillainImageDisplay(){
+    const imageDisplay = document.createElement("img");
+    imageDisplay.setAttribute("draggable", "false");
+    imageDisplay.classList.add("villainImageDisplay");
+    imageDisplay.id = "villainImageDisplay";
+    return imageDisplay;
 }
 
 /**

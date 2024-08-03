@@ -181,6 +181,11 @@ h1{
     display: flex;
 }
 
+.villainImageDisplay{
+    height: 84px;
+    width: 130px;
+}
+
 
 .refreshButton, .SkipPhase{
     font-size: 35px; 

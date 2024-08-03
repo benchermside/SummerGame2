@@ -170,7 +170,7 @@ const chef = {
 
 const energyGenerator = {
     name: "energyGenerator",
-    image: "dragon.jpg",
+    image: "energyGenerator.jpg",
     effectText: "gain 7 energy",
     cost: 4,
     effectID: "energyGenerator",
@@ -180,7 +180,7 @@ const energyGenerator = {
 const energyUser = {
     name: "energyUser",
     image: "energyUser.jpg",
-    effectText: "if you have at least 4 energy, turn 4 into 14 reputation",
+    effectText: "if you have at least 4 energy, turn 4 into 14 fight",
     cost: 5,
     effectID: "energyUser",
     type: "team",
@@ -215,7 +215,7 @@ const flyingSquirrelMan = {
 
 const theLoom = {
     name: "theLoom",
-    image: "dragon.jpg",
+    image: "theLoom.jpg",
     effectText: "0 investigate, 10 fight",
     cost: 1,
     effectID: "theLoom",
@@ -393,13 +393,13 @@ cardEffects.set("energyUser", (playingPlayer) => {
     if(playingPlayer === "player"){
         if(gameState.playerEnergy >= 4){
             gameState.playerEnergy = gameState.playerEnergy - 4;
-            gameState.playerReputation = gameState.playerReputation + 14;
+            gameState.playerFight = gameState.playerFight + 14;
         }
     }
     else if(playingPlayer === "opponent"){
         if(gameState.opponentEnergy >= 4){
             gameState.opponentEnergy = gameState.opponentEnergy - 4;
-            gameState.opponentReputation = gameState.opponentReputation + 14;
+            gameState.opponentFight = gameState.opponentFight + 14;
         }
 }
     else{

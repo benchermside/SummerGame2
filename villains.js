@@ -7,6 +7,7 @@
 //fight, the amount of fight required to catch them
 //rewardText the text describing the reward for catching a villin
 //rewardID the id of the function that triggers when the vollan is defeated
+//image is the file of the image that the villian uses
 
 
 const mastermind = {
@@ -14,7 +15,8 @@ const mastermind = {
     investigate: 3,
     fight: 0,
     rewardText: "gain 3 honor",
-    rewardID: "mastermind"
+    rewardID: "mastermind",
+    image: "mastermind.jpg",
 }
 
 const mindlessBlob = {
@@ -23,6 +25,7 @@ const mindlessBlob = {
     fight: 3,
     rewardText: "gain 3 honor",
     rewardID: "mindlessBlob",
+    image: "mindlessBlob.jpg",
 }
 
 const villains = [mastermind, mindlessBlob]

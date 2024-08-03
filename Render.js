@@ -193,6 +193,7 @@ function renderGameState(){
     //updates villian area
     document.getElementById("opponentProgressDisplay").innerText = "investigate: " + String(gameState.opponentInvestigate) + "/" + gameState.currVillain.investigate + "\nfight: " + String(gameState.opponentFight) + "/" + gameState.currVillain.fight;
     document.getElementById("villainNameDisplay").innerText = gameState.currVillain.name;
+    document.getElementById("villainImageDisplay").setAttribute("src", `img/${gameState.currVillain.image}`);
     document.getElementById("playerProgressDisplay").innerText = "investigate: " + String(gameState.playerInvestigate) + "/" + gameState.currVillain.investigate + "\nfight: " + String(gameState.playerFight) + "/" + gameState.currVillain.fight;
 
 
