@@ -820,6 +820,10 @@ function resulveVillain(){
         gameState.playerInvestigate = 0;
         gameState.opponentFight = 0;
         gameState.opponentInvestigate = 0;
+        gameState.playerDiscard = gameState.playerDiscard.concat(gameState.playerHeroTeam);
+        gameState.playerHeroTeam = [];
+        gameState.opponentDiscard = gameState.opponentDiscard.concat(gameState.opponentHeroTeam);
+        gameState.opponentHeroTeam = [];
     }
 
 }

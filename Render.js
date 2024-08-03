@@ -175,7 +175,21 @@ function renderGameState(){
     document.getElementById(`opponentDrawPileDisplayText`).innerText = `Draw Pile ${gameState.opponentDeck.length}`;
     
 
-
+    //update Hero teams
+    const playerShorthands = ["opponent", "player"];
+    for(let i=0; i<2; i++){
+        const currPlayerShorthand = playerShorthands[i];
+        const HeroTeamElement = document.getElementById(`${currPlayerShorthand}HeroTeam`);
+        for(const child of HeroTeamElement.children){
+            child.remove();
+        }
+        for (let i=0; i<gameState[`${currPlayerShorthand}HeroTeam`].length; i++){
+            const HeroTeamCard = document.createElement("div");
+            HeroTeamCard.id = `${currPlayerShorthand}HeroTeamCard${i}`;
+            HeroTeamElement.appendChild(HeroTeamCard);
+            renderCard(gameState[`${currPlayerShorthand}HeroTeam`][i], `${currPlayerShorthand}HeroTeamCard${i}`);
+        }
+    }
     //updates villian area
     document.getElementById("opponentProgressDisplay").innerText = "investigate: " + String(gameState.opponentInvestigate) + "/" + gameState.currVillain.investigate + "\nfight: " + String(gameState.opponentFight) + "/" + gameState.currVillain.fight;
     document.getElementById("villainNameDisplay").innerText = gameState.currVillain.name;
