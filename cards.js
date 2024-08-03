@@ -114,7 +114,7 @@ const thief = {
 
 const doomsayer = {
     name:"doomsayer",
-    image:"dragon.jpg",
+    image:"doomsayer.jpg",
     effectText: "set both players reputation to 0",
     cost: 5,
     effectID: "doomsayer",
@@ -197,7 +197,7 @@ const unpopularVigilante = {
 
 const batteryFactory = {
     name: "batteryFactory",
-    image: "dragon.jpg",
+    image: "batteryFactory.jpg",
     effectText: "at the end of every future turn you take, gain 1 energy",
     cost: 0,//will the upped in future, low for testing
     effectID: "batteryFactory",
