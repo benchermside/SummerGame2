@@ -42,7 +42,7 @@ function DrawNewHand(){
             shufflePlayerDeck();
         }
         if (!(gameState.playerDeck.length === 0)){
-            gameState.playerhand.updateNthHandSlot(i, gameState.playerDeck.pop());
+            gameState.playerHand.updateNthHandSlot(i, gameState.playerDeck.pop());
         }
     }
 }

@@ -377,7 +377,7 @@ function playCard(card, player, cardSlotNumber){
     }
     else{
     }
-    if(player === "player"){
+    if(player === player){
         playerDrawCard(cardSlotNumber);
     }
     else if(player === "opponent"){
@@ -447,13 +447,45 @@ async function tryBuyCard4(){
 
 
 /**
- * this function activeates the mode switch that happens when a card is played by player
+ * This animates the process of drawing a new card to replace one that has been played. It is an async
+ * function that does not return until the animation is finished. At the time this is called, the
+ * game state has been updated, so we can find the card to show in gameState.playerhand.slotX BUT
+ * the screen has not been rendered, so no such element exists; this function will need to create it.
+ *
+ * @param actor either "player" or "opponent", telling which actor is drawing a card
+ * @param slotToPlaceIt an int, specifying the particular slot where the card should be placed
+ */
+async function showCardBeingPulledFromDeck(actor, slotToPlaceIt) {
+    console.log("showCardBeingPulledFromDeck(", actor, ",", slotToPlaceIt, ")"); // FIXME: Remove
+    const cardToShow = gameState[`${actor}Hand`][`slot${slotToPlaceIt}`];
+    const drawPileId = `${actor}DrawPile`;
+    const drawPileElem = document.getElementById(drawPileId);
+    const slotId = `${actor}HandSlotCard${slotToPlaceIt}`;
+
+    // To get started, render the card in the location where the draw pile is, and an empty spot
+    // in the slot we are playing from.
+    renderCard(cardToShow, drawPileId);
+    renderCard(null, slotId);
+
+    // Now use animateMovingCard() to show it moving
+    const cardElem = drawPileElem.firstElementChild;
+    const travelTime = 2000;
+    const afterAction = () => {};
+    await animateMovingCard(cardElem, slotId, travelTime, afterAction);
+
+    // NOTE: Currently this leaves the draw pile looking empty while the card is being animated.
+    // It might be nice to render a card back there instead. That's an improvement we can save
+    // for later.
+}
+
+/**
+ * this function activates the mode switch that happens when a card is played by player
  * and calls the play card function
  */
-function playerPlaysCard(){
+async function playerPlaysCard(){
     playCard(draggingCard.card, "player", draggingCard.cardNumber);
-    //playerDrawCard(draggingCard.cardNumber);
     turnOffCardPlay();
+    await showCardBeingPulledFromDeck("player", draggingCard.cardNumber);
     endPlayCardPhase();
     renderGameState();
     enterPlayerBuyingPhase();
@@ -673,7 +705,9 @@ async function startedOpponentsTurn() {
         renderCard(cardPlayed, `opponentHandSlotCard${opponentMove.slotNumber}`);
         const playedCardElem = document.getElementById(`opponentHandSlotCard${opponentMove.slotNumber}`).firstChild;
         //create the animation of the bought card
-        animateMovingCard(playedCardElem, "opponentPlayedCards", 5000, opponentsBuyPhase);
+        await animateMovingCard(playedCardElem, "opponentPlayedCards", 5000, ()=>{});
+        await showCardBeingPulledFromDeck("opponent", opponentMove.slotNumber);
+        await opponentsBuyPhase();
     }
     else{
         console.log("opponent failed to do something");

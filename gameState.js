@@ -27,7 +27,7 @@ const gameState = {
     //Player hero team is the list of hero cards that the current player has on the case of the current villian
 
 
-    playerhand: {
+    playerHand: {
         slot1: null,
         slot2: null,
         slot3: null,
@@ -107,19 +107,19 @@ const gameState = {
  */
 function getNthHandSlot(n){
     if (n===0){
-        return gameState.playerhand.slot1;
+        return gameState.playerHand.slot1;
     }
     else if (n===1){
-        return gameState.playerhand.slot2;
+        return gameState.playerHand.slot2;
     }
     else if (n===2){
-        return gameState.playerhand.slot3;
+        return gameState.playerHand.slot3;
     }
     else if (n===3){
-        return gameState.playerhand.slot4;
+        return gameState.playerHand.slot4;
     }
     else if (n===4){
-        return gameState.playerhand.slot5;
+        return gameState.playerHand.slot5;
     }
     else{
         console.log("getNthHandSlot input invalid was ", n);
@@ -134,19 +134,19 @@ function getNthHandSlot(n){
  */
 function updateNthHandSlot(n, newValue){
     if (n===0){
-        gameState.playerhand.slot1 = newValue;
+        gameState.playerHand.slot1 = newValue;
     }
     else if (n===1){
-        gameState.playerhand.slot2 = newValue;
+        gameState.playerHand.slot2 = newValue;
     }
     else if (n===2){
-        gameState.playerhand.slot3 = newValue;
+        gameState.playerHand.slot3 = newValue;
     }
     else if (n===3){
-        gameState.playerhand.slot4 = newValue;
+        gameState.playerHand.slot4 = newValue;
     }
     else if (n===4){
-        gameState.playerhand.slot5 = newValue;
+        gameState.playerHand.slot5 = newValue;
     }
     else{
         console.log("updateNthHandSlot n invalid");

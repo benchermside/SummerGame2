@@ -326,7 +326,7 @@ cardEffects.set("doomsayer", (playingPlayer) => {
 
 cardEffects.set("publicityOfficer", (playeringPlayer) => {
     if (playeringPlayer === "player"){
-        gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.playerDeck.length + gameState.playerDiscard.length + (gameState.playerhand.slot1 != null) + (gameState.playerhand.slot2 != null) + (gameState.playerhand.slot3 != null) + (gameState.playerhand.slot4 != null) + (gameState.playerhand.slot5 != null))/2);
+        gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.playerDeck.length + gameState.playerDiscard.length + (gameState.playerHand.slot1 != null) + (gameState.playerHand.slot2 != null) + (gameState.playerHand.slot3 != null) + (gameState.playerHand.slot4 != null) + (gameState.playerHand.slot5 != null))/2);
     }
     else if(playeringPlayer === "opponent"){
         gameState.playerReputation = gameState.playerReputation + Math.floor((gameState.opponentDeck.length + gameState.opponentDiscard.length + (gameState.opponentHand.slot1 != null) + (gameState.opponentHand.slot2 != null) + (gameState.opponentHand.slot3 != null) + (gameState.opponentHand.slot4 != null) + (gameState.opponentHand.slot5 != null))/2);
