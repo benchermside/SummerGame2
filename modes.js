@@ -272,6 +272,11 @@ function makeButtonsArea() {
  * @returns {HTMLDivElement} the element to be shown (it still needs to be added into the page)
  */
 function makePurchaseArea() {
+    const purchaseAreaWraper = document.createElement("div");
+    purchaseAreaWraper.classList.add("purchaseAreaWraper");
+    const purchaseAreaTextExplainer = document.createElement("div");
+    purchaseAreaTextExplainer.classList.add("textExplainer");
+    purchaseAreaTextExplainer.innerText = "recruitable cards";
     const purchaseArea = document.createElement("div");
     const purchaseAreaSlotList = [];
     purchaseArea.classList.add("purchaseArea");
@@ -282,7 +287,9 @@ function makePurchaseArea() {
         purchaseAreaSlotList[i].id = `purchaseAreaSlot${i}`;
         purchaseArea.appendChild(purchaseAreaSlotList[i]);
     }
-    return purchaseArea;
+    purchaseAreaWraper.appendChild(purchaseAreaTextExplainer);
+    purchaseAreaWraper.appendChild(purchaseArea);
+    return purchaseAreaWraper;
 }
 
 /**
@@ -299,10 +306,17 @@ function makeDisplayCurrHeroTeam(){
 }
 
 function makePlayerHeroTeam(whoseTeam){
+    const playerHeroTeamWraper = document.createElement("div");
+    playerHeroTeamWraper.classList.add("playerHeroTeamWraper");
     const playerHeroTeam = document.createElement("div");
     playerHeroTeam.classList.add("playerHeroTeam");
     playerHeroTeam.id = `${whoseTeam}HeroTeam`;
-    return playerHeroTeam;
+    const playerHeroTeamTextExplainer = document.createElement("div");
+    playerHeroTeamTextExplainer.classList.add("textExplainer");
+    playerHeroTeamTextExplainer.innerText = `${whoseTeam==="player" ? "your" : whoseTeam} HeroTeam`;
+    playerHeroTeamWraper.appendChild(playerHeroTeamTextExplainer);
+    playerHeroTeamWraper.appendChild(playerHeroTeam);
+    return playerHeroTeamWraper;
 }
 
 
@@ -315,12 +329,21 @@ function makeVillainsArea() {
     const villainsArea = document.createElement("div");
     villainsArea.id = "villainsArea";
     villainsArea.classList.add("villainsArea");
+    villainsArea.appendChild(makeVillainTextDisplay());
     villainsArea.appendChild(makeVillainsProgressDisplay("opponent"));
     villainsArea.appendChild(villainNameDisplay());
     villainsArea.appendChild(makeVillainImageDisplay());
     villainsArea.appendChild(makeVillainsProgressDisplay("player"));
     return villainsArea;
 }
+
+function makeVillainTextDisplay(){
+    const villainTextDisplay = document.createElement("div");
+    villainTextDisplay.classList.add("textExplainer");
+    villainTextDisplay.innerText = "villain";
+    return villainTextDisplay;
+}
+
 
 /**
  * createst the display of how much progress a player has made in catching a villain

@@ -129,11 +129,16 @@ h1{
 
 
 .betweenPlayersArea{
-    height: 240px;
+    /* height: 240px; */
     align-self: stretch;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.purchaseAreaWraper{
+    display: flex;
+    flex-direction: column;
 }
 
 .purchaseArea{
@@ -163,14 +168,19 @@ h1{
 
 .playerHeroTeam{
     display: flex;
-    width: 395px;
+    max-width: 395px;
     overflow-x: scroll;
 }
 
+.playerHeroTeamWraper{
+    display: flex;
+    flex-direction: column;
+}
 
 .villainsArea{
     display: flex;
     flex-direction: column;
+    align-self: flex-start;
 }
 
 .villainNameDisplay{
