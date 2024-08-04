@@ -35,7 +35,7 @@ function sfc32(a, b, c, d) {
     }
 }
   
-const repeatable = true;
+const repeatable = false;
 const seedgen = () => (Math.random()*2**32)>>>0;
 const getRand =  repeatable ? sfc32(9836890, 98057909, 29598, 9867895) : sfc32(seedgen(), seedgen(), seedgen(), seedgen());
 
