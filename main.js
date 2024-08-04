@@ -1,4 +1,45 @@
 
+/**
+ * 
+ * @param {low}  the minimum number the you can get, this feild is optional and can be left out with defult 0
+ * @param {high} the max number you can get + 1
+ * 
+ */
+function generateRandomInt(low, high){
+    if (high === undefined){
+        high = low;
+        low = 0;
+    }
+    const rangeSize = high - low;
+    const RandomNum = Math.floor(getRand()*rangeSize);
+    return RandomNum + low;
+}
+
+
+
+/**
+ * 
+ * This came from https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
+ * should be used to genorate a random number function
+ */
+function sfc32(a, b, c, d) {
+    return function() {
+      a |= 0; b |= 0; c |= 0; d |= 0;
+      let t = (a + b | 0) + d | 0;
+      d = d + 1 | 0;
+      a = b ^ b >>> 9;
+      b = c + (c << 3) | 0;
+      c = (c << 21 | c >>> 11);
+      c = c + t | 0;
+      return (t >>> 0) / 4294967296;
+    }
+}
+  
+const repeatable = true;
+const seedgen = () => (Math.random()*2**32)>>>0;
+const getRand =  repeatable ? sfc32(9836890, 98057909, 29598, 9867895) : sfc32(seedgen(), seedgen(), seedgen(), seedgen());
+
+
 
 
 
@@ -17,7 +58,7 @@ function shufflePlayerDeck() {
 function shuffleList(list){
     let index = list.length;
     while(index != 0){
-        let RandomIndex = Math.floor(Math.random()*index);
+        let RandomIndex = generateRandomInt(index);
         index = index - 1;
         [list[index], list[RandomIndex]] = [list[RandomIndex], list[index]];
     }

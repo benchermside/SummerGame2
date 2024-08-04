@@ -33,7 +33,7 @@ function randomCardPlayer(){
             legalActions.push({type: "cardPlay", slotNumber: i});
         }
     }
-    const selectedAction = Math.floor(Math.random() * legalActions.length);
+    const selectedAction = generateRandomInt(legalActions.length);
     return legalActions[selectedAction];
 
 
@@ -63,7 +63,7 @@ function randomCardBuyer(){
             legalActions.push({type: "purchase", slotNumber: i});
         }
     }
-    return legalActions[Math.floor(Math.random() * legalActions.length)];
+    return legalActions[generateRandomInt(legalActions.length)];
 }
 
 /**
@@ -83,7 +83,7 @@ function randomCardBuyerIfPossible(){
         return {type: "skip"};
     }
     else{
-        return legalActions[Math.floor(Math.random() * legalActions.length)];
+        return legalActions[generateRandomInt(legalActions.length)];
     }
     
 }

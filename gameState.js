@@ -28,18 +28,18 @@ const gameState = {
 
 
     playerHand: {
+        slot0: null,
         slot1: null,
         slot2: null,
         slot3: null,
         slot4: null,
-        slot5: null,
     },
     opponentHand: {
+        slot0: null,
         slot1: null,
         slot2: null,
         slot3: null,
         slot4: null,
-        slot5: null,
     },
     purchaseArea: {
         slot0: null,
@@ -107,19 +107,19 @@ const gameState = {
  */
 function getNthHandSlot(n){
     if (n===0){
-        return gameState.playerHand.slot1;
+        return gameState.playerHand.slot0;
     }
     else if (n===1){
-        return gameState.playerHand.slot2;
+        return gameState.playerHand.slot1;
     }
     else if (n===2){
-        return gameState.playerHand.slot3;
+        return gameState.playerHand.slot2;
     }
     else if (n===3){
-        return gameState.playerHand.slot4;
+        return gameState.playerHand.slot3;
     }
     else if (n===4){
-        return gameState.playerHand.slot5;
+        return gameState.playerHand.slot4;
     }
     else{
         console.log("getNthHandSlot input invalid was ", n);
@@ -134,19 +134,19 @@ function getNthHandSlot(n){
  */
 function updateNthHandSlot(n, newValue){
     if (n===0){
-        gameState.playerHand.slot1 = newValue;
+        gameState.playerHand.slot0 = newValue;
     }
     else if (n===1){
-        gameState.playerHand.slot2 = newValue;
+        gameState.playerHand.slot1 = newValue;
     }
     else if (n===2){
-        gameState.playerHand.slot3 = newValue;
+        gameState.playerHand.slot2 = newValue;
     }
     else if (n===3){
-        gameState.playerHand.slot4 = newValue;
+        gameState.playerHand.slot3 = newValue;
     }
     else if (n===4){
-        gameState.playerHand.slot5 = newValue;
+        gameState.playerHand.slot4 = newValue;
     }
     else{
         console.log("updateNthHandSlot n invalid");
@@ -160,19 +160,19 @@ function updateNthHandSlot(n, newValue){
  */
 function getOpponentsNthHandSlot(n){
     if (n===0){
-        return gameState.opponentHand.slot1;
+        return gameState.opponentHand.slot0;
     }
     else if (n===1){
-        return gameState.opponentHand.slot2;
+        return gameState.opponentHand.slot1;
     }
     else if (n===2){
-        return gameState.opponentHand.slot3;
+        return gameState.opponentHand.slot2;
     }
     else if (n===3){
-        return gameState.opponentHand.slot4;
+        return gameState.opponentHand.slot3;
     }
     else if (n===4){
-        return gameState.opponentHand.slot5;
+        return gameState.opponentHand.slot4;
     }
     else{
         console.log("getOpponentsNthHandSlot input invalid");
@@ -188,19 +188,19 @@ function getOpponentsNthHandSlot(n){
  */
 function updateOpponentsNthHandSlot(n, newValue){
     if (n===0){
-        gameState.opponentHand.slot1 = newValue;
+        gameState.opponentHand.slot0 = newValue;
     }
     else if (n===1){
-        gameState.opponentHand.slot2 = newValue;
+        gameState.opponentHand.slot1 = newValue;
     }
     else if (n===2){
-        gameState.opponentHand.slot3 = newValue;
+        gameState.opponentHand.slot2 = newValue;
     }
     else if (n===3){
-        gameState.opponentHand.slot4 = newValue;
+        gameState.opponentHand.slot3 = newValue;
     }
     else if (n===4){
-        gameState.opponentHand.slot5 = newValue;
+        gameState.opponentHand.slot4 = newValue;
     }
     else{
         console.log("updateNthHandSlot n invalid");

@@ -313,7 +313,7 @@ async function animateCardBuy(card, cardSlotNumber, animationConclusionFunction)
 }
 
 /**
- * @pram domElement element to move
+ * @pram cardElem element to move
  * @pram containerID string id of a card container 
  * @pram travelTime milliseconds
  * @pram afterAction async function

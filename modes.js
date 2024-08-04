@@ -51,12 +51,7 @@ function enterGame(){
 
 
    //creates the deck of cards for the purchase area
-    let wildCardIndex = gameState.wildCards.length;
-    while(wildCardIndex != 0){
-       let RandomwildCardIndex = Math.floor(Math.random()*wildCardIndex);
-       wildCardIndex = wildCardIndex - 1;
-       [gameState.wildCards[wildCardIndex], gameState.wildCards[RandomwildCardIndex]] = [gameState.wildCards[RandomwildCardIndex], gameState.wildCards[wildCardIndex]];
-    }
+    shuffleList(gameState.wildCards);
     for (let i=0; i<5; i++){
         updatePurchaseAreaNthSlot(i, gameState.wildCards.pop());
     }
@@ -74,9 +69,6 @@ function enterGame(){
 
     //This selects how the opponent will decides on their moves
     gameState.opponentMovesDecider = "randomIfPossible"; //in the future, this may depend on the gameMode your playing and the AI level
-
-    //TEMP FOR TESTING
-    updateNthHandSlot(2, flyingSquirrelMan)
 
 
     //Call update gameState
