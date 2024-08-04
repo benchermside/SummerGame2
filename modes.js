@@ -382,11 +382,11 @@ function playCard(card, player, cardSlotNumber){
     }
     else{
     }
-    if(player === player){
+    if(player === "player"){
         playerDrawCard(cardSlotNumber);
     }
     else if(player === "opponent"){
-        opponentDiscardCard(opponentMove.slotNumber);
+        opponentDiscardCard(cardSlotNumber);
         opponentDrawCard(cardSlotNumber);
     }
 }
