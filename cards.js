@@ -216,15 +216,44 @@ const flyingSquirrelMan = {
 const theLoom = {
     name: "theLoom",
     image: "theLoom.jpg",
-    effectText: "0 investigate, 10 fight",
+    effectText: "10 fight",
     cost: 1,
     effectID: "theLoom",
     type: "hero",
 }
 
+const BatteryEnergyTechnologyResearch = {
+    name: "BatteryResearch",
+    image: "dragon.jpg",
+    effectText: "at the end of each turn, increese your passive energy income by one",
+    cost: 10,
+    effectID: "BatteryEnergyTechnologyResearch",
+    type: "team",
+}
+
+
+const hacker = {
+    name: "hacker",
+    image: "dragon.jpg",
+    effectText: "Spend 5 energy for 20 investigate",
+    cost: 5,
+    effectID: "hacker",
+    type: "hero",
+}
+
+const publicityCampaign = {
+    name: "publicity campaign",
+    image: "publicityCampaign.jpg",
+    effectText: "loose energy for reputation 1→1, 2→3, 3→6, 4→7, 5→9, 6→10",
+    cost: 3,
+    effectID: "publicityCampaign",
+    type: "team",
+}
+
+
 
 const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante,
-     batteryFactory, flyingSquirrelMan, theLoom,];
+     batteryFactory, flyingSquirrelMan, theLoom, BatteryEnergyTechnologyResearch, hacker];
 
 
 
@@ -432,5 +461,34 @@ cardEffects.set("flyingSquirrelMan", (playingPlayer) => {
 
 cardEffects.set("theLoom", (playingPlayer) => {
     gameState[`${playingPlayer}Fight`] = gameState[`${playingPlayer}Fight`] + 10;
+})
+
+
+cardEffects.set("BatteryEnergyTechnologyResearch", (playingPlayer) => {
+    gameState[`${playingPlayer}Statuses`].passiveBatteryFactory = gameState[`${playingPlayer}Statuses`].passiveBatteryFactory + 1;
+})
+
+
+cardEffects.set("hacker", (playingPlayer) => {
+    if(gameState[`${playingPlayer}Energy`] >= 5){
+        gameState[`${playingPlayer}Energy`] = gameState[`${playingPlayer}Energy`] - 5;
+        gameState[`${playingPlayer}Investigate`] = gameState[`${playingPlayer}Investigate`] + 20;
+    }
+})
+
+cardEffects.set("publicityCampaign", (playingPlayer) => {
+    if(gameState[`${playingPlayer}Energy`] >= 3){
+        gameState[`${playingPlayer}Energy`] = gameState[`${playingPlayer}Energy`] - 3;
+        gameState[`${playingPlayer}Reputation`] = gameState[`${playingPlayer}Reputation`] + 6;
+    }
+    if(gameState[`${playingPlayer}Energy`] >= 2){
+        gameState[`${playingPlayer}Energy`] = gameState[`${playingPlayer}Energy`] - 2;
+        gameState[`${playingPlayer}Reputation`] = gameState[`${playingPlayer}Reputation`] + 3;
+    }
+    if(gameState[`${playingPlayer}Energy`] >= 1){
+        gameState[`${playingPlayer}Energy`] = gameState[`${playingPlayer}Energy`] - 1;
+        gameState[`${playingPlayer}Reputation`] = gameState[`${playingPlayer}Reputation`] + 1;
+    }
+
 })
 

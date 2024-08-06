@@ -16,12 +16,13 @@ function enterGame(){
 
 
     //this creates the players deck
-    for (let i=0; i<5; i++){
+    for (let i=0; i<4; i++){
         gameState.playerDeck.push(structuredClone(recruiter));
     }
     for (let i=0; i<2; i++){
         gameState.playerDeck.push(structuredClone(dragon));
     }
+    gameState.playerDeck.push(structuredClone(publicityCampaign))
     shufflePlayerDeck();
 
 
@@ -38,12 +39,13 @@ function enterGame(){
 
 
     //This makes the opponent's deck with it's starting cards
-    for (let i=0; i<5; i++){
+    for (let i=0; i<4; i++){
         gameState.opponentDeck.push(structuredClone(recruiter));
     }
     for (let i=0; i<2; i++){
         gameState.opponentDeck.push(structuredClone(dragon));
     }
+    gameState.opponentDeck.push(structuredClone(publicityCampaign));
     shuffleOpponentDeck();
 
     //This will draw the opponents hand from there deck
@@ -812,6 +814,7 @@ function endTurn(endingPlayer){
     gameState[`${endingPlayer}Statuses`].energyLossThisTurn = gameState[`${endingPlayer}Statuses`].energyLossNextTurn;
     gameState[`${endingPlayer}Statuses`].energyLossNextTurn = 0;    
     gameState[`${endingPlayer}Energy`] = gameState[`${endingPlayer}Energy`] + gameState[`${endingPlayer}Statuses`].passiveEnergy;
+    gameState[`${endingPlayer}Statuses`].passiveEnergy = gameState[`${endingPlayer}Statuses`].passiveEnergy + gameState[`${endingPlayer}Statuses`].passiveBatteryFactory;
     gameState[`${endingPlayer}Reputation`] = gameState[`${endingPlayer}Reputation`] + gameState[`${endingPlayer}Statuses`].passiveReputation;
 
 

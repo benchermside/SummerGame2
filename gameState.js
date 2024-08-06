@@ -83,13 +83,15 @@ const gameState = {
     playerStatuses: {
         passiveReputation: 1,//the amount of reputation you get at the end of each of your turns
         passiveEnergy: 1,//the amount of energy you get at the end of each of your turns
+        passiveBatteryFactory: 1,//the amount the passive Energy you gain at the end of your turn
         energyLossThisTurn: 1,//the amount of energy you are to loose at the end of your next turn
         energyLossNextTurn: 1,//the amount of energy you will lose at the end of your second turn from now, equivlently, the amount of energy loss this turn you are to get after this turn
         
     },
     opponentStatuses: {
-        passiveReputation: 0,//the amount of reputation you get at the end of each of your turns
+        passiveReputation: 2,//the amount of reputation you get at the end of each of your turns
         passiveEnergy: 0,//the amount of energy you get at the end of each of your turns
+        passiveBatteryFactory: 0,//the amount of passive energy you gain at the end of your turn
         energyLossThisTurn: 0,//the amount of energy you are to loose at the end of your next turn
         energyLossNextTurn: 0,//the amount of energy you will lose at the end of your second turn from now, equivlently, the amount of energy loss this turn you are to get after this turn
     },

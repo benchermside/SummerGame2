@@ -100,6 +100,9 @@ function renderFaceDownStack(listOfCards, locationID) {
  * Updates screen based on current gamestate
  */
 function renderGameState(){
+    const playerShorthands = ["opponent", "player"];
+
+
     //Handles your hand
     let cardSlot = null;
     let Slot;
@@ -176,9 +179,8 @@ function renderGameState(){
     
 
     //update Hero teams
-    const playerShorthands = ["opponent", "player"];
     for(let i=0; i<2; i++){
-        const currPlayerShorthand = playerShorthands[i];
+        const currPlayerShorthand = playerShorthands[i];//playerShorthands is the list ["player", "opponent"] defined at the top of the funtion
         const HeroTeamElement = document.getElementById(`${currPlayerShorthand}HeroTeam`);
         for(const child of HeroTeamElement.children){
             child.remove();
@@ -217,69 +219,91 @@ function renderGameState(){
     //updates the list and quanitity of status makers
     
     //remove old statuses
-    const playerStatusesDisplay = document.getElementById("playerStatusesDisplay");
-    const stasusList = playerStatusesDisplay.children;
-    for(let i=stasusList.length-1; i>-1; i = i-1){
-        stasusList[i].remove();
+    const statusDisplays = {
+        playerStatusesDisplay: document.getElementById("playerStatusesDisplay"),
+        opponentStatusesDisplay: document.getElementById("opponentStatusesDisplay"),
     }
-
+    for(const currentRemovingPlayer of playerShorthands){
+        console.log(currentRemovingPlayer);
+        console.log(statusDisplays);
+        const currStatusDisplays = statusDisplays[`${currentRemovingPlayer}StatusesDisplay`];
+        const stasusList = currStatusDisplays.children;
+        for(let i=stasusList.length-1; i>-1; i = i-1){
+            stasusList[i].remove();
+        }
+    }
 
     //this list contain the information needed by one impliment of a for loop to put an arbitraty 
     //status with just an integer value and display it on the screen
     //Information used in render game to loop through the statuses and apply each visualy
     // name is the name of the status
-    // value refers to the actual value of the status currently
     // color is the color of the status display, ment to be unique to each status
-    // discription is the discription of the status that displays when clicked
+    // playerDiscription is the discription of the status for the player that displays when clicked
+    // opponentDiscription is the discription of the statuses for the opponent that displays when clicked
     //defult is the defult value this status is at, most often 0. if the status is at defult, it will not display as it is "not doing anything" 
     //example of defult, the defult passive reputation is 0 sence having passive reputation of 0 does nothing.
 
     const numberedStatusInformation = [
         {
             name: "passiveReputation",
-            value: gameState.playerStatuses.passiveReputation,
+            //value: gameState.playerStatuses.passiveReputation,
             color: "#ce0e08",
-            discription: `This is the amount of reputation you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveReputation}`,
+            playerDiscription: `This is the amount of reputation you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveReputation}`,
+            opponentDiscription: `This is the amount of reputation opponent gets for free at end of turn, currently ${gameState.opponentStatuses.passiveReputation}`,
             default: 0,
         },
         {
             name: "passiveEnergy",
-            value: gameState.playerStatuses.passiveEnergy,
+            //value: gameState.playerStatuses.passiveEnergy,
             color: "#4f771f",
-            discription: `This is the amount of energy you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveEnergy}`,
+            playerDiscription: `This is the amount of energy you get for free at the end of your turn, you currently get ${gameState.playerStatuses.passiveEnergy}`,
+            opponentDiscription: `This is the amount of energy opponent gets at end of turn, currently ${gameState.opponentStatuses.passiveEnergy}`,
             default: 0,
         },
         {
             name: "energyLossThisTurn",
-            value: gameState.playerStatuses.energyLossThisTurn,
+            //value: gameState.playerStatuses.energyLossThisTurn,
             color: "#749b09",
-            discription: `This is the amount of energy you will lose after you take your turn, currently ${gameState.playerStatuses.energyLossThisTurn}`,
+            playerDiscription: `This is the amount of energy you will lose after you take your turn, currently ${gameState.playerStatuses.energyLossThisTurn}`,
+            opponentDiscription: `This is the amount of energy opponent will lose after turn, currently ${gameState.opponentStatuses.energyLossThisTurn}`,
             default: 0,
         },
         {
             name: "energyLossNextTurn",
-            value: gameState.playerStatuses.energyLossNextTurn,
+            //value: gameState.playerStatuses.energyLossNextTurn,
             color: "#39490d",
-            discription: `The amount of energy you will once you finish 2 turns, currently, you will lose ${gameState.playerStatuses.energyLossNextTurn} energy`,
+            playerDiscription: `The amount of energy you will once you finish 2 turns, currently, you will lose ${gameState.playerStatuses.energyLossNextTurn} energy`,
+            opponentDiscription: `The amount of energy opponent will after 2 turns, currently, they will lose ${gameState.opponentStatuses.energyLossNextTurn} energy`,
+            default: 0,
+        },
+        {
+            name: "passiveBatteryFactory",
+            //value: gameState.playerStatuses.passiveBatteryFactory,
+            color: "#252801",
+            playerDiscription: `The amount that your passive energy gain will increese each turn, after your passiveEnergy is gained, you will currently gain, ${gameState.playerStatuses.passiveBatteryFactory} passive energy gain`,
+            opponentDiscription: `The amount that opponent's passive energy gain will increese each turn, afterw passiveEnergy is gained, they will gain, ${gameState.opponentStatuses.passiveBatteryFactory} passive energy gain`,
             default: 0,
         },
     ];
 
     //This loop add all the statuses to the display except ones where the status is default value
-    for(let i=0; i<numberedStatusInformation.length; i++){
-        if(numberedStatusInformation[i].value !== numberedStatusInformation[i].default){
-            const currStatusDisplay = document.createElement("div");
-            currStatusDisplay.classList.add("statusShower");
-            currStatusDisplay.style.backgroundColor = numberedStatusInformation[i].color;
-            currStatusDisplay.innerText = String(numberedStatusInformation[i].value);
+    for (const displayingPlayer of playerShorthands){//playerShorthands is the list ["player", "opponent"] defined at the top of the funtion
+        for(let i=0; i<numberedStatusInformation.length; i++){
+            const currStatusInfo = numberedStatusInformation[i];
+            const currStatusValue = gameState[`${displayingPlayer}Statuses`][currStatusInfo.name];
+            if(currStatusValue !== currStatusInfo.default){
+                const currStatusDisplay = document.createElement("div");
+                currStatusDisplay.classList.add("statusShower");
+                currStatusDisplay.style.backgroundColor = currStatusInfo.color;
+                currStatusDisplay.innerText = String(currStatusValue);
 
-            currStatusDisplay.addEventListener("click", () => {
-                displayToast(currStatusDisplay, numberedStatusInformation[i].discription)
-            });
-            playerStatusesDisplay.appendChild(currStatusDisplay)
-        }
+                currStatusDisplay.addEventListener("click", () => {
+                    displayToast(currStatusDisplay, currStatusInfo[`${displayingPlayer}Discription`])
+                });
+                statusDisplays[`${displayingPlayer}StatusesDisplay`].appendChild(currStatusDisplay)
+            }
+        }  
     }
-
 
 
 }

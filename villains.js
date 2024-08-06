@@ -14,7 +14,7 @@ const mastermind = {
     name: "mastermind",
     investigate: 3,
     fight: 0,
-    rewardText: "gain 3 honor",
+    rewardText: "3 honor",
     rewardID: "mastermind",
     image: "mastermind.jpg",
 }
@@ -23,12 +23,24 @@ const mindlessBlob = {
     name: "mindlessBlob",
     investigate: 0,
     fight: 3,
-    rewardText: "gain 3 honor",
+    rewardText: "3 honor",
     rewardID: "mindlessBlob",
     image: "mindlessBlob.jpg",
 }
 
-const villains = [mastermind, mindlessBlob]
+const evilPenguin = {
+    name: "evilPenguin",
+    investigate: 5,
+    fight: 5,
+    rewardText: "6 honor",
+    image: "dragon.jpg",
+}
+
+
+
+
+
+const villains = [mastermind, mindlessBlob, evilPenguin]
 
 //here starts the reward functions
 //here starts the reward functions
@@ -59,4 +71,8 @@ villainRewards.set("mastermind", (playingPlayer) => {
 
 villainRewards.set("mindlessBlob", (playingPlayer) => {
     gameState[`${playingPlayer}Honor`] = gameState[`${playingPlayer}Honor`] + 3;
+})
+
+villainRewards.set("evilPenguin", (playingPlayer) => {
+    gameState[`${playingPlayer}Honor`] += 6
 })
