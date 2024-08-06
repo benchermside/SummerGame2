@@ -92,6 +92,91 @@ const recruiter = {
 }
 
 
+const funDude = {
+    name: "funDude",
+    image: "funDude.jpg",
+    effectText: "gain 2 reputation",
+    cost: 0,
+    effectID: "funDude",
+    type: "team",
+}
+
+const chef = {
+    name: "chef",
+    image: "chef.jpg",
+    effectText: "gain 3 reputation",
+    cost: 1,
+    effectID: "chef",
+    type: "team",
+}
+
+const combatBonuses = {
+    name: "combatBonuses",
+    image: "combatBonuses.jpg",
+    effectText: "gain 5 reputation",
+    cost: 2,
+    effectID: "combatBonuses",
+    type: "team"
+}
+
+const childcare = {
+    name: "childcare",
+    image: "childcare.jpg",
+    effectText: "gain 7 reputation",
+    cost: 3,
+    effectID: "childcare",
+    type: "team"
+}
+
+const coolHomeBase = {
+    name: "coolHomeBase",
+    image: "coolHomeBase.jpg",
+    effectText: "gain 9 reputation",
+    cost: 4,
+    effectID: "coolHomeBase",
+    type: "team"
+}
+
+const governmentPartnership = {
+    name: "governmentPartnership",
+    image: "governmentPartnership.jpg",
+    effectText: "gain 12 reputation",
+    cost: 5,
+    effectID: "governmentPartnership",
+    type: "team"
+}
+
+
+
+const publicityStunt = {
+    name:"publicityStunt",
+    image:"publicityStunt.jpg",
+    effectText: "gain 14 reputation",
+    cost: 6,
+    effectID: "publicityStunt",
+    type: "team",
+}
+
+const Garry = {
+    name: "Garry",
+    image: "garry.jpg",
+    effectText: "gain 16 reputation, Garry needs no explination",
+    cost: 5,
+    effectID: "Garry",
+    type: "team"
+}
+
+const onSightHealthcare = {
+    name: "onSightHealthcare",
+    image: "onSightHealthcare.jpg",
+    effectText: "gain 18 reputation",
+    cost: 5,
+    effectID: "onSightHealthcare",
+    type: "team"
+}
+
+
+
 
 const ninja = {
     name:"ninja",
@@ -130,14 +215,6 @@ const publicityOfficer = {
     effectID: "publicityOfficer",
     type: "team",
 }
-const bigEnergy = {
-    name:"bigEnergy",
-    image:"dragon.jpg",
-    effectText: "gain 20 reputation",
-    cost: 9,
-    effectID: "bigEnergy",
-    type: "team",
-}
 
 
 const instantPower = {
@@ -149,23 +226,6 @@ const instantPower = {
     type: "team",
 }
 
-const funDude = {
-    name: "funDude",
-    image: "funDude.jpg",
-    effectText: "gain 2 reputation",
-    cost: 0,
-    effectID: "funDude",
-    type: "team",
-}
-
-const chef = {
-    name: "chef",
-    image: "chef.jpg",
-    effectText: "gain 3 reputation",
-    cost: 1,
-    effectID: "chef",
-    type: "team",
-}
 
 
 const energyGenerator = {
@@ -252,8 +312,8 @@ const publicityCampaign = {
 
 
 
-const wildCards = [ninja, thief, doomsayer, publicityOfficer, bigEnergy, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante,
-     batteryFactory, flyingSquirrelMan, theLoom, BatteryEnergyTechnologyResearch, hacker];
+const wildCards = [ninja, thief, doomsayer, publicityOfficer, publicityStunt, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante,
+     batteryFactory, flyingSquirrelMan, theLoom, BatteryEnergyTechnologyResearch, hacker, combatBonuses, childcare, coolHomeBase, governmentPartnership, publicityStunt, Garry, onSightHealthcare];
 
 
 
@@ -364,15 +424,15 @@ cardEffects.set("publicityOfficer", (playeringPlayer) => {
         console.log("publicityOfficer Input invalid");
     }
 })
-cardEffects.set("bigEnergy", (playingPlayer) => {
+cardEffects.set("publicityStunt", (playingPlayer) => {
     if (playingPlayer === "player"){
-        gameState.playerReputation = gameState.playerReputation + 20;
+        gameState.playerReputation = gameState.playerReputation + 13;
     }
     else if (playingPlayer === "opponent"){
-        gameState.playerReputation = gameState.playerReputation + 20;
+        gameState.playerReputation = gameState.playerReputation + 13;
     }
     else{
-        console.log("bigEnergy Input invalid");
+        console.log("publicityStunt Input invalid");
     }
     
 })
@@ -491,4 +551,35 @@ cardEffects.set("publicityCampaign", (playingPlayer) => {
     }
 
 })
+
+cardEffects.set("combatBonuses", (playingPlayer) => {
+    gameState[`${playingPlayer}Reputation`] += 5;
+})
+
+cardEffects.set("childcare", (playingPlayer) => {
+    gameState[`${playingPlayer}Reputation`] += 7;
+})
+
+cardEffects.set("coolHomeBase", (playingPlayer) => {
+    gameState[`${playingPlayer}Reputation`] += 9;
+})
+
+cardEffects.set("governmentPartnership", (playingPlayer) => {
+    gameState[`${playingPlayer}Reputation`] += 12;
+})
+
+cardEffects.set("publicityStunt", (playingPlayer) => {
+    gameState[`${playingPlayer}Reputation`] += 14;
+})
+
+
+cardEffects.set("Garry", (playingPlayer) => {
+    gameState[`${playingPlayer}Reputation`] += 16;
+})
+
+
+cardEffects.set("onSightHealthcare", (playingPlayer) => {
+    gameState[`${playingPlayer}Reputation`] += 18;
+})
+
 

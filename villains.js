@@ -33,7 +33,7 @@ const evilPenguin = {
     investigate: 5,
     fight: 5,
     rewardText: "6 honor",
-    image: "dragon.jpg",
+    image: "evilPenguin.jpg",
 }
 
 
