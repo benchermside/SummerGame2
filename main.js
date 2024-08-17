@@ -91,28 +91,31 @@ function DrawNewHand(){
 
 
 
+/**
+ * creates the elements of the starting homepage of the game
+ */
+function makeHomePage(){
+    const soloButton = document.createElement('button');
+    soloButton.innerText = 'Solo';
+    soloButton.id = 'soloButton';
+    soloButton.classList.add("startMenuButton");
+    document.body.appendChild(soloButton);
+    const multButton = document.createElement('button');
+    multButton.innerText = 'Mult (ariving soon)';
+    multButton.id = 'multButton';
+    multButton.classList.add("startMenuButton");
+    document.body.appendChild(multButton);
+    document.body.classList.add("bodyImage");
+}
+
 
 
 
 
 
 function main(){
-    const soloButton = document.createElement('button');
-    soloButton.innerText = 'Solo';
-    soloButton.id = 'soloButton';
-    // soloButton.addEventListener('click', () => {
-    //     enterGame()
-    // })
-    document.body.appendChild(soloButton);
-    const multButton = document.createElement('button');
-    multButton.innerText = 'Mult';
-    multButton.id = 'multButton';
-    // multButton.addEventListener('click', () => {
-    //     enterGame()
-    // })
-    document.body.appendChild(multButton);
+    makeHomePage();    
     enterMode(startMode);
-
 
 
 

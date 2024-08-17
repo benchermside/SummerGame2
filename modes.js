@@ -11,8 +11,7 @@ function enterGame(){
     soloButton.style.display = "none";
     const multButton = document.getElementById("multButton");
     multButton.style.display = "none";
-    const sampleCard= document.getElementById("sampleCard");
-    sampleCard.style.display = "none";
+    document.body.classList.remove("bodyImage");
 
 
     //this creates the players deck
@@ -522,7 +521,17 @@ async function playerPlaysCard(){
     enterMode(buyingCard);
 }
 
+
 /**
+ * temp for when muiltiButton pressed
+ */
+function alterFunct(){
+    alert("multyPlayer soon");
+}
+
+
+
+/** * 
  * this function turns off the draggability of cards in player's hand
  */
 function turnOffCardPlay(){
@@ -974,7 +983,7 @@ const startMode = {
             eventType: "click",
         },
         multButton:{
-            funct: enterGame,
+            funct: alterFunct,
             elementID: "multButton",
             eventType: "click",
         },

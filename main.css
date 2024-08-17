@@ -3,6 +3,21 @@
     flex-direction: column;
 }
 
+.bodyImage{
+    background-image: url("img/teamPhoto.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.startMenuButton{
+    width: 430px;
+    align-self: center;
+    text-align: left;
+    font-size: larger;
+    background-color: blue;
+    border-color: blue;
+}
+
 
 h1{
     text-align: center;
