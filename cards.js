@@ -77,7 +77,7 @@ const dragon = {
     name:"dragon",
     image:"dragon.jpg",
     effectText: "gain 1 energy",
-    cost: 12,
+    cost: 2,
     effectID: "dragon",
     type: "team",
 }
@@ -311,9 +311,73 @@ const publicityCampaign = {
 }
 
 
+const retire = {
+    name: "retire",
+    image: "dragon.jpg",
+    effectText: "retire the leftMost card in your hand",
+    cost: 4,
+    effectID: "retire",
+    type: "team",
+}
+
+const targetedRetirment = {
+    name: "targetedRetirment",
+    image: "dragon.jpg",
+    effectText: "retire the cheapest card in your hand",
+    cost: 5,
+    effectID: "targetedRetirment",
+    type: "team",
+}
+
+const OrginizedRerirment = {
+    name: "OrginizedRerirment",
+    image: "dragon.jpg",
+    effectText: "retire your cheapest card",
+    cost: 6,
+    effectID: "OrginizedRerirment",
+    type: "team",
+}
+
+const teamRetirment = {
+    name: "teamRetirment",
+    image: "dragon.jpg",
+    effectText: "retire your cheapest team card",
+    cost: 6,
+    effectID: "teamRetirment",
+    type: "team",
+}
+
+const heroRetirment = {
+    name: "heroRetirment",
+    image: "dragon.jpg",
+    effectText: "retire your cheapest hero card",
+    cost: 6,
+    effectID: "heroRetirment",
+    type: "team",
+}
+
+const heroFocused = {
+    name: "hero Focused",
+    image: "dragon.jpg",
+    effectText: "retire every team card in your hand",
+    cost: 8,
+    effectID: "heroFocused",
+    type: "team",
+}
+
+const cuttingBureaucracy = {
+    name: "cutting bureaucracy",
+    image: "dragon.jpg",
+    effectText: "retire the top 5 team cards in your deck",
+    cost: 10,
+    effectID: "cuttingBureaucracy",
+    type: "team",
+}
 
 const wildCards = [ninja, thief, doomsayer, publicityOfficer, publicityStunt, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante,
-     batteryFactory, flyingSquirrelMan, theLoom, BatteryEnergyTechnologyResearch, hacker, combatBonuses, childcare, coolHomeBase, governmentPartnership, publicityStunt, Garry, onSightHealthcare];
+    batteryFactory, flyingSquirrelMan, theLoom, BatteryEnergyTechnologyResearch, hacker, combatBonuses, childcare, coolHomeBase, governmentPartnership, 
+    publicityStunt, Garry, onSightHealthcare, retire, targetedRetirment, OrginizedRerirment, teamRetirment, heroFocused, cuttingBureaucracy
+    ];
 
 
 
@@ -582,4 +646,218 @@ cardEffects.set("onSightHealthcare", (playingPlayer) => {
     gameState[`${playingPlayer}Reputation`] += 18;
 })
 
+
+cardEffects.set("retire", (playingPlayer) => {
+    let LocationIndex;
+    if(gameState[`${playingPlayer}Hand`].slot0.effectID === "retire"){
+        LocationIndex = 1;
+    }
+    else{
+        LocationIndex = 0;
+    }
+    retireCard(playingPlayer, "handslot", LocationIndex);
+})
+
+cardEffects.set("targetedRetirment", (playingPlayer) => {
+    let cheapest = 0;
+    for(let i=1; i<5; i++){
+        if(gameState[`${playingPlayer}Hand`][`slot${i}`].cost < gameState[`${playingPlayer}Hand`][`slot${cheapest}`].cost && gameState[`${playingPlayer}Hand`][`slot${i}`].effectID !== "targetedRetirment"){
+            cheapest = i;
+        }
+    }
+    retireCard(playingPlayer, "handSlot", cheapest);
+})
+
+cardEffects.set("OrginizedRerirment", (playingPlayer) => {
+    const cheapest = {
+        cardLocation: null,
+        cardLocationIndex: null,
+        cost: Number.NEGATIVE_INFINITY,
+    }
+    for (let i=0; i<5; i++){
+        if(gameState[`${playingPlayer}Hand`][`slot${i}`] !== null){
+            if(gameState[`${playingPlayer}Hand`][`slot${i}`].cost < cheapest.cost){
+                cheapest.cardLocationIndex = i;
+                cheapest.cost = gameState[`${playingPlayer}Hand`][`slot${i}`].cost;
+                cheapest.cardLocation = "handslot";
+            }
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}Deck`].length; i++){
+        if(gameState[`${playingPlayer}Deck`][i].cost < cheapest.cost){
+            cheapest.cost = gameState[`${playingPlayer}Deck`][i].cost;
+            cheapest.cardLocation = "deck";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}Discard`].length; i++){
+        if(gameState[`${playingPlayer}Discard`][i].cost < cheapest.cost){
+            cheapest.cost = gameState[`${playingPlayer}Discard`][i].cost;
+            cheapest.cardLocation = "discard";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}BoughtCards`].length; i++){
+        if(gameState[`${playingPlayer}BoughtCards`][i].cost < cheapest.cost){
+            cheapest.cost = gameState[`${playingPlayer}BoughtCards`][i].cost;
+            cheapest.cardLocation = "boughtCards";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    if(cheapest.cost !== Number.NEGATIVE_INFINITY){
+        retireCard(playingPlayer, cheapest.cardLocation, cheapest.cardLocationIndex);
+    }
+    else{
+        console.log("no cards to retire, possibly a valid gamestate or possibly an error");
+    }
+})
+
+cardEffects.set("teamRetirment", (playingPlayer) => {
+    const cheapest = {
+        cardLocation: null,
+        cardLocationIndex: null,
+        cost: Number.NEGATIVE_INFINITY,
+    }
+    for (let i=0; i<5; i++){
+        if(gameState[`${playingPlayer}Hand`][`slot${i}`] !== null){
+            if(gameState[`${playingPlayer}Hand`][`slot${i}`].cost < cheapest.cost && gameState[`${playingPlayer}Hand`][`slot${i}`].type === "team"){
+                cheapest.cardLocationIndex = i;
+                cheapest.cost = gameState[`${playingPlayer}Hand`][`slot${i}`].cost;
+                cheapest.cardLocation = "handslot";
+            }
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}Deck`].length; i++){
+        if(gameState[`${playingPlayer}Deck`][i].cost < cheapest.cost && gameState[`${playingPlayer}Deck`][i].type === "team"){
+            cheapest.cost = gameState[`${playingPlayer}Deck`][i].cost;
+            cheapest.cardLocation = "deck";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}Discard`].length; i++){
+        if(gameState[`${playingPlayer}Discard`][i].cost < cheapest.cost && gameState[`${playingPlayer}Discard`][i].type === "team"){
+            cheapest.cost = gameState[`${playingPlayer}Discard`][i].cost;
+            cheapest.cardLocation = "discard";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}BoughtCards`].length; i++){
+        if(gameState[`${playingPlayer}BoughtCards`][i].cost < cheapest.cost && gameState[`${playingPlayer}BoughtCards`][i].type === "team"){
+            cheapest.cost = gameState[`${playingPlayer}BoughtCards`][i].cost;
+            cheapest.cardLocation = "boughtCards";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    if(cheapest.cost !== Number.NEGATIVE_INFINITY){
+        retireCard(playingPlayer, cheapest.cardLocation, cheapest.cardLocationIndex);
+    }
+    else{
+        console.log("no cards to retire, possibly a valid gamestate or possibly an error");
+    }
+})
+
+
+cardEffects.set("heroRetirment", (playingPlayer) => {
+    const cheapest = {
+        cardLocation: null,
+        cardLocationIndex: null,
+        cost: Number.NEGATIVE_INFINITY,
+    }
+    for (let i=0; i<5; i++){
+        if(gameState[`${playingPlayer}Hand`][`slot${i}`] !== null){
+            if(gameState[`${playingPlayer}Hand`][`slot${i}`].cost < cheapest.cost && gameState[`${playingPlayer}Hand`][`slot${i}`].type === "hero"){
+                cheapest.cardLocationIndex = i;
+                cheapest.cost = gameState[`${playingPlayer}Hand`][`slot${i}`].cost;
+                cheapest.cardLocation = "handslot";
+            }
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}Deck`].length; i++){
+        if(gameState[`${playingPlayer}Deck`][i].cost < cheapest.cost && gameState[`${playingPlayer}Deck`][i].type === "hero"){
+            cheapest.cost = gameState[`${playingPlayer}Deck`][i].cost;
+            cheapest.cardLocation = "deck";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}Discard`].length; i++){
+        if(gameState[`${playingPlayer}Discard`][i].cost < cheapest.cost && gameState[`${playingPlayer}Discard`][i].type === "hero"){
+            cheapest.cost = gameState[`${playingPlayer}Discard`][i].cost;
+            cheapest.cardLocation = "discard";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    for(let i=0; i<gameState[`${playingPlayer}BoughtCards`].length; i++){
+        if(gameState[`${playingPlayer}BoughtCards`][i].cost < cheapest.cost && gameState[`${playingPlayer}BoughtCards`][i].type === "hero"){
+            cheapest.cost = gameState[`${playingPlayer}BoughtCards`][i].cost;
+            cheapest.cardLocation = "boughtCards";
+            cheapest.cardLocationIndex = i;
+        }
+    }
+    if(cheapest.cost !== Number.NEGATIVE_INFINITY){
+        retireCard(playingPlayer, cheapest.cardLocation, cheapest.cardLocationIndex);
+    }
+    else{
+        console.log("no cards to retire, possibly a valid gamestate or possibly an error");
+    }
+})
+
+cardEffects.set("heroFocused", (playingPlayer) => {
+    for(let i=0; i<5; i++){
+        if(gameState[`${playingPlayer}Hand`][`slot${i}`].type === "team" && gameState[`${playingPlayer}Hand`][`slot${i}`].effectID !== "heroFocused"){
+            retireCard(playingPlayer, "handSlot", i);
+        }
+    }
+})
+
+cardEffects.set("cuttingBureaucracy", (playingPlayer) => {
+    let teamCardsFound = [];
+    let i = gameState[`${playingPlayer}Deck`].length - 1;
+    while(teamCardsFound.length < 5 && i > -1){
+        if(gameState[`${playingPlayer}Deck`][i].type === "team"){
+            teamCardsFound.push(i);
+        }
+    }
+    for(let j=0; j<teamCardsFound.length; j++){
+        retireCard(playingPlayer, "deck", teamCardsFound[j]);
+    }
+})
+
+
+
+const retireEffects = new Map();
+
+retireEffects.set("recruiter", (retiringPlayer) => {
+    gameState[`${retiringPlayer}Energy`] = gameState[`${retiringPlayer}Energy`] + 100//temp for testing
+})
+
+/**
+ * This is the fucntion you call when you wish to reture a card
+ * retirment removes the card, draws a new card if the card is in your hand and triggers the onreture effect of the card
+ *      retiringPlayer: a string indicating who is returing the card
+ *      cardLocation: the location of the card as a string. possibly handslot, deck, discard, or boughtCards
+ *      cardLocationIndex: if the card is in your hand, this it its slotNumber, 
+ *          if the card is in your deck, discard, or boughtCards this is the index within the list of the card
+ * } 
+ */
+
+function retireCard(retiringPlayer, cardLocation, cardLocationIndex){
+    let retiringCard;
+    if(cardLocation === "handslot"){
+        retiringCard = getNthHandSlot(cardLocationIndex);
+        updateNthHandSlot(cardLocationIndex, null);
+        drawCard(retiringPlayer, cardLocationIndex);
+    }
+    else if(cardLocation === "deck" || cardLocation === "discard" || cardLocation === "handslot"){
+        const containingList = gameState[`${retiringPlayer}` + cardLocation[0].toUpperCase() + cardLocation.substring(1)];
+        retiringCard = containingList[cardLocationIndex];
+        containingList.splice(cardLocationIndex, 1);
+    }
+    else{
+        console.log("input object for retireCard, cardLocation feild not a valid value")
+    }
+    const onTrashEffect = retireEffects.get(retiringCard.effectID);
+    if(onTrashEffect !== undefined){
+        onTrashEffect(retiringPlayer);
+    }
+}
 

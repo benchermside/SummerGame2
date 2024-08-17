@@ -72,7 +72,7 @@ function enterGame(){
     //This selects how the opponent will decides on their moves
     gameState.opponentMovesDecider = "randomIfPossible"; //in the future, this may depend on the gameMode your playing and the AI level
 
-
+    updateNthHandSlot(2, retire);
     //Call update gameState
     renderGameState();
     turnOnCardPlay();
@@ -695,6 +695,23 @@ function opponentDrawCard(slotNumber){
     }
 
 }
+
+/**
+ * cars opponentDrawCard, or playerDrawCard based on if drawingPlayer is player or opponent
+ */
+function drawCard(drawingPlayer, slotNumber){
+    if(drawingPlayer === "player"){
+        playerDrawCard(slotNumber);
+    }
+    else if(drawingPlayer === "opponent"){
+        opponentDrawCard(slotNumber);
+    }
+    else{
+        console.log("drawCard called with invalid drawingPlayer");
+    }
+}
+
+
 /**
  * discards the card in slot number without drawing a new one
  */
