@@ -10,12 +10,16 @@
 }
 
 .startMenuButton{
-    width: 430px;
+    width: 700px;
     align-self: center;
     text-align: left;
-    font-size: larger;
+    font-size: 60px;
     background-color: blue;
     border-color: blue;
+}
+
+.contrastColor{
+    color: #460656;
 }
 
 
