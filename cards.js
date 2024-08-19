@@ -377,7 +377,7 @@ const cuttingBureaucracy = {
 
 const sight = {
     name: "sight",
-    image: "deagon.jpg",
+    image: "dragon.jpg",
     effectText: "3 fight, 2 investigate",
     cost: 1,
     effectID: "sight",
@@ -417,14 +417,16 @@ const carcajou = {
     effectText: "8 fight, 7 investigate",
     cost: 3,
     effectID: "carcajou",
+    type: "hero",
 }
 
 const superUltra = {
     name: "superUltra",
-    image: "superUltra",
+    image: "dragon.jpg",
     effectText: "40 fight",
     cost: 12,
-    effectID: "superUltra"
+    effectID: "superUltra",
+    type: "hero",
 }
 
 const explodeWoman = {
@@ -433,6 +435,7 @@ const explodeWoman = {
     effectText: "converts up to 10 enrgy into 2 fight each, 7 if first hero played",
     cost: 5,
     effectID: "explodeWoman",
+    type: "hero",
 }
 
 const electricSpeedster = {
@@ -441,6 +444,7 @@ const electricSpeedster = {
     effectText: "if you have 6 energy, use it for 15 fight, 15 investigate",
     cost: 4,
     effectID: "electricSpeedster",
+    type: "hero",
 }
 
 const energychannel = {
@@ -449,6 +453,7 @@ const energychannel = {
     effectText: "gain 1 fight for each energy you have WITHOUT LOOSING ENEGY",
     cost: 8,
     effectID: "energychannel",
+    type: "hero",
 }
 
 const investigationBot = {
@@ -457,6 +462,7 @@ const investigationBot = {
     effectText: "gain 1 investigate for each energy you have WITHOUT LOOSING ENERGY",
     cost: 8,
     effectID: "investigationBot",
+    type: "hero",
 }
 
 
