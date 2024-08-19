@@ -268,7 +268,7 @@ const flyingSquirrelMan = {
     name: "flyingSquirrelMan",
     image: "flyingSquirrelMan.jpg",
     effectText: "9 investigate, 1 fight",
-    cost: 1,
+    cost: 2,
     effectID: "flyingSquirrelMan",
     type: "hero",
 }
@@ -277,7 +277,7 @@ const theLoom = {
     name: "theLoom",
     image: "theLoom.jpg",
     effectText: "10 fight",
-    cost: 1,
+    cost: 2,
     effectID: "theLoom",
     type: "hero",
 }
@@ -374,9 +374,97 @@ const cuttingBureaucracy = {
     type: "team",
 }
 
+
+const sight = {
+    name: "sight",
+    image: "deagon.jpg",
+    effectText: "3 fight, 2 investigate",
+    cost: 1,
+    effectID: "sight",
+    type: "hero",
+}
+
+const flexMan = {
+    name: "flexMan",
+    image: "dragon.jpg",
+    effectText: "gain 4 investigate, if the current villian needs more fight, gain that instead",
+    cost: 1,
+    effectID: "flexMan",
+    type: "hero",
+}
+
+const questioner = {
+    name: "questioner",
+    image: "dragon.jpg",
+    effectText: "lose 1 reputation and energy if possible, gain 11 investigate",
+    cost: 1,
+    effectID: "questioner",
+    type: "hero",
+}
+
+const orc = {
+    name: "orc",
+    image: "dragon.jpg",
+    effectText: "15 fight",
+    cost: 3,
+    effectID: "orc",
+    type: "hero",
+}
+
+const carcajou = {
+    name: "carcajou",
+    image: "dragon.jpg",
+    effectText: "8 fight, 7 investigate",
+    cost: 3,
+    effectID: "carcajou",
+}
+
+const superUltra = {
+    name: "superUltra",
+    image: "superUltra",
+    effectText: "40 fight",
+    cost: 12,
+    effectID: "superUltra"
+}
+
+const explodeWoman = {
+    name: "explodeWoman",
+    image: "dragon.jpg",
+    effectText: "converts up to 10 enrgy into 2 fight each, 7 if first hero played",
+    cost: 5,
+    effectID: "explodeWoman",
+}
+
+const electricSpeedster = {
+    name: "electric speedster",
+    image: "dragon.jpg",
+    effectText: "if you have 6 energy, use it for 15 fight, 15 investigate",
+    cost: 4,
+    effectID: "electricSpeedster",
+}
+
+const energychannel = {
+    name: "energy channel",
+    image: "dragon.jpg",
+    effectText: "gain 1 fight for each energy you have WITHOUT LOOSING ENEGY",
+    cost: 8,
+    effectID: "energychannel",
+}
+
+const investigationBot = {
+    name: "investigation Bot",
+    image: "dragon.jpg",
+    effectText: "gain 1 investigate for each energy you have WITHOUT LOOSING ENERGY",
+    cost: 8,
+    effectID: "investigationBot",
+}
+
+
+
 const wildCards = [ninja, thief, doomsayer, publicityOfficer, publicityStunt, instantPower, funDude, chef, energyGenerator, energyUser, unpopularVigilante,
     batteryFactory, flyingSquirrelMan, theLoom, BatteryEnergyTechnologyResearch, hacker, combatBonuses, childcare, coolHomeBase, governmentPartnership, 
-    publicityStunt, Garry, onSightHealthcare, retire, targetedRetirment, OrginizedRerirment, teamRetirment, heroFocused, cuttingBureaucracy
+    publicityStunt, Garry, onSightHealthcare, retire, targetedRetirment, OrginizedRerirment, teamRetirment, heroFocused, cuttingBureaucracy, sight, flexMan,
+    questioner, superUltra, explodeWoman, electricSpeedster, energychannel, investigationBot,
     ];
 
 
@@ -820,6 +908,78 @@ cardEffects.set("cuttingBureaucracy", (playingPlayer) => {
     for(let j=0; j<teamCardsFound.length; j++){
         retireCard(playingPlayer, "deck", teamCardsFound[j]);
     }
+})
+
+cardEffects.set("sight", (playingPlayer) => {
+    gameState[`${playingPlayer}Fight`] += 3;
+    gameState[`${playingPlayer}investigate`] += 2;
+})
+
+cardEffects.set("flexMan", (playingPlayer) => {
+    if(gameState.currVillain.fight > gameState.currVillain.investigate){
+        gameState[`${playingPlayer}Fight`] += 4;
+    }
+    else{
+        gameState[`${playingPlayer}investigate`] += 4;
+    }
+})
+
+cardEffects.set("questioner", (playingPlayer) => {
+    if(gameState[`${playingPlayer}Energy`] >= 1){
+        gameState[`${playingPlayer}Energy`] = gameState[`${playingPlayer}Energy`] - 1;
+    }
+    if(gameState[`${playingPlayer}Reputation`] >= 1){
+        gameState[`${playingPlayer}Reputation`] = gameState[`${playingPlayer}Reputation`] - 1;
+    }
+    gameState[`${playingPlayer}Investigate`] += 11;
+})
+
+cardEffects.set("orc", (playingPlayer) => {
+    gameState[`${playingPlayer}Fight`] += 15;
+})
+
+cardEffects.set("carcajou", (playingPlayer) => {
+    gameState[`${playingPlayer}Fight`] += 8;
+    gameState[`${playingPlayer}Investigate`] += 7;
+})
+
+cardEffects.set("superUltra", (playingPlayer) => {
+    gameState[`${playingPlayer}Fight`] += 40;
+})
+
+cardEffects.set("explodeWoman", (playingPlayer) => {
+    let energyReturn = 0;
+    if(gameState[`${playingPlayer}HeroTeam`].length === 0){
+        energyReturn = 2;
+    }
+    else{
+        energyReturn = 7;
+    }
+    const playerEnergyQuantity = gameState[`${playingPlayer}Energy`];
+    if(playerEnergyQuantity >= 10){
+        gameState[`${playingPlayer}Energy`] += -10;
+        gameState[`${playingPlayer}Fight`] += (10*energyReturn);
+    }
+    else{
+        gameState[`${playingPlayer}Energy`] = 0;
+        gameState[`${playingPlayer}Fight`] += gameState[`${playingPlayer}Fight`]*playerEnergyQuantity;
+    }
+})
+
+cardEffects.set("electricSpeedster", (playingPlayer) => {
+    if(gameState[`${playingPlayer}Energy`] >= 6){
+        gameState[`${playingPlayer}Energy`] = gameState[`${playingPlayer}Energy`] - 6;
+        gameState[`${playingPlayer}Investigate`] += 15;
+        gameState[`${playingPlayer}Fight`] += 15;
+    }
+})
+
+cardEffects.set("energychannel", (playingPlayer) => {
+    gameState[`${playingPlayer}Fight`] = gameState[`${playingPlayer}Fight`] + gameState[`${playingPlayer}Energy`];
+})
+
+cardEffects.set("investigationBot", (playingPlayer) => {
+    gameState[`${playingPlayer}Investigate`] = gameState[`${playingPlayer}Investigate`] + gameState[`${playingPlayer}Energy`];
 })
 
 
